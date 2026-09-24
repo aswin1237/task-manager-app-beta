@@ -47,7 +47,9 @@
           <span class="role-label-head">Role:</span>
           <button class="role-chip active" data-role="user" id="role-user-btn">User</button>
           <button class="role-chip" data-role="caregiver" id="role-caregiver-btn">Caregiver</button>
-          <button class="role-chip admin-chip" data-role="admin" id="role-admin-btn">👑 Master Admin</button>
+          <button class="role-chip admin-chip" data-role="admin" id="role-admin-btn">
+            👑 Master Admin <span class="notification-count-badge hidden" id="admin-pending-badge">1</span>
+          </button>
         </div>
 
         <button class="action-pill-btn" id="btn-escalation-demo" title="Test Safety Escalation Protocol">
@@ -94,7 +96,7 @@
           </div>
         </button>
 
-        <!-- Master Admin Oversight Nav Link (Visible when role = admin or clicked) -->
+        <!-- Master Admin Oversight Nav Link -->
         <button class="nav-item admin-only-item" data-view="admin-oversight" id="nav-admin-oversight">
           <span class="nav-icon">🛡️</span>
           <div class="nav-info">
@@ -107,8 +109,8 @@
         <div class="sidebar-caregiver-card" id="caregiver-status-card">
           <div class="card-status-dot online"></div>
           <div class="card-text">
-            <strong>Caregiver Active</strong>
-            <p>Dr. Elena Rostova (Linked)</p>
+            <strong id="sidebar-caregiver-name">Caregiver Active</strong>
+            <p id="sidebar-caregiver-detail">Dr. Elena Rostova (Linked)</p>
           </div>
           <button class="revoke-link" id="btn-open-revoke">Revoke</button>
         </div>
@@ -321,18 +323,31 @@
             <div class="elderly-greeting">Good morning, Eleanor</div>
           </div>
 
-          <!-- Autonomy Transparency Banner -->
-          <div class="elderly-autonomy-banner">
+          <!-- Autonomy Transparency & Status Banner -->
+          <div class="elderly-autonomy-banner" id="elderly-autonomy-banner">
             <div class="autonomy-info">
               <span class="autonomy-shield">🛡️</span>
               <div>
-                <strong>Monitored by Nurse Elena Rostova</strong>
-                <p>Supervised under Master Account (Aswin • Son). You retain 100% unilateral independence.</p>
+                <strong id="autonomy-banner-title">Monitored by Nurse Elena Rostova</strong>
+                <p id="autonomy-banner-desc">Supervised under Master Account (Aswin • Son). You retain 100% unilateral independence.</p>
               </div>
             </div>
-            <button class="btn-elderly-override" id="btn-elderly-trigger-override">
-              Take Back Full Control
-            </button>
+            <div class="autonomy-banner-actions">
+              <button class="btn-pause-monitoring" id="btn-open-pause-modal">⏸️ Temporary Pause</button>
+              <button class="btn-elderly-override" id="btn-elderly-trigger-override">Take Back Control</button>
+            </div>
+          </div>
+
+          <!-- Temporary Pause Indicator (Active when paused) -->
+          <div class="pause-active-card hidden" id="pause-active-indicator">
+            <div class="pause-left">
+              <span class="pause-icon">⏸️</span>
+              <div>
+                <strong>Monitoring Temporarily Paused</strong>
+                <p id="pause-status-text">Privacy mode active for 6 hours. Caregiver notifications are muted until 8:00 PM.</p>
+              </div>
+            </div>
+            <button class="btn-resume-now" id="btn-resume-monitoring-now">▶ Resume Monitoring Now</button>
           </div>
 
           <div class="elderly-section-title">Today's Important Tasks & Pills</div>
@@ -365,19 +380,34 @@
             </div>
           </div>
 
+          <!-- PENDING 2ND VERIFICATION APPROVAL BANNER (Appears when senior requests complete detach) -->
+          <div class="master-verification-alert hidden" id="master-verification-banner">
+            <div class="verification-head">
+              <span class="v-icon">⚠️</span>
+              <div>
+                <strong>2nd Verification Required: Senior Independence Request</strong>
+                <p id="master-verification-desc">Eleanor Vance has requested to completely detach caregiver Dr. Elena Rostova and self-manage. Reason: 'Desire to self-manage my medications independently'.</p>
+              </div>
+            </div>
+            <div class="verification-buttons">
+              <button class="btn-danger-sm" id="btn-master-approve-detach">✓ Authorize Complete Detach (Master PIN)</button>
+              <button class="btn-secondary-sm" id="btn-master-decline-detach">✕ Decline & Request Discussion</button>
+            </div>
+          </div>
+
           <!-- Dual Telemetry Grid -->
           <div class="admin-grid">
             <!-- Card 1: Caregiver Telemetry & Response SLA -->
             <div class="admin-card">
               <div class="admin-card-head">
                 <div class="head-left">
-                  <span class="status-dot-pulse"></span>
+                  <span class="status-dot-pulse" id="admin-caregiver-pulse"></span>
                   <div>
-                    <h3>Assigned Caregiver: Dr. Elena Rostova</h3>
-                    <p class="text-muted">License #MD-90412 • Hired Specialist</p>
+                    <h3 id="admin-caregiver-title">Assigned Caregiver: Dr. Elena Rostova</h3>
+                    <p class="text-muted" id="admin-caregiver-sub">License #MD-90412 • Hired Specialist</p>
                   </div>
                 </div>
-                <span class="sla-badge green">98.4% SLA Compliance</span>
+                <span class="sla-badge green" id="admin-caregiver-status-badge">98.4% SLA Compliance</span>
               </div>
 
               <div class="metric-row">
@@ -440,8 +470,8 @@
                   <span class="m-lbl">Continuous Adherence</span>
                 </div>
                 <div class="metric-box">
-                  <span class="m-val">1 Alert</span>
-                  <span class="m-lbl">Oct 15 Overdue (Resolved)</span>
+                  <span class="m-val" id="admin-user-safety-net">Protected</span>
+                  <span class="m-lbl">Master Safety Net</span>
                 </div>
                 <div class="metric-box">
                   <span class="m-val">Active</span>
@@ -475,33 +505,80 @@
     </main>
 
     <!-- ========================================== -->
-    <!-- USER OVERRIDE DIALOG (Autonomous Takeover) -->
+    <!-- TEMPORARY PAUSE MODAL -->
     <!-- ========================================== -->
-    <div class="modal-overlay" id="override-modal">
+    <div class="modal-overlay" id="pause-modal">
       <div class="modal-card">
         <div class="modal-head">
           <div>
-            <h2>⚖️ Autonomous Override: Reclaim Full Control</h2>
-            <p class="modal-subheading">Patient Autonomy Safeguard: You can disconnect caregiver oversight unilaterally.</p>
+            <h2>⏸️ Temporary Pause Monitoring</h2>
+            <p class="modal-subheading">For doctor visits, hospital procedures, family time, or privacy.</p>
+          </div>
+          <button class="modal-close-btn" id="btn-close-pause-modal">✕</button>
+        </div>
+        <div class="modal-body">
+          <p style="font-size:0.88rem; color:var(--text-secondary); margin-bottom:16px;">
+            Choose how long you'd like to pause monitoring. Alerts will not be sent to your caregiver during this window, and monitoring will <strong>automatically resume</strong> when the time is up.
+          </p>
+          <div class="pause-duration-grid">
+            <button class="pause-choice-btn" data-hours="2">
+              <span class="p-hours">2 Hours</span>
+              <span class="p-sub">Doctor visit / Clinic</span>
+            </button>
+            <button class="pause-choice-btn active" data-hours="6">
+              <span class="p-hours">6 Hours</span>
+              <span class="p-sub">Family outing / Event</span>
+            </button>
+            <button class="pause-choice-btn" data-hours="24">
+              <span class="p-hours">24 Hours</span>
+              <span class="p-sub">Day off / Rest period</span>
+            </button>
+          </div>
+        </div>
+        <div class="modal-footer">
+          <button class="btn-secondary" id="btn-cancel-pause">Cancel</button>
+          <button class="btn-accent" id="btn-confirm-pause">Activate Temporary Pause</button>
+        </div>
+      </div>
+    </div>
+
+    <!-- ========================================== -->
+    <!-- TIERED USER OVERRIDE DIALOG -->
+    <!-- ========================================== -->
+    <div class="modal-overlay" id="override-modal">
+      <div class="modal-card wide">
+        <div class="modal-head">
+          <div>
+            <h2>⚖️ Take Back Control: Override Options</h2>
+            <p class="modal-subheading">Patient Autonomy Safeguard: Choose your preferred level of detachment.</p>
           </div>
           <button class="modal-close-btn" id="btn-close-override">✕</button>
         </div>
         <div class="modal-body">
-          <div class="override-box">
-            <p style="margin-bottom:12px; font-size:0.88rem; color:var(--text-secondary); line-height:1.5;">
-              As the account owner, you have the unilateral right to terminate caregiver surveillance. 
-              Executing this will <strong>immediately purge all cached medical records from Dr. Elena Rostova's phone</strong> and alert the Master User (Aswin) for legal clarity.
-            </p>
-            <div class="override-action-block">
-              <label style="font-size:0.78rem; font-weight:700; color:#fca5a5;">Reason for Override / Disconnect:</label>
-              <select id="override-reason-select" style="width:100%; margin:8px 0 16px; padding:10px; background:#0a0d14; border:1px solid var(--border-subtle); color:#fff; border-radius:8px;">
-                <option>Desire to self-manage my medications independently</option>
-                <option>Caregiver replacement required immediately</option>
-                <option>Privacy boundary dispute</option>
-                <option>Emergency temporary freeze</option>
-              </select>
-              <button class="btn-danger-sm" id="btn-execute-override" style="width:100%; padding:14px; font-size:0.95rem; font-weight:800;">
-                ⚡ Execute Immediate Caregiver Detach & Wipe
+          <div class="override-tiers-grid">
+            <!-- Tier 1: Instant Caregiver Freeze (Master Safety Net Active) -->
+            <div class="override-tier-card recommended">
+              <div class="tier-tag green">Recommended & Immediate</div>
+              <h3>🛑 Freeze Caregiver Instantly</h3>
+              <p>Immediately disconnects Nurse Elena Rostova and purges cached records from her phone.</p>
+              <div class="safety-net-guarantee">
+                🛡️ <strong>Safety Net Stays Active:</strong> The Master User (Aswin • Son) remains connected to receive any missed medication emergency alerts.
+              </div>
+              <button class="btn-accent" id="btn-execute-caregiver-freeze" style="width:100%; margin-top:14px;">
+                Freeze Caregiver (Keep Master Net)
+              </button>
+            </div>
+
+            <!-- Tier 2: Complete Independence (2nd Verification with Master) -->
+            <div class="override-tier-card">
+              <div class="tier-tag amber">Requires Master 2nd Verification</div>
+              <h3>🔓 Complete Independence</h3>
+              <p>Completely detaches all external oversight (both Caregiver and Master User).</p>
+              <div class="safety-net-guarantee amber">
+                ⚠️ <strong>Safety Dual-Signoff:</strong> Dispatches a verification confirmation request to the Master User's phone to verify and authorize total independence.
+              </div>
+              <button class="btn-secondary" id="btn-request-master-verification" style="width:100%; margin-top:14px;">
+                Submit Complete Detach Request
               </button>
             </div>
           </div>

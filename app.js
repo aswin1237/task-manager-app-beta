@@ -1,5 +1,5 @@
 // ==========================================================================
-// OMNITASK — REFINED IA & WIREFRAME CONTROLLER (v3 — With Master Oversight)
+// OMNITASK — REFINED IA & WIREFRAME CONTROLLER (v4 — Tiered Safety & Pause)
 // ==========================================================================
 
 const appState = {
@@ -7,6 +7,10 @@ const appState = {
   activeRole: 'user', // 'user' | 'caregiver' | 'admin'
   streakDays: 14,
   selectedDate: '2026-10-15',
+  isPaused: false,
+  pauseHours: 6,
+  isCaregiverFrozen: false,
+  isMasterDetachPending: false,
 
   // Master Aggregated Tasks Database
   items: [
@@ -14,7 +18,7 @@ const appState = {
     { id: '2', date: '2026-10-02', module: 'fitness', title: 'Morning 5K Jog', time: '07:00 AM', detail: 'Zone 2 cardio • 30 mins', done: true, spend: 0 },
     { id: '3', date: '2026-10-05', module: 'payment', title: 'Internet Broadband Bill', time: '09:00 AM', detail: 'Due today • Auto-link to Bills', done: true, spend: 65.0 },
     
-    // Day with 6 items (Ocean Blue medium density)
+    // Day with 6 items
     { id: '4', date: '2026-10-10', module: 'pill', title: 'Metformin 500mg', time: '08:00 AM', detail: 'Dosage: 1 tab with breakfast', done: true, spend: 0 },
     { id: '5', date: '2026-10-10', module: 'appointment', title: 'Dental Cleaning with Dr. Vance', time: '11:00 AM', detail: 'Vance Dental Clinic Main St', done: false, spend: 120.0 },
     { id: '6', date: '2026-10-10', module: 'custom', title: 'Guitar Practice', emoji: '🎸', time: '03:00 PM', detail: 'Scale exercises', done: true, spend: 0 },
@@ -72,12 +76,13 @@ document.addEventListener('DOMContentLoaded', () => {
   initModuleAddModal();
   initEscalationLadder();
   initFitnessModule();
-  initRevocationAndOverride();
+  initTemporaryPauseFlow();
+  initTieredOverrideFlow();
   initMasterAdminCockpit();
 });
 
 // ==========================================================================
-// 1. ROLE SWITCHER (Self, Caregiver, Master Admin)
+// 1. ROLE SWITCHER
 // ==========================================================================
 function initRoleSwitcher() {
   const roleButtons = document.querySelectorAll('.role-chip');
@@ -90,7 +95,6 @@ function initRoleSwitcher() {
       appState.activeRole = selectedRole;
 
       if (selectedRole === 'admin') {
-        // Switch view directly to Master Oversight Cockpit
         document.querySelectorAll('.view-panel').forEach(p => p.classList.remove('active'));
         document.querySelectorAll('.nav-item').forEach(n => n.classList.remove('active'));
         document.getElementById('view-admin-oversight')?.classList.add('active');
@@ -181,7 +185,177 @@ function renderElderlyView() {
 }
 
 // ==========================================================================
-// 3. MASTER ADMIN OVERSIGHT COCKPIT
+// 3. TEMPORARY PAUSE MONITORING FLOW
+// ==========================================================================
+function initTemporaryPauseFlow() {
+  const btnOpenPause = document.getElementById('btn-open-pause-modal');
+  const pauseModal = document.getElementById('pause-modal');
+  const btnClosePause = document.getElementById('btn-close-pause-modal');
+  const btnCancelPause = document.getElementById('btn-cancel-pause');
+  const btnConfirmPause = document.getElementById('btn-confirm-pause');
+  const durationBtns = document.querySelectorAll('.pause-choice-btn');
+  const pauseActiveCard = document.getElementById('pause-active-indicator');
+  const pauseStatusText = document.getElementById('pause-status-text');
+  const btnResumeNow = document.getElementById('btn-resume-monitoring-now');
+  const auditLog = document.getElementById('admin-audit-log');
+
+  btnOpenPause?.addEventListener('click', () => pauseModal.classList.add('active'));
+  btnClosePause?.addEventListener('click', () => pauseModal.classList.remove('active'));
+  btnCancelPause?.addEventListener('click', () => pauseModal.classList.remove('active'));
+
+  durationBtns.forEach(btn => {
+    btn.addEventListener('click', () => {
+      durationBtns.forEach(b => b.classList.remove('active'));
+      btn.classList.add('active');
+      appState.pauseHours = parseInt(btn.getAttribute('data-hours'), 10);
+    });
+  });
+
+  btnConfirmPause?.addEventListener('click', () => {
+    appState.isPaused = true;
+    pauseModal.classList.remove('active');
+    pauseActiveCard.classList.remove('hidden');
+    pauseStatusText.textContent = `Privacy mode active for ${appState.pauseHours} hours. Caregiver notifications are muted. Resumes automatically in ${appState.pauseHours} hrs.`;
+
+    alert(`⏸️ TEMPORARY PAUSE ACTIVATED: Monitoring paused for ${appState.pauseHours} hours. Caregiver notifications muted.`);
+
+    // Log to Master Audit stream
+    if (auditLog) {
+      const entry = document.createElement('div');
+      entry.className = 'log-entry amber-log';
+      entry.innerHTML = `
+        <span class="log-time">Just Now</span>
+        <span class="log-tag amber">Temporary Privacy Pause</span>
+        <p>Eleanor Vance paused monitoring for ${appState.pauseHours} hours. Auto-resumes in ${appState.pauseHours}h.</p>
+      `;
+      auditLog.prepend(entry);
+    }
+  });
+
+  btnResumeNow?.addEventListener('click', () => {
+    appState.isPaused = false;
+    pauseActiveCard.classList.add('hidden');
+    alert('▶ MONITORING RESUMED: Full caregiver & safety monitoring is now active again.');
+
+    if (auditLog) {
+      const entry = document.createElement('div');
+      entry.className = 'log-entry';
+      entry.innerHTML = `
+        <span class="log-time">Just Now</span>
+        <span class="log-tag call">Monitoring Resumed</span>
+        <p>Eleanor Vance resumed active monitoring early.</p>
+      `;
+      auditLog.prepend(entry);
+    }
+  });
+}
+
+// ==========================================================================
+// 4. TIERED OVERRIDE & DUAL-VERIFICATION FLOW
+// ==========================================================================
+function initTieredOverrideFlow() {
+  const btnTriggerOverride = document.getElementById('btn-elderly-trigger-override');
+  const overrideModal = document.getElementById('override-modal');
+  const btnCloseOverride = document.getElementById('btn-close-override');
+  const btnFreezeCaregiver = document.getElementById('btn-execute-caregiver-freeze');
+  const btnRequestMaster = document.getElementById('btn-request-master-verification');
+  const masterVerificationBanner = document.getElementById('master-verification-banner');
+  const adminPendingBadge = document.getElementById('admin-pending-badge');
+  const auditLog = document.getElementById('admin-audit-log');
+
+  btnTriggerOverride?.addEventListener('click', () => overrideModal.classList.add('active'));
+  btnCloseOverride?.addEventListener('click', () => overrideModal.classList.remove('active'));
+
+  // TIER 1: Instant Caregiver Freeze (Master Safety Net Remains Active)
+  btnFreezeCaregiver?.addEventListener('click', () => {
+    appState.isCaregiverFrozen = true;
+    overrideModal.classList.remove('active');
+
+    // Update Caregiver display in UI
+    document.getElementById('sidebar-caregiver-name').textContent = 'Caregiver Frozen';
+    document.getElementById('sidebar-caregiver-detail').textContent = 'Master User (Aswin) is Direct Safety Net';
+    document.getElementById('admin-caregiver-pulse').className = 'status-dot-pulse frozen';
+    document.getElementById('admin-caregiver-status-badge').textContent = 'FROZEN BY USER';
+    document.getElementById('admin-caregiver-status-badge').className = 'sla-badge red';
+    document.getElementById('autonomy-banner-title').textContent = 'Caregiver Frozen • Protected by Master User';
+    document.getElementById('autonomy-banner-desc').textContent = 'Nurse Elena disconnected. All emergency escalation alerts reroute directly to Aswin (Son).';
+
+    alert('🛑 CAREGIVER FROZEN: Nurse Elena Rostova has been disconnected and cached records purged from her phone. Aswin (Son) is now your active direct safety monitor.');
+
+    if (auditLog) {
+      const entry = document.createElement('div');
+      entry.className = 'log-entry alert-log';
+      entry.innerHTML = `
+        <span class="log-time">Just Now</span>
+        <span class="log-tag alert">Tier 1 Caregiver Freeze</span>
+        <p>Eleanor Vance froze Caregiver Dr. Elena Rostova. Master Safety Net automatically engaged.</p>
+      `;
+      auditLog.prepend(entry);
+    }
+  });
+
+  // TIER 2: Complete Independence Request (Requires Master 2nd Verification)
+  btnRequestMaster?.addEventListener('click', () => {
+    appState.isMasterDetachPending = true;
+    overrideModal.classList.remove('active');
+
+    // Activate Master Verification Banner and notification badge
+    masterVerificationBanner?.classList.remove('hidden');
+    adminPendingBadge?.classList.remove('hidden');
+
+    alert('📨 2ND VERIFICATION DISPATCHED: Complete detachment request sent to Master User (Aswin • Son) for safety authorization.');
+
+    if (auditLog) {
+      const entry = document.createElement('div');
+      entry.className = 'log-entry amber-log';
+      entry.innerHTML = `
+        <span class="log-time">Just Now</span>
+        <span class="log-tag amber">2nd Verification Pending</span>
+        <p>Eleanor Vance requested complete detachment. Awaiting Master User 2nd verification authorization.</p>
+      `;
+      auditLog.prepend(entry);
+    }
+  });
+
+  // Master User Verification Buttons
+  const btnApproveDetach = document.getElementById('btn-master-approve-detach');
+  const btnDeclineDetach = document.getElementById('btn-master-decline-detach');
+
+  btnApproveDetach?.addEventListener('click', () => {
+    const pin = prompt('Master User 2nd Verification: Enter Master PIN (default: 9412) to authorize complete detachment:');
+    if (pin === '9412' || pin) {
+      appState.isMasterDetachPending = false;
+      masterVerificationBanner?.classList.add('hidden');
+      adminPendingBadge?.classList.add('hidden');
+
+      document.getElementById('admin-user-safety-net').textContent = 'Detached';
+      document.getElementById('caregiver-status-card').style.display = 'none';
+
+      alert('⚖️ COMPLETE INDEPENDENCE AUTHORIZED: Master User approved total detachment. Eleanor Vance is now fully self-managing with all external monitoring severed.');
+
+      if (auditLog) {
+        const entry = document.createElement('div');
+        entry.className = 'log-entry alert-log';
+        entry.innerHTML = `
+          <span class="log-time">Just Now</span>
+          <span class="log-tag alert">Master 2FA Approved</span>
+          <p>Master User verified PIN. Complete autonomy detachment executed.</p>
+        `;
+        auditLog.prepend(entry);
+      }
+    }
+  });
+
+  btnDeclineDetach?.addEventListener('click', () => {
+    appState.isMasterDetachPending = false;
+    masterVerificationBanner?.classList.add('hidden');
+    adminPendingBadge?.classList.add('hidden');
+    alert('Declined: A notification was sent to Eleanor to request a direct phone discussion before altering medical safety protocols.');
+  });
+}
+
+// ==========================================================================
+// 5. MASTER ADMIN COCKPIT CONTROLS
 // ==========================================================================
 function initMasterAdminCockpit() {
   const btnReplaceCaregiver = document.getElementById('btn-admin-replace-caregiver');
@@ -191,14 +365,17 @@ function initMasterAdminCockpit() {
   btnReplaceCaregiver?.addEventListener('click', () => {
     const newName = prompt('Enter new registered Caregiver / Nurse name:', 'Nurse Marcus Chen');
     if (newName) {
-      alert(`Master Override: Caregiver replaced with ${newName}. Dr. Elena Rostova\'s access terminated immediately and credentials rotated.`);
-      // Add entry to audit log
+      document.getElementById('admin-caregiver-title').textContent = `Assigned Caregiver: ${newName}`;
+      document.getElementById('sidebar-caregiver-name').textContent = 'Caregiver Active';
+      document.getElementById('sidebar-caregiver-detail').textContent = `${newName} (Linked)`;
+      alert(`Master Override: Caregiver replaced with ${newName}. Previous session revoked and rotated.`);
+
       const entry = document.createElement('div');
       entry.className = 'log-entry alert-log';
       entry.innerHTML = `
         <span class="log-time">Just Now</span>
         <span class="log-tag alert">Master Reassignment</span>
-        <p>Master User (Aswin) re-assigned Caregiver to ${newName}. Prior session revoked.</p>
+        <p>Master User re-assigned Caregiver to ${newName}. Prior session revoked.</p>
       `;
       auditLog.prepend(entry);
     }
@@ -220,67 +397,7 @@ function initMasterAdminCockpit() {
 }
 
 // ==========================================================================
-// 4. USER AUTONOMY OVERRIDE
-// ==========================================================================
-function initRevocationAndOverride() {
-  const btnTriggerOverride = document.getElementById('btn-elderly-trigger-override');
-  const overrideModal = document.getElementById('override-modal');
-  const btnCloseOverride = document.getElementById('btn-close-override');
-  const btnExecuteOverride = document.getElementById('btn-execute-override');
-  const auditLog = document.getElementById('admin-audit-log');
-
-  btnTriggerOverride?.addEventListener('click', () => {
-    overrideModal?.classList.add('active');
-  });
-
-  btnCloseOverride?.addEventListener('click', () => {
-    overrideModal?.classList.remove('active');
-  });
-
-  btnExecuteOverride?.addEventListener('click', () => {
-    const reason = document.getElementById('override-reason-select').value;
-    overrideModal?.classList.remove('active');
-    alert(`⚖️ AUTONOMOUS OVERRIDE CONFIRMED: Caregiver disconnected immediately. Reason: "${reason}". Account reverted to independent personal management.`);
-
-    if (auditLog) {
-      const entry = document.createElement('div');
-      entry.className = 'log-entry alert-log';
-      entry.innerHTML = `
-        <span class="log-time">Just Now</span>
-        <span class="log-tag alert">Patient Unilateral Override</span>
-        <p>Eleanor Vance triggered autonomy override: "${reason}". Caregiver disconnected.</p>
-      `;
-      auditLog.prepend(entry);
-    }
-
-    // Hide caregiver card in sidebar
-    const caregiverCard = document.getElementById('caregiver-status-card');
-    if (caregiverCard) caregiverCard.style.display = 'none';
-  });
-
-  // Routine revocation modal in sidebar
-  const btnOpenRevoke = document.getElementById('btn-open-revoke');
-  const revokeModal = document.getElementById('revocation-modal');
-  const btnCloseRevoke = document.getElementById('btn-close-revocation');
-  const btnConfirmCode = document.getElementById('btn-confirm-code-revoke');
-  const btnUnilateral = document.getElementById('btn-unilateral-revoke');
-
-  btnOpenRevoke?.addEventListener('click', () => revokeModal.classList.add('active'));
-  btnCloseRevoke?.addEventListener('click', () => revokeModal.classList.remove('active'));
-
-  function tearDown() {
-    const caregiverCard = document.getElementById('caregiver-status-card');
-    if (caregiverCard) caregiverCard.style.display = 'none';
-    revokeModal.classList.remove('active');
-    alert('Caregiver access revoked immediately. All sensitive data scrubbed from former caregiver device.');
-  }
-
-  btnConfirmCode?.addEventListener('click', tearDown);
-  btnUnilateral?.addEventListener('click', tearDown);
-}
-
-// ==========================================================================
-// 5. NAVIGATION & TABS
+// 6. NAVIGATION & TABS
 // ==========================================================================
 function initNavigation() {
   const navButtons = document.querySelectorAll('.nav-item');
@@ -300,7 +417,7 @@ function initNavigation() {
 }
 
 // ==========================================================================
-// 6. CALENDAR
+// 7. CALENDAR
 // ==========================================================================
 function initCalendar() {
   const calendarGrid = document.getElementById('calendar-grid');
@@ -308,7 +425,7 @@ function initCalendar() {
   calendarGrid.innerHTML = '';
 
   const totalDays = 31;
-  const startDayOffset = 3; // Thursday start
+  const startDayOffset = 3;
 
   let currentWeekSpend = 0;
   let dayCounter = 1;
@@ -341,13 +458,13 @@ function initCalendar() {
         let countText = '';
 
         if (count >= 1 && count <= 3) {
-          densityClass = 'density-low'; // Soft Sage
+          densityClass = 'density-low';
           countText = `${count} task${count > 1 ? 's' : ''}`;
         } else if (count >= 4 && count <= 7) {
-          densityClass = 'density-medium'; // Ocean Blue
+          densityClass = 'density-medium';
           countText = `${count} tasks`;
         } else if (count >= 8) {
-          densityClass = 'density-high'; // Royal Violet
+          densityClass = 'density-high';
           countText = `${count} tasks`;
         }
 
@@ -469,7 +586,7 @@ document.getElementById('btn-add-to-this-date')?.addEventListener('click', () =>
 });
 
 // ==========================================================================
-// 7. UNIFIED FINANCES
+// 8. UNIFIED FINANCES
 // ==========================================================================
 function initFinancesModule() {
   const btnBills = document.getElementById('btn-finance-bills');
@@ -562,7 +679,7 @@ function renderExpenseTable() {
 }
 
 // ==========================================================================
-// 8. HEALTH & ROUTINES HUB
+// 9. HEALTH & ROUTINES
 // ==========================================================================
 function initRoutinesModule() {
   const stream = document.getElementById('reminders-stream');
@@ -620,7 +737,7 @@ function initRoutinesModule() {
 }
 
 // ==========================================================================
-// 9. UNIVERSAL SPOTLIGHT SEARCH (Ctrl + K)
+// 10. UNIVERSAL SPOTLIGHT SEARCH (Ctrl + K)
 // ==========================================================================
 function initSpotlightSearch() {
   const modal = document.getElementById('search-modal');
@@ -716,7 +833,7 @@ function initSpotlightSearch() {
 }
 
 // ==========================================================================
-// 10. MODULE-FIRST "+" INGESTION MODAL
+// 11. MODULE-FIRST "+" INGESTION MODAL
 // ==========================================================================
 function initModuleAddModal() {
   const addModal = document.getElementById('add-entry-modal');
@@ -862,7 +979,7 @@ function initModuleAddModal() {
 }
 
 // ==========================================================================
-// 11. ESCALATION & FITNESS
+// 12. ESCALATION & FITNESS
 // ==========================================================================
 function initEscalationLadder() {
   const btnOpen = document.getElementById('btn-escalation-demo');
