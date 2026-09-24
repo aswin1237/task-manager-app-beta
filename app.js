@@ -94,30 +94,55 @@ document.addEventListener('DOMContentLoaded', () => {
 // ==========================================================================
 function initRoleSwitcher() {
   const roleButtons = document.querySelectorAll('.role-chip');
+  const uxLauncher = document.getElementById('ux-lab-launcher');
+  const uxDock = document.getElementById('ux-dock-panel');
 
   roleButtons.forEach(btn => {
     btn.addEventListener('click', () => {
-      roleButtons.forEach(b => b.classList.remove('active'));
-      btn.classList.add('active');
       const selectedRole = btn.getAttribute('data-role');
-      appState.activeRole = selectedRole;
 
       if (selectedRole === 'admin') {
+        const pin = prompt('👑 Master Admin Authentication\nEnter Master PIN to unlock Master Oversight & UX Testing Lab (Default: 9412):', '9412');
+        if (pin !== '9412' && pin !== null && pin.trim() !== '') {
+          alert('❌ Incorrect PIN. Access denied to Master Admin.');
+          return;
+        } else if (pin === null) {
+          return; // User clicked Cancel
+        }
+
+        roleButtons.forEach(b => b.classList.remove('active'));
+        btn.classList.add('active');
+        appState.activeRole = selectedRole;
+
         document.querySelectorAll('.view-panel').forEach(p => p.classList.remove('active'));
         document.querySelectorAll('.nav-item').forEach(n => n.classList.remove('active'));
         document.getElementById('view-admin-oversight')?.classList.add('active');
         document.getElementById('nav-admin-oversight')?.classList.add('active');
-      } else if (selectedRole === 'user') {
-        document.querySelectorAll('.view-panel').forEach(p => p.classList.remove('active'));
-        document.querySelectorAll('.nav-item').forEach(n => n.classList.remove('active'));
-        document.getElementById('view-home')?.classList.add('active');
-        document.getElementById('nav-home')?.classList.add('active');
-      } else if (selectedRole === 'caregiver') {
-        document.querySelectorAll('.view-panel').forEach(p => p.classList.remove('active'));
-        document.querySelectorAll('.nav-item').forEach(n => n.classList.remove('active'));
-        document.getElementById('view-routines')?.classList.add('active');
-        document.getElementById('nav-routines')?.classList.add('active');
-        alert('Switched to Caregiver View: Filtered to Eleanor Vance\'s medication compliance stream.');
+
+        // Reveal UX Testing Lab exclusively for Master Admin
+        uxLauncher?.classList.remove('hidden');
+        alert('👑 Welcome Master Admin (Aswin)!\n\n1. Master Oversight Cockpit is active.\n2. 🧪 UX Design Lab & Testing Studio is now unlocked in the bottom-right corner.');
+      } else {
+        roleButtons.forEach(b => b.classList.remove('active'));
+        btn.classList.add('active');
+        appState.activeRole = selectedRole;
+
+        // Hide UX Testing Lab when switching back to User or Caregiver
+        uxLauncher?.classList.add('hidden');
+        uxDock?.classList.remove('active');
+
+        if (selectedRole === 'user') {
+          document.querySelectorAll('.view-panel').forEach(p => p.classList.remove('active'));
+          document.querySelectorAll('.nav-item').forEach(n => n.classList.remove('active'));
+          document.getElementById('view-home')?.classList.add('active');
+          document.getElementById('nav-home')?.classList.add('active');
+        } else if (selectedRole === 'caregiver') {
+          document.querySelectorAll('.view-panel').forEach(p => p.classList.remove('active'));
+          document.querySelectorAll('.nav-item').forEach(n => n.classList.remove('active'));
+          document.getElementById('view-routines')?.classList.add('active');
+          document.getElementById('nav-routines')?.classList.add('active');
+          alert('Switched to Caregiver View: Filtered to Eleanor Vance\'s medication compliance stream.');
+        }
       }
     });
   });
