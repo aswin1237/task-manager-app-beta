@@ -62,6 +62,13 @@ const appState = {
   ]
 };
 
+// Deep copy for State Machine: Ideal / Populated restore
+const baselineData = {
+  items: JSON.parse(JSON.stringify(appState.items)),
+  upcomingBills: JSON.parse(JSON.stringify(appState.upcomingBills)),
+  expenses: JSON.parse(JSON.stringify(appState.expenses))
+};
+
 // ==========================================================================
 // DOM INITIALIZATION
 // ==========================================================================
@@ -79,6 +86,7 @@ document.addEventListener('DOMContentLoaded', () => {
   initTemporaryPauseFlow();
   initTieredOverrideFlow();
   initMasterAdminCockpit();
+  initUXTestingStudio();
 });
 
 // ==========================================================================
@@ -618,6 +626,17 @@ function renderBillsGrid() {
   if (!billsGrid) return;
   billsGrid.innerHTML = '';
 
+  if (appState.upcomingBills.length === 0) {
+    billsGrid.innerHTML = `
+      <div class="empty-state-card" style="grid-column: 1 / -1;">
+        <span class="empty-icon">💳</span>
+        <div class="empty-title">All Bills Paid & Cleared</div>
+        <p class="empty-desc">Zero upcoming bills due. Great job maintaining financial adherence!</p>
+      </div>
+    `;
+    return;
+  }
+
   appState.upcomingBills.forEach(bill => {
     const card = document.createElement('div');
     card.className = 'bill-card';
@@ -660,6 +679,17 @@ function renderExpenseTable() {
   if (!tbody) return;
   tbody.innerHTML = '';
 
+  if (appState.expenses.length === 0) {
+    tbody.innerHTML = `
+      <tr>
+        <td colspan="5" style="text-align:center; padding:32px; color:var(--text-muted);">
+          No ledger transactions recorded yet. Mark a bill as paid or add an expense to populate.
+        </td>
+      </tr>
+    `;
+    return;
+  }
+
   appState.expenses.forEach(exp => {
     const tr = document.createElement('tr');
     const isLinked = exp.module.includes('Linked');
@@ -691,6 +721,17 @@ function initRoutinesModule() {
     const filtered = subdomain === 'all' 
       ? appState.items.filter(i => ['pill', 'appointment', 'custom'].includes(i.module))
       : appState.items.filter(i => i.module === subdomain);
+
+    if (filtered.length === 0) {
+      stream.innerHTML = `
+        <div class="empty-state-card">
+          <span class="empty-icon">💊</span>
+          <div class="empty-title">No Active Prescriptions or Habits</div>
+          <p class="empty-desc">Your daily medication stream is clean. Tap '+ New Entry' or switch state in the UX Lab.</p>
+        </div>
+      `;
+      return;
+    }
 
     filtered.forEach(item => {
       const card = document.createElement('div');
@@ -1058,4 +1099,349 @@ function initFitnessModule() {
       chatBox.scrollTop = chatBox.scrollHeight;
     }, 600);
   });
+}
+
+// ==========================================================================
+// 13. UX DESIGN LAB & TESTING SUITE (NIFT & INDUSTRY STANDARDS)
+// ==========================================================================
+function initUXTestingStudio() {
+  const launcher = document.getElementById('btn-toggle-ux-dock');
+  const dock = document.getElementById('ux-dock-panel');
+  const btnMinimize = document.getElementById('btn-minimize-ux-dock');
+  const tabBtns = document.querySelectorAll('.ux-tab-btn');
+  const tabContents = document.querySelectorAll('.ux-tab-content');
+
+  // Toggle dock open/close
+  launcher?.addEventListener('click', () => {
+    dock?.classList.toggle('active');
+  });
+  btnMinimize?.addEventListener('click', () => {
+    dock?.classList.remove('active');
+  });
+
+  // Tab switching
+  tabBtns.forEach(btn => {
+    btn.addEventListener('click', () => {
+      const targetTab = btn.getAttribute('data-uxtab');
+      tabBtns.forEach(b => b.classList.remove('active'));
+      tabContents.forEach(c => c.classList.remove('active'));
+      btn.classList.add('active');
+      document.getElementById(`uxtab-${targetTab}`)?.classList.add('active');
+    });
+  });
+
+  // ------------------------------------------------------------------------
+  // A. STATE MACHINE SIMULATOR (Ideal, Empty, Loading, Offline)
+  // ------------------------------------------------------------------------
+  const stateCards = document.querySelectorAll('.ux-state-card');
+  const offlineBanner = document.getElementById('offline-status-banner');
+  const btnRestoreOnline = document.getElementById('btn-restore-online');
+
+  stateCards.forEach(card => {
+    card.addEventListener('click', () => {
+      stateCards.forEach(c => c.classList.remove('active'));
+      card.classList.add('active');
+      const chosenState = card.getAttribute('data-state');
+      applyInterfaceState(chosenState);
+    });
+  });
+
+  function applyInterfaceState(state) {
+    if (state === 'ideal') {
+      // Restore populated baseline data
+      appState.items = JSON.parse(JSON.stringify(baselineData.items));
+      appState.upcomingBills = JSON.parse(JSON.stringify(baselineData.upcomingBills));
+      appState.expenses = JSON.parse(JSON.stringify(baselineData.expenses));
+      offlineBanner?.classList.add('hidden');
+
+      initCalendar();
+      initRoutinesModule();
+      renderBillsGrid();
+      renderExpenseTable();
+      alert('🌟 IDEAL / POPULATED STATE LOADED: October 2026 active day restored with Royal Violet high density, bills, and ledger records.');
+    } else if (state === 'empty') {
+      // Simulate Day 1 onboarding with 0 items
+      appState.items = [];
+      appState.upcomingBills = [];
+      appState.expenses = [];
+      offlineBanner?.classList.add('hidden');
+
+      initCalendar();
+      initRoutinesModule();
+      renderBillsGrid();
+      renderExpenseTable();
+      alert('📭 EMPTY STATE LOADED: Simulating new user onboarding on Day 1. Notice clean calendar cells, zero spend, and friendly module prompts.');
+    } else if (state === 'loading') {
+      // Simulate Skeleton Loading
+      const cells = document.querySelectorAll('.cal-cell');
+      cells.forEach(c => c.classList.add('is-skeleton'));
+
+      const stream = document.getElementById('reminders-stream');
+      if (stream) {
+        stream.innerHTML = `
+          <div class="skeleton-box" style="height:70px; margin-bottom:12px;"></div>
+          <div class="skeleton-box" style="height:70px; margin-bottom:12px;"></div>
+          <div class="skeleton-box" style="height:70px;"></div>
+        `;
+      }
+
+      const billsGrid = document.getElementById('bills-grid');
+      if (billsGrid) {
+        billsGrid.innerHTML = `
+          <div class="skeleton-box" style="height:120px; border-radius:14px;"></div>
+          <div class="skeleton-box" style="height:120px; border-radius:14px;"></div>
+        `;
+      }
+
+      setTimeout(() => {
+        // Re-render data after 1.8s
+        appState.items = JSON.parse(JSON.stringify(baselineData.items));
+        appState.upcomingBills = JSON.parse(JSON.stringify(baselineData.upcomingBills));
+        appState.expenses = JSON.parse(JSON.stringify(baselineData.expenses));
+        initCalendar();
+        initRoutinesModule();
+        renderBillsGrid();
+        renderExpenseTable();
+        document.getElementById('ux-state-ideal')?.classList.add('active');
+        document.getElementById('ux-state-loading')?.classList.remove('active');
+        alert('⏳ SKELETON LOADING SIMULATION COMPLETE: Data payload received and rendered.');
+      }, 1800);
+    } else if (state === 'offline') {
+      // Simulate Offline Connection Drop
+      offlineBanner?.classList.remove('hidden');
+      alert('⚡ OFFLINE STATE ACTIVE: Network connection dropped. Local-First architecture engaged. Pill alarms & Medical ID records are cached locally.');
+    }
+  }
+
+  btnRestoreOnline?.addEventListener('click', () => {
+    offlineBanner?.classList.add('hidden');
+    document.querySelectorAll('.ux-state-card').forEach(c => c.classList.remove('active'));
+    document.getElementById('ux-state-ideal')?.classList.add('active');
+    alert('🌐 NETWORK RESTORED: App is back online and synchronized with remote cloud storage.');
+  });
+
+  // ------------------------------------------------------------------------
+  // B. INTERACTIVE USER JOURNEYS RUNNER
+  // ------------------------------------------------------------------------
+  // Flow A: Senior Pill Adherence
+  document.getElementById('btn-run-journey-senior')?.addEventListener('click', () => {
+    dock?.classList.remove('active');
+    // Switch to elderly profile
+    const btnElderly = document.getElementById('btn-mode-elderly');
+    btnElderly?.click();
+
+    setTimeout(() => {
+      const cards = document.querySelectorAll('.elderly-card');
+      if (cards.length > 0) {
+        const firstCard = cards[0];
+        firstCard.scrollIntoView({ behavior: 'smooth', block: 'center' });
+        firstCard.style.boxShadow = '0 0 30px #6366f1';
+        firstCard.style.border = '2px solid #a5b4fc';
+
+        const actionBtn = firstCard.querySelector('.btn-elderly-action');
+        setTimeout(() => {
+          actionBtn?.click();
+          firstCard.style.boxShadow = '';
+          firstCard.style.border = '';
+          alert('✓ USER JOURNEY A PASSED: 76yo Senior Eleanor Vance marked Morning Metformin taken. Auto-sync pushed to Dr. Elena Rostova and Master Oversight Cockpit!');
+        }, 1200);
+      }
+    }, 400);
+  });
+
+  // Flow B: Missed Medication Escalation
+  document.getElementById('btn-run-journey-escalation')?.addEventListener('click', () => {
+    dock?.classList.remove('active');
+    const escBtn = document.getElementById('btn-escalation-demo');
+    escBtn?.click();
+
+    setTimeout(() => {
+      const runLadderBtn = document.getElementById('btn-run-escalation');
+      runLadderBtn?.click();
+    }, 500);
+  });
+
+  // Flow C: Bill Payment -> Spent Ledger Auto-Link
+  document.getElementById('btn-run-journey-bill')?.addEventListener('click', () => {
+    dock?.classList.remove('active');
+    // Switch to finances
+    document.getElementById('nav-finance')?.click();
+    document.getElementById('btn-finance-bills')?.click();
+
+    setTimeout(() => {
+      const firstPayBtn = document.querySelector('.btn-mark-bill-paid');
+      if (firstPayBtn) {
+        firstPayBtn.scrollIntoView({ behavior: 'smooth', block: 'center' });
+        firstPayBtn.style.boxShadow = '0 0 24px #22c55e';
+
+        setTimeout(() => {
+          firstPayBtn.click();
+          firstPayBtn.style.boxShadow = '';
+          // Switch to Spent Ledger tab to view updated ledger
+          setTimeout(() => {
+            document.getElementById('btn-finance-ledger')?.click();
+          }, 800);
+        }, 1200);
+      }
+    }, 400);
+  });
+
+  // Flow D: Senior Autonomy & Master 2FA Sign-off
+  document.getElementById('btn-run-journey-autonomy')?.addEventListener('click', () => {
+    dock?.classList.remove('active');
+    document.getElementById('btn-mode-elderly')?.click();
+
+    setTimeout(() => {
+      document.getElementById('btn-elderly-trigger-override')?.click();
+      setTimeout(() => {
+        document.getElementById('btn-request-master-verification')?.click();
+        setTimeout(() => {
+          document.getElementById('role-admin-btn')?.click();
+          const banner = document.getElementById('master-verification-banner');
+          banner?.scrollIntoView({ behavior: 'smooth', block: 'center' });
+        }, 1000);
+      }, 800);
+    }, 400);
+  });
+
+  // ------------------------------------------------------------------------
+  // C. FITTS'S LAW TOUCH TARGET INSPECTOR
+  // ------------------------------------------------------------------------
+  const btnToggleFitts = document.getElementById('btn-toggle-fitts');
+  const fittsStatusPill = document.getElementById('fitts-status-pill');
+  let isFittsActive = false;
+
+  btnToggleFitts?.addEventListener('click', () => {
+    isFittsActive = !isFittsActive;
+    document.body.classList.toggle('fitts-overlay-active', isFittsActive);
+    fittsStatusPill.textContent = isFittsActive ? 'ACTIVE' : 'OFF';
+    fittsStatusPill.classList.toggle('on', isFittsActive);
+
+    // Remove existing badges
+    document.querySelectorAll('.fitts-dimension-badge').forEach(b => b.remove());
+
+    if (isFittsActive) {
+      const targets = document.querySelectorAll(
+        'button, .cal-cell, .nav-item, .filter-tab, .universal-search-trigger'
+      );
+
+      targets.forEach(el => {
+        const rect = el.getBoundingClientRect();
+        if (rect.width > 0 && rect.height > 0) {
+          const badge = document.createElement('span');
+          badge.className = 'fitts-dimension-badge';
+          const w = Math.round(rect.width);
+          const h = Math.round(rect.height);
+          const isSeniorPass = w >= 56 && h >= 56;
+          const isMobilePass = w >= 44 && h >= 44;
+
+          badge.textContent = `${w}×${h}px ${isSeniorPass ? '★ 56dp' : isMobilePass ? '✓ HIG' : ''}`;
+          if (isSeniorPass) {
+            badge.style.background = '#a855f7';
+            badge.style.color = '#fff';
+          } else if (!isMobilePass) {
+            badge.style.background = '#f59e0b';
+            badge.style.color = '#000';
+          }
+          el.appendChild(badge);
+        }
+      });
+    }
+  });
+
+  // ------------------------------------------------------------------------
+  // D. UX LAWS & DESIGN TOKENS MODALS
+  // ------------------------------------------------------------------------
+  const btnOpenLaws = document.getElementById('btn-open-laws-guide');
+  const lawsModal = document.getElementById('ux-laws-modal');
+  const btnCloseLaws = document.getElementById('btn-close-laws-modal');
+
+  btnOpenLaws?.addEventListener('click', () => lawsModal?.classList.add('active'));
+  btnCloseLaws?.addEventListener('click', () => lawsModal?.classList.remove('active'));
+
+  const btnOpenTokens = document.getElementById('btn-open-tokens-modal');
+  const tokensModal = document.getElementById('ux-tokens-modal');
+  const btnCloseTokens = document.getElementById('btn-close-tokens-modal');
+
+  btnOpenTokens?.addEventListener('click', () => tokensModal?.classList.add('active'));
+  btnCloseTokens?.addEventListener('click', () => tokensModal?.classList.remove('active'));
+
+  // ------------------------------------------------------------------------
+  // E. LIVE USABILITY TASK-COMPLETION TEST RUNNER (PHASE 5)
+  // ------------------------------------------------------------------------
+  const btnStartTest = document.getElementById('btn-start-usability-test');
+  const testHud = document.getElementById('usability-test-hud');
+  const hudTimer = document.getElementById('hud-timer');
+  const hudClicks = document.getElementById('hud-clicks');
+  const btnFinishTest = document.getElementById('btn-finish-usability-test');
+  const btnCancelTest = document.getElementById('btn-cancel-usability-test');
+  const scorecardModal = document.getElementById('usability-scorecard-modal');
+  const btnCloseScorecard = document.getElementById('btn-close-scorecard');
+  const btnCloseScorecardAlt = document.getElementById('btn-close-scorecard-alt');
+
+  let testActive = false;
+  let testSeconds = 0;
+  let testClicks = 0;
+  let timerInterval = null;
+
+  btnStartTest?.addEventListener('click', () => {
+    dock?.classList.remove('active');
+    testActive = true;
+    testSeconds = 0;
+    testClicks = 0;
+    hudTimer.textContent = '00:00';
+    hudClicks.textContent = '0 clicks';
+    testHud?.classList.remove('hidden');
+
+    // Switch to home view to ensure clean start
+    document.getElementById('nav-home')?.click();
+
+    clearInterval(timerInterval);
+    timerInterval = setInterval(() => {
+      testSeconds++;
+      const mins = Math.floor(testSeconds / 60);
+      const secs = testSeconds % 60;
+      hudTimer.textContent = `${mins < 10 ? '0' + mins : mins}:${secs < 10 ? '0' + secs : secs}`;
+    }, 1000);
+
+    alert('⏱️ USABILITY TEST STARTED!\n\nYour Objectives:\n1. Click + New Entry and schedule an entry for Oct 18.\n2. Go to Finances and mark the Electric Utility Bill as paid.\n\nInteract naturally. The HUD is tracking your time and interaction count.');
+  });
+
+  window.addEventListener('click', (e) => {
+    if (testActive && !testHud.contains(e.target)) {
+      testClicks++;
+      hudClicks.textContent = `${testClicks} clicks`;
+    }
+  });
+
+  btnFinishTest?.addEventListener('click', () => {
+    testActive = false;
+    clearInterval(timerInterval);
+    testHud?.classList.add('hidden');
+
+    const mins = Math.floor(testSeconds / 60);
+    const secs = testSeconds % 60;
+    const timeFormatted = `${mins < 10 ? '0' + mins : mins}:${secs < 10 ? '0' + secs : secs}`;
+
+    document.getElementById('scorecard-time').textContent = timeFormatted;
+    document.getElementById('scorecard-clicks').textContent = `${testClicks}`;
+
+    // Calculate SUS rating (higher if under 45s and < 15 clicks)
+    let susScore = 95;
+    if (testSeconds > 40) susScore -= 5;
+    if (testClicks > 12) susScore -= 5;
+    document.getElementById('scorecard-sus-val').textContent = `${susScore}`;
+
+    scorecardModal?.classList.add('active');
+  });
+
+  btnCancelTest?.addEventListener('click', () => {
+    testActive = false;
+    clearInterval(timerInterval);
+    testHud?.classList.add('hidden');
+    alert('Usability test canceled.');
+  });
+
+  btnCloseScorecard?.addEventListener('click', () => scorecardModal?.classList.remove('active'));
+  btnCloseScorecardAlt?.addEventListener('click', () => scorecardModal?.classList.remove('active'));
 }

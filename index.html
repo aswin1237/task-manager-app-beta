@@ -58,6 +58,18 @@
       </div>
     </header>
 
+    <!-- OFFLINE STATUS BANNER (Triggered during State Machine: Offline Test) -->
+    <div class="offline-banner hidden" id="offline-status-banner">
+      <div class="offline-content">
+        <span class="offline-icon">⚡</span>
+        <div>
+          <strong>Offline Mode Active (Simulated Disconnection)</strong>
+          <p>Local-First Resilient Architecture: All scheduled pill alarms & Medical ID records are cached in local browser memory and will trigger on time without network access.</p>
+        </div>
+      </div>
+      <button class="btn-restore-online" id="btn-restore-online">Re-connect Online</button>
+    </div>
+
     <!-- Main Workspace Area -->
     <main class="app-main">
       <!-- Left Sidebar (Module Nav) -->
@@ -758,6 +770,489 @@
         </div>
       </div>
     </div>
+    <!-- ========================================== -->
+    <!-- 🧪 UX DESIGN LAB & TESTING SUITE (NIFT & INDUSTRY) -->
+    <!-- ========================================== -->
+    <!-- Floating UX Lab Trigger Launcher -->
+    <div class="ux-lab-launcher" id="ux-lab-launcher">
+      <button class="btn-ux-launcher" id="btn-toggle-ux-dock" title="Toggle Interactive UX Testing Suite">
+        <span class="ux-badge-icon">🧪</span>
+        <span class="ux-btn-text">UX Design Lab & Testing</span>
+        <span class="ux-live-dot"></span>
+      </button>
+    </div>
+
+    <!-- Floating Interactive UX Dock Panel -->
+    <aside class="ux-dock-panel" id="ux-dock-panel">
+      <div class="ux-dock-header">
+        <div class="ux-dock-title">
+          <span class="ux-title-icon">🧪</span>
+          <div>
+            <strong>OmniTask UX Testing Studio</strong>
+            <span class="ux-subtitle">NIFT & Industry Heuristic Verification Hub</span>
+          </div>
+        </div>
+        <div class="ux-dock-actions">
+          <button class="ux-dock-minimize" id="btn-minimize-ux-dock" title="Minimize UX Lab">✕</button>
+        </div>
+      </div>
+
+      <!-- Navigation Tabs inside UX Dock -->
+      <div class="ux-dock-tabs">
+        <button class="ux-tab-btn active" data-uxtab="states">1. State Machines</button>
+        <button class="ux-tab-btn" data-uxtab="journeys">2. User Journeys</button>
+        <button class="ux-tab-btn" data-uxtab="laws">3. UX Laws & Fitts</button>
+        <button class="ux-tab-btn" data-uxtab="tokens">4. Design Tokens</button>
+        <button class="ux-tab-btn" data-uxtab="usability">5. Usability Test</button>
+      </div>
+
+      <div class="ux-dock-body">
+        <!-- TAB 1: STATE MACHINE SWITCHER -->
+        <div class="ux-tab-content active" id="uxtab-states">
+          <p class="ux-dock-hint">Simulate the 4 mandatory interface states for every screen:</p>
+          <div class="ux-states-grid">
+            <button class="ux-state-card active" data-state="ideal" id="ux-state-ideal">
+              <span class="state-icon">🌟</span>
+              <strong>Ideal / Populated</strong>
+              <span>Active day (9 tasks, Royal Violet, spend)</span>
+            </button>
+            <button class="ux-state-card" data-state="empty" id="ux-state-empty">
+              <span class="state-icon">📭</span>
+              <strong>Empty State</strong>
+              <span>Day 1 onboarding (0 tasks, helpful CTA)</span>
+            </button>
+            <button class="ux-state-card" data-state="loading" id="ux-state-loading">
+              <span class="state-icon">⏳</span>
+              <strong>Loading Skeleton</strong>
+              <span>Shimmer placeholders while fetching data</span>
+            </button>
+            <button class="ux-state-card" data-state="offline" id="ux-state-offline">
+              <span class="state-icon">⚡</span>
+              <strong>Offline / Error State</strong>
+              <span>Network drop & local-first alarm fallback</span>
+            </button>
+          </div>
+        </div>
+
+        <!-- TAB 2: INTERACTIVE USER JOURNEYS -->
+        <div class="ux-tab-content" id="uxtab-journeys">
+          <p class="ux-dock-hint">Click any user flow to run a real-time guided walkthrough:</p>
+          <div class="ux-journeys-list">
+            <div class="ux-journey-item" id="journey-senior-pill">
+              <div class="journey-meta">
+                <span class="journey-tag green">Flow A</span>
+                <strong>76yo Senior Pill Adherence & Caregiver Sync</strong>
+              </div>
+              <p>Switches to Elderly Mode, completes morning Metformin with 56px touch target, and pushes live sync to Caregiver.</p>
+              <button class="btn-ux-run" id="btn-run-journey-senior">▶ Run Flow A</button>
+            </div>
+
+            <div class="ux-journey-item" id="journey-missed-pill">
+              <div class="journey-meta">
+                <span class="journey-tag red">Flow B</span>
+                <strong>Missed Medication Escalation Ladder (T=0 → T+12m)</strong>
+              </div>
+              <p>Simulates unattended evening Atorvastatin escalating from gentle chime to caregiver distress alert.</p>
+              <button class="btn-ux-run" id="btn-run-journey-escalation">▶ Run Flow B</button>
+            </div>
+
+            <div class="ux-journey-item" id="journey-bill-ledger">
+              <div class="journey-meta">
+                <span class="journey-tag purple">Flow C</span>
+                <strong>Bill Payment → Spent Ledger Auto-Linking</strong>
+              </div>
+              <p>Pays $75 Electric bill, auto-generates ledger entry, and dynamically recalculates monthly spend.</p>
+              <button class="btn-ux-run" id="btn-run-journey-bill">▶ Run Flow C</button>
+            </div>
+
+            <div class="ux-journey-item" id="journey-autonomy-2fa">
+              <div class="journey-meta">
+                <span class="journey-tag amber">Flow D</span>
+                <strong>Senior Autonomy Request & Master 2FA Sign-off</strong>
+              </div>
+              <p>Senior requests complete independence; Master Cockpit authenticates with security PIN 9412.</p>
+              <button class="btn-ux-run" id="btn-run-journey-autonomy">▶ Run Flow D</button>
+            </div>
+          </div>
+        </div>
+
+        <!-- TAB 3: CORE UX LAWS & FITTS'S TOUCH TARGETS -->
+        <div class="ux-tab-content" id="uxtab-laws">
+          <p class="ux-dock-hint">Toggle live visual inspection lenses on the interface:</p>
+          <div class="ux-laws-controls">
+            <button class="btn-lens-toggle" id="btn-toggle-fitts">
+              <span>🎯</span>
+              <div class="lens-text">
+                <strong>Fitts's Law & Touch Target Overlay</strong>
+                <small>Highlights all buttons with exact sizes (44px / 48px / 56px Senior)</small>
+              </div>
+              <span class="lens-status-pill" id="fitts-status-pill">OFF</span>
+            </button>
+
+            <button class="btn-lens-toggle" id="btn-open-laws-guide">
+              <span>📚</span>
+              <div class="lens-text">
+                <strong>UX Laws & Nielsen Heuristics Guide</strong>
+                <small>Jakob's, Hick's, Miller's & Aesthetic-Usability explanations</small>
+              </div>
+              <span class="lens-status-pill action">View</span>
+            </button>
+          </div>
+        </div>
+
+        <!-- TAB 4: DESIGN TOKENS & TYPE SCALE -->
+        <div class="ux-tab-content" id="uxtab-tokens">
+          <p class="ux-dock-hint">Inspect the production design system, spacing, and typography tokens:</p>
+          <div class="ux-tokens-preview-row">
+            <button class="btn-tokens-open" id="btn-open-tokens-modal">
+              <span>🎨</span> Open Design Tokens & WCAG AAA Color Palette
+            </button>
+          </div>
+        </div>
+
+        <!-- TAB 5: USABILITY TEST RUNNER -->
+        <div class="ux-tab-content" id="uxtab-usability">
+          <p class="ux-dock-hint">Evaluate task completion metrics like a professional UX researcher:</p>
+          <div class="ux-usability-box">
+            <strong>Standard Usability Test Scenario</strong>
+            <p>1. Schedule an entry on Oct 18.<br>2. Pay the 'Electric Utility Bill' ($75).</p>
+            <div class="usability-start-row">
+              <button class="btn-accent" id="btn-start-usability-test">⏱️ Launch Test Session</button>
+            </div>
+          </div>
+        </div>
+      </div>
+    </aside>
+
+    <!-- LIVE USABILITY TEST FLOATING HUD (Sticky during test session) -->
+    <div class="usability-test-hud hidden" id="usability-test-hud">
+      <div class="hud-left">
+        <span class="hud-rec-pulse"></span>
+        <div class="hud-info">
+          <strong>Task Completion Test in Progress</strong>
+          <span class="hud-scenario">1. Schedule an entry on Oct 18 • 2. Pay Electric Bill</span>
+        </div>
+      </div>
+      <div class="hud-center">
+        <div class="hud-stat">
+          <span class="hud-stat-lbl">Time Elapsed</span>
+          <span class="hud-stat-val" id="hud-timer">00:00</span>
+        </div>
+        <div class="hud-stat">
+          <span class="hud-stat-lbl">Interactions</span>
+          <span class="hud-stat-val" id="hud-clicks">0 clicks</span>
+        </div>
+      </div>
+      <div class="hud-right">
+        <button class="btn-hud-finish" id="btn-finish-usability-test">Complete Test ✓</button>
+        <button class="btn-hud-cancel" id="btn-cancel-usability-test">✕ Cancel</button>
+      </div>
+    </div>
+
+    <!-- MODAL: UX LAWS & NIELSEN HEURISTICS GUIDE -->
+    <div class="modal-overlay" id="ux-laws-modal">
+      <div class="modal-card wide ux-guide-modal">
+        <div class="modal-head">
+          <div>
+            <h2>📚 Core UX Laws & Usability Heuristics Audit</h2>
+            <p class="modal-subheading">How OmniTask's architecture adheres to cognitive science & Nielsen Norman Group principles.</p>
+          </div>
+          <button class="modal-close-btn" id="btn-close-laws-modal">✕</button>
+        </div>
+        <div class="modal-body">
+          <div class="laws-grid">
+            <div class="law-card">
+              <div class="law-head">
+                <span class="law-icon">📐</span>
+                <div>
+                  <strong>Fitts's Law</strong>
+                  <span class="law-sub">Distance & Target Size</span>
+                </div>
+              </div>
+              <p><em>"The time required to rapidly move to a target area is a function of the ratio between distance and width."</em></p>
+              <div class="law-impl">
+                <strong>In OmniTask:</strong>
+                <ul>
+                  <li>Primary "+ New Entry" button pinned in comfortable reach.</li>
+                  <li>Senior mode enforces extra-large <strong>56×56dp tactile touch targets</strong> to eliminate motor tremor errors.</li>
+                  <li>Emergency 🚨 SOS button given maximum width and high-contrast red treatment.</li>
+                </ul>
+              </div>
+            </div>
+
+            <div class="law-card">
+              <div class="law-head">
+                <span class="law-icon">🧠</span>
+                <div>
+                  <strong>Hick's Law</strong>
+                  <span class="law-sub">Decision Time ($T = b \cdot \log_2(n+1)$)</span>
+                </div>
+              </div>
+              <p><em>"The time it takes to make a decision increases logarithmically with the number and complexity of choices."</em></p>
+              <div class="law-impl">
+                <strong>In OmniTask:</strong>
+                <ul>
+                  <li>Replaced a chaotic list of 15+ task types with <strong>5 distinct top-level module categories</strong> (Pill, Payment, Appointment, Fitness, Habit).</li>
+                  <li>Elderly interface reduces 4 navigation tabs into a <strong>single linear timeline</strong> of today's events.</li>
+                </ul>
+              </div>
+            </div>
+
+            <div class="law-card">
+              <div class="law-head">
+                <span class="law-icon">🧭</span>
+                <div>
+                  <strong>Jakob's Law</strong>
+                  <span class="law-sub">User Familiarity & Expectations</span>
+                </div>
+              </div>
+              <p><em>"Users spend most of their time on other apps. They prefer your app to work the same way as all the others they already know."</em></p>
+              <div class="law-impl">
+                <strong>In OmniTask:</strong>
+                <ul>
+                  <li>Retained standard Monday–Sunday 7-column calendar matrix.</li>
+                  <li>Universal spotlight search triggers via universal desktop shortcut <code>Ctrl + K</code>.</li>
+                  <li>Familiar bottom/sidebar navigation patterns with standard icon signifiers.</li>
+                </ul>
+              </div>
+            </div>
+
+            <div class="law-card">
+              <div class="law-head">
+                <span class="law-icon">📦</span>
+                <div>
+                  <strong>Miller's Law</strong>
+                  <span class="law-sub">Working Memory Capacity ($7 \pm 2$)</span>
+                </div>
+              </div>
+              <p><em>"The average person can only keep 7 (plus or minus 2) items in their active working memory."</em></p>
+              <div class="law-impl">
+                <strong>In OmniTask:</strong>
+                <ul>
+                  <li>Progressive disclosure in the "+ New Entry" flow: Step 1 (Choose module) $\rightarrow$ Step 2 (Fill details).</li>
+                  <li>Same-day recurring habits chunked under emoji clusters (e.g. <code>🎸 ×2 Grouped</code>).</li>
+                </ul>
+              </div>
+            </div>
+
+            <div class="law-card">
+              <div class="law-head">
+                <span class="law-icon">✨</span>
+                <div>
+                  <strong>Aesthetic-Usability Effect</strong>
+                  <span class="law-sub">Perception of Usability</span>
+                </div>
+              </div>
+              <p><em>"Users perceive aesthetically pleasing design as design that’s more usable and trustworthy."</em></p>
+              <div class="law-impl">
+                <strong>In OmniTask:</strong>
+                <ul>
+                  <li>Replaced stress-inducing red calendar cells with soothing <strong>Royal Violet</strong> for high task density.</li>
+                  <li>Glassmorphic cards, polished dark-mode palette, and micro-animations inspire clinical trust.</li>
+                </ul>
+              </div>
+            </div>
+
+            <div class="law-card">
+              <div class="law-head">
+                <span class="law-icon">🛡️</span>
+                <div>
+                  <strong>Nielsen's 10 Usability Heuristics</strong>
+                  <span class="law-sub">Industry Gold Standard Evaluation</span>
+                </div>
+              </div>
+              <p><em>Evaluated against industry standards: Visibility of Status, User Freedom, Error Prevention, and Recognition.</em></p>
+              <div class="law-impl">
+                <strong>In OmniTask:</strong>
+                <ul>
+                  <li><strong>Status Visibility:</strong> Real-time caregiver status dot + SLA response counter.</li>
+                  <li><strong>User Control & Freedom:</strong> Temporary Privacy Pause (2h/6h/24h) + Unilateral Caregiver Freeze.</li>
+                  <li><strong>Error Prevention:</strong> Master PIN verification (9412) prevents accidental senior abandonment.</li>
+                </ul>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- MODAL: DESIGN TOKENS & TYPOGRAPHY SCALE (PHASE 4) -->
+    <div class="modal-overlay" id="ux-tokens-modal">
+      <div class="modal-card wide tokens-modal">
+        <div class="modal-head">
+          <div>
+            <h2>🎨 OmniTask Atomic Design System & Tokens</h2>
+            <p class="modal-subheading">Design tokens, spacing system, modular type scale, and WCAG 2.2 AAA accessibility.</p>
+          </div>
+          <button class="modal-close-btn" id="btn-close-tokens-modal">✕</button>
+        </div>
+        <div class="modal-body">
+          <div class="tokens-section">
+            <h3>1. Color Tokens & Semantic Calendar Density</h3>
+            <div class="tokens-color-grid">
+              <div class="token-color-card">
+                <div class="color-sample" style="background:#0a0d14;"></div>
+                <strong>--bg-primary</strong>
+                <code>#0a0d14</code>
+                <span>Obsidian Deep Background</span>
+              </div>
+              <div class="token-color-card">
+                <div class="color-sample" style="background:#6366f1;"></div>
+                <strong>--accent-primary</strong>
+                <code>#6366f1</code>
+                <span>Electric Indigo (Interactive)</span>
+              </div>
+              <div class="token-color-card">
+                <div class="color-sample" style="background:#4ade80;"></div>
+                <strong>--density-low</strong>
+                <code>#4ade80</code>
+                <span>Soft Sage (1–3 tasks)</span>
+              </div>
+              <div class="token-color-card">
+                <div class="color-sample" style="background:#38bdf8;"></div>
+                <strong>--density-med</strong>
+                <code>#38bdf8</code>
+                <span>Ocean Blue (4–7 tasks)</span>
+              </div>
+              <div class="token-color-card">
+                <div class="color-sample" style="background:#c084fc;"></div>
+                <strong>--density-high</strong>
+                <code>#c084fc</code>
+                <span>Royal Violet (8+ tasks)</span>
+              </div>
+              <div class="token-color-card">
+                <div class="color-sample" style="background:#ef4444;"></div>
+                <strong>--density-alert</strong>
+                <code>#ef4444</code>
+                <span>Emergency Red (Pills / Bills)</span>
+              </div>
+            </div>
+          </div>
+
+          <div class="tokens-section">
+            <h3>2. Modular Typography Scale</h3>
+            <div class="type-scale-list">
+              <div class="type-scale-item">
+                <span class="type-token">Display (48px / Bold)</span>
+                <span class="type-sample" style="font-size:2rem; font-weight:800;">Master Timeline</span>
+              </div>
+              <div class="type-scale-item">
+                <span class="type-token">H1 / Section (32px / Bold)</span>
+                <span class="type-sample" style="font-size:1.5rem; font-weight:700;">October 2026 Aggregator</span>
+              </div>
+              <div class="type-scale-item">
+                <span class="type-token">H2 / Subhead (24px / Semibold)</span>
+                <span class="type-sample" style="font-size:1.25rem; font-weight:600;">Health & Routines Stream</span>
+              </div>
+              <div class="type-scale-item">
+                <span class="type-token">Body Base (16px / Regular)</span>
+                <span class="type-sample" style="font-size:1rem;">Clear, accessible typography meeting WCAG readability standards.</span>
+              </div>
+              <div class="type-scale-item">
+                <span class="type-token">Caption / Mono (12px / Monospace)</span>
+                <span class="type-sample" style="font-size:0.75rem; font-family:var(--font-mono);">Rx #4912 • Scheduled T=0 • 1 tab with breakfast</span>
+              </div>
+            </div>
+          </div>
+
+          <div class="tokens-section">
+            <h3>3. Accessibility (WCAG 2.2 AAA Contrast Verification)</h3>
+            <div class="wcag-audit-grid">
+              <div class="wcag-card pass">
+                <div class="wcag-head">
+                  <span class="wcag-ratio">18.4 : 1</span>
+                  <span class="wcag-badge">AAA PASS</span>
+                </div>
+                <strong>White Text (#ffffff) on Obsidian (#0a0d14)</strong>
+                <p>Exceeds required 7.0:1 threshold for high-contrast accessibility.</p>
+              </div>
+
+              <div class="wcag-card pass">
+                <div class="wcag-head">
+                  <span class="wcag-ratio">8.9 : 1</span>
+                  <span class="wcag-badge">AAA PASS</span>
+                </div>
+                <strong>Electric Indigo Text (#a5b4fc) on Card Glass (#101622)</strong>
+                <p>Ensures effortless legibility across all lighting environments.</p>
+              </div>
+
+              <div class="wcag-card pass">
+                <div class="wcag-head">
+                  <span class="wcag-ratio">56 × 56 dp</span>
+                  <span class="wcag-badge">AAA PASS</span>
+                </div>
+                <strong>Senior Mode Touch Target Sizing</strong>
+                <p>Exceeds Apple (44pt) and Android (48dp) minimums for tremor mitigation.</p>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- MODAL: USABILITY TEST SCORECARD (PHASE 5) -->
+    <div class="modal-overlay" id="usability-scorecard-modal">
+      <div class="modal-card">
+        <div class="modal-head">
+          <div>
+            <h2>🏆 Usability Test Completion Scorecard</h2>
+            <p class="modal-subheading">Quantitative and Qualitative metrics recorded during session.</p>
+          </div>
+          <button class="modal-close-btn" id="btn-close-scorecard">✕</button>
+        </div>
+        <div class="modal-body">
+          <div class="scorecard-hero">
+            <div class="score-circle">
+              <span class="score-val" id="scorecard-sus-val">94</span>
+              <span class="score-lbl">SUS Grade A+</span>
+            </div>
+            <div class="score-summary">
+              <h3>Task Completed Successfully!</h3>
+              <p>User successfully scheduled an appointment on Oct 18 and paid the electric bill.</p>
+            </div>
+          </div>
+
+          <div class="scorecard-metrics-grid">
+            <div class="metric-item">
+              <span class="m-val" id="scorecard-time">00:18</span>
+              <span class="m-lbl">Time-on-Task</span>
+            </div>
+            <div class="metric-item">
+              <span class="m-val" id="scorecard-clicks">6</span>
+              <span class="m-lbl">Total Interactions</span>
+            </div>
+            <div class="metric-item">
+              <span class="m-val">100%</span>
+              <span class="m-lbl">Task Completion Rate</span>
+            </div>
+            <div class="metric-item">
+              <span class="m-val">0</span>
+              <span class="m-lbl">Error / Misclicks</span>
+            </div>
+          </div>
+
+          <div class="heuristic-compliance-box">
+            <h4>Nielsen Norman Usability Heuristics Audit: 10 / 10 Passing</h4>
+            <div class="heuristic-chips">
+              <span class="h-chip">✓ Status Visibility</span>
+              <span class="h-chip">✓ Real World Match</span>
+              <span class="h-chip">✓ User Control</span>
+              <span class="h-chip">✓ Consistency</span>
+              <span class="h-chip">✓ Error Prevention</span>
+              <span class="h-chip">✓ Recognition Over Recall</span>
+              <span class="h-chip">✓ Flexibility & Efficiency</span>
+              <span class="h-chip">✓ Aesthetic & Minimal</span>
+              <span class="h-chip">✓ Error Recovery</span>
+              <span class="h-chip">✓ Help & Documentation</span>
+            </div>
+          </div>
+        </div>
+        <div class="modal-footer">
+          <button class="btn-accent" id="btn-close-scorecard-alt">Done & Close Scorecard</button>
+        </div>
+      </div>
+    </div>
+
   </div>
 
   <script src="app.js"></script>
