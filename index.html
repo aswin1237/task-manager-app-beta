@@ -3,39 +3,53 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>OmniTask — IA & Wireframe Prototype</title>
+  <title>OmniTask — Next-Gen IA Architecture Prototype</title>
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@300;400;500;600;700;800&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@300;400;500;600;700;800&family=JetBrains+Mono:wght@400;500;700&display=swap" rel="stylesheet">
   <link rel="stylesheet" href="style.css">
 </head>
 <body>
-  <div class="app-layout">
+  <div class="app-layout" id="app-root">
     <!-- Top Header -->
     <header class="app-header">
       <div class="header-left">
         <div class="brand-badge">
           <span class="brand-dot"></span>
           <span class="brand-name">OmniTask</span>
-          <span class="ia-badge">IA Interactive Prototype</span>
+          <span class="ia-badge">IA v2 Refined</span>
         </div>
+
+        <!-- Universal Quick Search (Ctrl + K) -->
+        <button class="universal-search-trigger" id="btn-trigger-search">
+          <span class="search-icon">🔍</span>
+          <span class="search-placeholder">Search pills, appointments, bills, habits...</span>
+          <kbd class="search-kbd">Ctrl K</kbd>
+        </button>
       </div>
 
       <div class="header-center">
-        <div class="role-selector" title="Switch User Role to test permissions">
-          <span class="role-label">Active Role:</span>
-          <button class="role-btn active" data-role="user" id="role-user-btn">User (Self / Elderly)</button>
-          <button class="role-btn" data-role="caregiver" id="role-caregiver-btn">Caregiver</button>
-          <button class="role-btn" data-role="admin" id="role-admin-btn">Admin</button>
+        <!-- Adaptive Profile Switcher -->
+        <div class="profile-mode-selector">
+          <span class="mode-label">Interface Mode:</span>
+          <button class="mode-pill-btn active" id="btn-mode-standard" data-profile="standard">
+            ⚡ Power User
+          </button>
+          <button class="mode-pill-btn elderly-btn" id="btn-mode-elderly" data-profile="elderly">
+            👓 Elderly / Accessible
+          </button>
         </div>
       </div>
 
       <div class="header-right">
+        <!-- Role permissions toggle -->
+        <div class="role-selector-compact">
+          <button class="role-chip active" data-role="user" id="role-user-btn">Self</button>
+          <button class="role-chip" data-role="caregiver" id="role-caregiver-btn">Caregiver</button>
+        </div>
+
         <button class="action-pill-btn" id="btn-escalation-demo" title="Test Safety Escalation Protocol">
-          <span class="pulse-indicator"></span> 🚨 Test Escalation Ladder
-        </button>
-        <button class="action-pill-btn secondary" id="btn-onboarding-demo">
-          👋 Onboarding Flow
+          <span class="pulse-indicator"></span> 🚨 Safety Ladder
         </button>
       </div>
     </header>
@@ -43,37 +57,42 @@
     <!-- Main Workspace Area -->
     <main class="app-main">
       <!-- Left Sidebar (Module Nav) -->
-      <nav class="sidebar-nav">
+      <nav class="sidebar-nav" id="sidebar-nav">
         <div class="nav-section-title">Core Modules</div>
+        
         <button class="nav-item active" data-view="home" id="nav-home">
           <span class="nav-icon">📅</span>
           <div class="nav-info">
-            <span class="nav-title">Calendar Aggregator</span>
-            <span class="nav-subtitle">Home / Density Dashboard</span>
-          </div>
-        </button>
-        <button class="nav-item" data-view="fitness" id="nav-fitness">
-          <span class="nav-icon">🏋️</span>
-          <div class="nav-info">
-            <span class="nav-title">Fitness Planner</span>
-            <span class="nav-subtitle">AI Chat & Forward Plans</span>
-          </div>
-        </button>
-        <button class="nav-item" data-view="reminders" id="nav-reminders">
-          <span class="nav-icon">⏰</span>
-          <div class="nav-info">
-            <span class="nav-title">Reminders Hub</span>
-            <span class="nav-subtitle">Pill • Payment • Appt • Custom</span>
-          </div>
-        </button>
-        <button class="nav-item" data-view="expense" id="nav-expense">
-          <span class="nav-icon">💳</span>
-          <div class="nav-info">
-            <span class="nav-title">Expense Ledger</span>
-            <span class="nav-subtitle">Daily & Cumulative Spend</span>
+            <span class="nav-title">Calendar & Timeline</span>
+            <span class="nav-subtitle">Aggregator & In-Cell Edit</span>
           </div>
         </button>
 
+        <button class="nav-item" data-view="routines" id="nav-routines">
+          <span class="nav-icon">💊</span>
+          <div class="nav-info">
+            <span class="nav-title">Health & Routines</span>
+            <span class="nav-subtitle">Pill Medical ID • Habits • Appts</span>
+          </div>
+        </button>
+
+        <button class="nav-item standard-only" data-view="fitness" id="nav-fitness">
+          <span class="nav-icon">🏋️</span>
+          <div class="nav-info">
+            <span class="nav-title">Fitness Planner</span>
+            <span class="nav-subtitle">AI Routines & Forward Plans</span>
+          </div>
+        </button>
+
+        <button class="nav-item standard-only" data-view="finance" id="nav-finance">
+          <span class="nav-icon">💳</span>
+          <div class="nav-info">
+            <span class="nav-title">Finances</span>
+            <span class="nav-subtitle">Upcoming Bills & Spent Ledger</span>
+          </div>
+        </button>
+
+        <!-- Caregiver connection badge -->
         <div class="sidebar-caregiver-card" id="caregiver-status-card">
           <div class="card-status-dot online"></div>
           <div class="card-text">
@@ -90,30 +109,38 @@
 
       <!-- View Container -->
       <section class="content-viewport">
+
+        <!-- ========================================== -->
         <!-- VIEW 1: HOME / CALENDAR AGGREGATOR -->
+        <!-- ========================================== -->
         <div class="view-panel active" id="view-home">
           <div class="view-header">
             <div>
               <h1 class="view-title">October 2026</h1>
-              <p class="view-subtitle">Aggregated multi-module calendar with density & cognitive load shape indicators</p>
+              <p class="view-subtitle">Master aggregated calendar. Click any date to view breakdown, spend, or add entries directly.</p>
             </div>
+            
+            <!-- Updated Non-Alarming Palette Legend -->
             <div class="calendar-legend">
-              <div class="legend-item"><span class="legend-chip zero"></span> 0 tasks (Translucent)</div>
-              <div class="legend-item"><span class="legend-chip low"></span> 1–4 tasks (Soft Green)</div>
-              <div class="legend-item"><span class="legend-chip medium"></span> 5–7 tasks (Orange)</div>
-              <div class="legend-item"><span class="legend-chip high"></span> 8+ tasks (Sharp Red)</div>
+              <div class="legend-item"><span class="legend-chip zero"></span> 0 tasks (Clear)</div>
+              <div class="legend-item"><span class="legend-chip low"></span> 1–3 tasks (Sage)</div>
+              <div class="legend-item"><span class="legend-chip medium"></span> 4–7 tasks (Ocean Blue)</div>
+              <div class="legend-item"><span class="legend-chip high"></span> 8+ tasks (Royal Violet)</div>
+              <div class="legend-item"><span class="legend-chip alert-red"></span> Missed/Overdue (Red Alert)</div>
             </div>
           </div>
 
+          <!-- Calendar Grid Container -->
           <div class="calendar-wrapper">
             <div class="calendar-grid-header">
               <div>MON</div><div>TUE</div><div>WED</div><div>THU</div><div>FRI</div><div>SAT</div><div>SUN</div><div class="weekly-col-head">WEEK SPEND</div>
             </div>
             <div class="calendar-grid" id="calendar-grid">
-              <!-- Grid generated via JS -->
+              <!-- Dynamically generated via JS -->
             </div>
           </div>
 
+          <!-- Month Spend Footer -->
           <div class="month-financial-footer">
             <div class="footer-stat">
               <span class="stat-label">Total October Spend</span>
@@ -124,16 +151,40 @@
               <span class="stat-value text-muted">$2,200.00</span>
             </div>
             <div class="footer-stat">
-              <span class="stat-label">Spend Tracking Health</span>
-              <span class="stat-badge green">Under Budget (67.5%)</span>
+              <span class="stat-label">Upcoming Bills (Due Soon)</span>
+              <span class="stat-value text-amber" id="month-bills-due">$140.00</span>
             </div>
             <div class="footer-hint">
-              💡 <em>Click any calendar cell to view that date's task breakdown and exact daily spend.</em>
+              💡 <em>Tapping any date cell lets you edit or schedule an Appointment, Bill, or Medication directly.</em>
             </div>
           </div>
         </div>
 
-        <!-- VIEW 2: FITNESS MODULE -->
+        <!-- ========================================== -->
+        <!-- VIEW 2: HEALTH & ROUTINES (REFINED REMINDERS) -->
+        <!-- ========================================== -->
+        <div class="view-panel" id="view-routines">
+          <div class="view-header">
+            <div>
+              <h1 class="view-title">Health & Daily Routines</h1>
+              <p class="view-subtitle">Medical ID prescriptions, scheduled doctor appointments, and custom daily habits.</p>
+            </div>
+            <div class="reminders-filter-tabs">
+              <button class="filter-tab active" data-subdomain="all">All Routines</button>
+              <button class="filter-tab" data-subdomain="pill">💊 Pills & Medical ID</button>
+              <button class="filter-tab" data-subdomain="appointment">📅 Appointments</button>
+              <button class="filter-tab" data-subdomain="custom">✨ Habits (🎸 ×2)</button>
+            </div>
+          </div>
+
+          <div class="reminders-stream" id="reminders-stream">
+            <!-- Dynamic stream items injected via JS -->
+          </div>
+        </div>
+
+        <!-- ========================================== -->
+        <!-- VIEW 3: FITNESS MODULE -->
+        <!-- ========================================== -->
         <div class="view-panel" id="view-fitness">
           <div class="view-header">
             <div>
@@ -210,41 +261,34 @@
           </div>
         </div>
 
-        <!-- VIEW 3: REMINDERS HUB -->
-        <div class="view-panel" id="view-reminders">
+        <!-- ========================================== -->
+        <!-- VIEW 4: UNIFIED FINANCES (BILLS + EXPENSES) -->
+        <!-- ========================================== -->
+        <div class="view-panel" id="view-finance">
           <div class="view-header">
             <div>
-              <h1 class="view-title">Reminders Hub</h1>
-              <p class="view-subtitle">Unified container for temporal prompt items: Pills, Payments, Appointments & Custom habits</p>
+              <h1 class="view-title">Finances & Expenditure</h1>
+              <p class="view-subtitle">Unified financial hub: Upcoming due bills, daily ledger, and cumulative spend.</p>
             </div>
-            <div class="reminders-filter-tabs">
-              <button class="filter-tab active" data-subdomain="all">All Reminders</button>
-              <button class="filter-tab" data-subdomain="pill">💊 Pills (Medical ID)</button>
-              <button class="filter-tab" data-subdomain="payment">💳 Payments (Expense-Linked)</button>
-              <button class="filter-tab" data-subdomain="appointment">📅 Appointments</button>
-              <button class="filter-tab" data-subdomain="custom">✨ Custom Habits</button>
-            </div>
-          </div>
-
-          <div class="reminders-stream" id="reminders-stream">
-            <!-- Dynamic stream items injected via JS -->
-          </div>
-        </div>
-
-        <!-- VIEW 4: EXPENSE LEDGER -->
-        <div class="view-panel" id="view-expense">
-          <div class="view-header">
-            <div>
-              <h1 class="view-title">Expense Ledger</h1>
-              <p class="view-subtitle">Daily & cumulative expenditures with automatic payment integration</p>
-            </div>
-            <div class="expense-quick-stats">
-              <div class="stat-pill"><span class="dim">Today's Spend:</span> <strong>$42.50</strong></div>
-              <div class="stat-pill"><span class="dim">Auto-Linked Bills:</span> <strong>$320.00</strong></div>
+            <div class="finance-subtabs">
+              <button class="finance-tab-btn active" id="btn-finance-bills" data-subview="bills">
+                💳 Upcoming Bills & Payments
+              </button>
+              <button class="finance-tab-btn" id="btn-finance-ledger" data-subview="ledger">
+                📊 Spent Ledger & History
+              </button>
             </div>
           </div>
 
-          <div class="expense-container">
+          <!-- Sub-view A: Upcoming Bills -->
+          <div class="finance-subview" id="subview-bills">
+            <div class="bills-grid" id="bills-grid">
+              <!-- Dynamically populated via JS -->
+            </div>
+          </div>
+
+          <!-- Sub-view B: Spent Ledger -->
+          <div class="finance-subview hidden" id="subview-ledger">
             <div class="expense-table-card">
               <table class="expense-table">
                 <thead>
@@ -263,10 +307,52 @@
             </div>
           </div>
         </div>
+
+        <!-- ========================================== -->
+        <!-- VIEW 5: ELDERLY SIMPLIFIED VIEW -->
+        <!-- ========================================== -->
+        <div class="view-panel" id="view-elderly-today">
+          <div class="elderly-welcome-card">
+            <div class="elderly-date-display">Today is Thursday, October 15</div>
+            <div class="elderly-greeting">Good morning, Eleanor</div>
+          </div>
+
+          <div class="elderly-section-title">Today's Important Tasks & Pills</div>
+          <div class="elderly-cards-stack" id="elderly-cards-stack">
+            <!-- Large tactile cards populated via JS -->
+          </div>
+
+          <div class="elderly-emergency-bar">
+            <div class="emergency-info">
+              <strong>Need Help or Missed a Pill?</strong>
+              <p>Your caregiver Dr. Elena Rostova is connected.</p>
+            </div>
+            <button class="elderly-distress-btn" id="btn-elderly-sos">🚨 Call Caregiver Now</button>
+          </div>
+        </div>
+
       </section>
     </main>
 
+    <!-- ========================================== -->
+    <!-- UNIVERSAL SPOTLIGHT SEARCH MODAL (Ctrl + K) -->
+    <!-- ========================================== -->
+    <div class="modal-overlay" id="search-modal">
+      <div class="modal-card wide spotlight-modal">
+        <div class="spotlight-input-wrapper">
+          <span class="spotlight-search-icon">🔍</span>
+          <input type="text" id="spotlight-input" placeholder="Search pills, appointments, bills, habits (e.g. 'Metformin', 'Vance', 'Guitar')..." autofocus />
+          <kbd class="esc-kbd" id="btn-close-search">ESC</kbd>
+        </div>
+        <div class="spotlight-results" id="spotlight-results">
+          <!-- Injected via JS -->
+        </div>
+      </div>
+    </div>
+
+    <!-- ========================================== -->
     <!-- DAY DRILLDOWN MODAL -->
+    <!-- ========================================== -->
     <div class="modal-overlay" id="day-detail-modal">
       <div class="modal-card">
         <div class="modal-head">
@@ -291,13 +377,15 @@
       </div>
     </div>
 
+    <!-- ========================================== -->
     <!-- MODULE-FIRST "+" INGESTION MODAL -->
+    <!-- ========================================== -->
     <div class="modal-overlay" id="add-entry-modal">
       <div class="modal-card wide">
         <div class="modal-head">
           <div>
             <h2>Add New Entry</h2>
-            <p class="modal-subheading">Select a module first. No generic combined forms.</p>
+            <p class="modal-subheading">Select a module first. Automatically routed & aggregated into the Calendar.</p>
           </div>
           <button class="modal-close-btn" id="btn-close-add-modal">✕</button>
         </div>
@@ -312,18 +400,18 @@
             </button>
             <button class="module-choice-card" data-module="payment">
               <span class="m-icon">💳</span>
-              <h3>Payment Reminder</h3>
-              <p>Due date, days-before alert, auto-links to Expense Ledger</p>
+              <h3>Bill / Payment</h3>
+              <p>Due date, pre-alert, auto-linked inside Finances</p>
+            </button>
+            <button class="module-choice-card" data-module="appointment">
+              <span class="m-icon">📅</span>
+              <h3>Appointment</h3>
+              <p>Direct date & time slot for doctor, meetings, visits</p>
             </button>
             <button class="module-choice-card" data-module="fitness">
               <span class="m-icon">🏋️</span>
               <h3>Fitness Routine</h3>
               <p>Pre-scheduled workout date with custom plan</p>
-            </button>
-            <button class="module-choice-card" data-module="appointment">
-              <span class="m-icon">📅</span>
-              <h3>Appointment</h3>
-              <p>Lightweight time, title & location tracker</p>
             </button>
             <button class="module-choice-card" data-module="custom">
               <span class="m-icon">✨</span>
@@ -352,7 +440,9 @@
       </div>
     </div>
 
+    <!-- ========================================== -->
     <!-- ESCALATION LADDER SIMULATOR MODAL -->
+    <!-- ========================================== -->
     <div class="modal-overlay" id="escalation-modal">
       <div class="modal-card">
         <div class="modal-head">
@@ -398,7 +488,9 @@
       </div>
     </div>
 
+    <!-- ========================================== -->
     <!-- REVOCATION & AUTONOMY MODAL -->
+    <!-- ========================================== -->
     <div class="modal-overlay" id="revocation-modal">
       <div class="modal-card">
         <div class="modal-head">
@@ -423,53 +515,6 @@
               <button class="btn-danger-sm" id="btn-unilateral-revoke">Trigger Unilateral Immediate Wipe</button>
             </div>
           </div>
-        </div>
-      </div>
-    </div>
-
-    <!-- ADAPTIVE ONBOARDING MODAL -->
-    <div class="modal-overlay" id="onboarding-modal">
-      <div class="modal-card wide">
-        <div class="modal-head">
-          <div>
-            <h2>Adaptive Onboarding Flow</h2>
-            <p class="modal-subheading">Risk-stratified profile onboarding with mandatory Pill + Payment setup</p>
-          </div>
-          <button class="modal-close-btn" id="btn-close-onboarding">✕</button>
-        </div>
-        <div class="modal-body">
-          <div class="onboarding-progress">
-            <span class="step-dot active">1. Profile Type</span>
-            <span class="step-dot">2. Mandatory Pill</span>
-            <span class="step-dot">3. Mandatory Payment</span>
-            <span class="step-dot">4. Caregiver Pairing</span>
-          </div>
-
-          <div class="onboarding-step-content" id="onboarding-step-content">
-            <h3>Who is this account primarily for?</h3>
-            <p>Setup depth and permissions adjust automatically based on user vulnerability.</p>
-            <div class="profile-choice-grid">
-              <div class="profile-box selected">
-                <span class="p-icon">👤</span>
-                <h4>For Myself</h4>
-                <p>Standard profile with full personal autonomy</p>
-              </div>
-              <div class="profile-box">
-                <span class="p-icon">👵</span>
-                <h4>For an Elderly Relative</h4>
-                <p>Includes high-contrast UI, simplified screens, and caregiver escalation pairing</p>
-              </div>
-              <div class="profile-box">
-                <span class="p-icon">🧒</span>
-                <h4>For a Child (Under 18)</h4>
-                <p>Parental admin oversight with age-gated revocation</p>
-              </div>
-            </div>
-          </div>
-        </div>
-        <div class="modal-footer">
-          <button class="btn-secondary" id="btn-close-onboarding-alt">Close Demo</button>
-          <button class="btn-accent" id="btn-next-onboarding-step">Next: Mandatory Module Walkthrough →</button>
         </div>
       </div>
     </div>
