@@ -110,9 +110,10 @@ To balance patient dignity with medical safety, OmniTask features a **3-tiered a
 
 | File | Purpose |
 | :--- | :--- |
-| [`index.html`](./index.html) | Interactive HTML wireframe prototype with Master Admin Oversight, Temporary Pause modal, and Tiered Override dialog. |
-| [`style.css`](./style.css) | Complete design system tokens, telemetry cards, high-contrast elderly styling, and glassmorphism. |
-| [`app.js`](./app.js) | Interactive state controller (Master role switcher, remote data scrub, Spotlight `Ctrl+K`, temporary pause timer, 2nd verification). |
+| [`UX_RESEARCH_AND_DOCUMENTATION.md`](./UX_RESEARCH_AND_DOCUMENTATION.md) | **Master Academic & UX Research Specification:** 3 Personas, Empathy Maps, Competitor Gaps, Cognitive UX Laws, WCAG AAA accessibility, and NN/g Heuristics Audit. |
+| [`index.html`](./index.html) | Clean canvas workspace ready for next design version (Trial UI archived in `trial-v1-archive` branch). |
+| [`style.css`](./style.css) | Core typography and canvas styling. |
+| [`app.js`](./app.js) | Core event controller. |
 | [`task-manager-app-full-conversation-record.md`](./task-manager-app-full-conversation-record.md) | Complete raw specification record behind all versions. |
 | [`sync.bat`](./sync.bat) | 1-click script to stage, commit, and push updates to this GitHub repository. |
 
