@@ -42,10 +42,12 @@
       </div>
 
       <div class="header-right">
-        <!-- Role permissions toggle -->
+        <!-- Role permissions toggle (Self, Caregiver, Master Admin) -->
         <div class="role-selector-compact">
-          <button class="role-chip active" data-role="user" id="role-user-btn">Self</button>
+          <span class="role-label-head">Role:</span>
+          <button class="role-chip active" data-role="user" id="role-user-btn">User</button>
           <button class="role-chip" data-role="caregiver" id="role-caregiver-btn">Caregiver</button>
+          <button class="role-chip admin-chip" data-role="admin" id="role-admin-btn">👑 Master Admin</button>
         </div>
 
         <button class="action-pill-btn" id="btn-escalation-demo" title="Test Safety Escalation Protocol">
@@ -92,6 +94,15 @@
           </div>
         </button>
 
+        <!-- Master Admin Oversight Nav Link (Visible when role = admin or clicked) -->
+        <button class="nav-item admin-only-item" data-view="admin-oversight" id="nav-admin-oversight">
+          <span class="nav-icon">🛡️</span>
+          <div class="nav-info">
+            <span class="nav-title">Master Oversight</span>
+            <span class="nav-subtitle">Caregiver & Senior Cockpit</span>
+          </div>
+        </button>
+
         <!-- Caregiver connection badge -->
         <div class="sidebar-caregiver-card" id="caregiver-status-card">
           <div class="card-status-dot online"></div>
@@ -120,7 +131,6 @@
               <p class="view-subtitle">Master aggregated calendar. Click any date to view breakdown, spend, or add entries directly.</p>
             </div>
             
-            <!-- Updated Non-Alarming Palette Legend -->
             <div class="calendar-legend">
               <div class="legend-item"><span class="legend-chip zero"></span> 0 tasks (Clear)</div>
               <div class="legend-item"><span class="legend-chip low"></span> 1–3 tasks (Sage)</div>
@@ -130,7 +140,6 @@
             </div>
           </div>
 
-          <!-- Calendar Grid Container -->
           <div class="calendar-wrapper">
             <div class="calendar-grid-header">
               <div>MON</div><div>TUE</div><div>WED</div><div>THU</div><div>FRI</div><div>SAT</div><div>SUN</div><div class="weekly-col-head">WEEK SPEND</div>
@@ -140,7 +149,6 @@
             </div>
           </div>
 
-          <!-- Month Spend Footer -->
           <div class="month-financial-footer">
             <div class="footer-stat">
               <span class="stat-label">Total October Spend</span>
@@ -161,7 +169,7 @@
         </div>
 
         <!-- ========================================== -->
-        <!-- VIEW 2: HEALTH & ROUTINES (REFINED REMINDERS) -->
+        <!-- VIEW 2: HEALTH & ROUTINES -->
         <!-- ========================================== -->
         <div class="view-panel" id="view-routines">
           <div class="view-header">
@@ -204,7 +212,6 @@
           </div>
 
           <div class="fitness-grid">
-            <!-- Left: AI Workout Creator -->
             <div class="fitness-card ai-coach-card">
               <div class="card-head">
                 <span class="card-icon">🤖</span>
@@ -223,7 +230,6 @@
               </div>
             </div>
 
-            <!-- Right: Planned Workout Schedule -->
             <div class="fitness-card">
               <div class="card-head">
                 <span class="card-icon">📋</span>
@@ -280,14 +286,12 @@
             </div>
           </div>
 
-          <!-- Sub-view A: Upcoming Bills -->
           <div class="finance-subview" id="subview-bills">
             <div class="bills-grid" id="bills-grid">
-              <!-- Dynamically populated via JS -->
+              <!-- Injected by JS -->
             </div>
           </div>
 
-          <!-- Sub-view B: Spent Ledger -->
           <div class="finance-subview hidden" id="subview-ledger">
             <div class="expense-table-card">
               <table class="expense-table">
@@ -317,6 +321,20 @@
             <div class="elderly-greeting">Good morning, Eleanor</div>
           </div>
 
+          <!-- Autonomy Transparency Banner -->
+          <div class="elderly-autonomy-banner">
+            <div class="autonomy-info">
+              <span class="autonomy-shield">🛡️</span>
+              <div>
+                <strong>Monitored by Nurse Elena Rostova</strong>
+                <p>Supervised under Master Account (Aswin • Son). You retain 100% unilateral independence.</p>
+              </div>
+            </div>
+            <button class="btn-elderly-override" id="btn-elderly-trigger-override">
+              Take Back Full Control
+            </button>
+          </div>
+
           <div class="elderly-section-title">Today's Important Tasks & Pills</div>
           <div class="elderly-cards-stack" id="elderly-cards-stack">
             <!-- Large tactile cards populated via JS -->
@@ -331,12 +349,167 @@
           </div>
         </div>
 
+        <!-- ========================================== -->
+        <!-- VIEW 6: MASTER USER / ADMIN OVERSIGHT COCKPIT -->
+        <!-- ========================================== -->
+        <div class="view-panel" id="view-admin-oversight">
+          <div class="view-header">
+            <div>
+              <div class="admin-badge-head">👑 Master User Authority</div>
+              <h1 class="view-title">Caregiver & Senior Oversight Cockpit</h1>
+              <p class="view-subtitle">100% supervisory command over caregiver activity, response metrics, and elderly patient adherence.</p>
+            </div>
+            <div class="admin-quick-actions">
+              <button class="btn-accent" id="btn-admin-replace-caregiver">🔄 Change / Reassign Caregiver</button>
+              <button class="btn-danger-sm" id="btn-admin-instant-scrub">⚡ Instant Remote Data Scrub</button>
+            </div>
+          </div>
+
+          <!-- Dual Telemetry Grid -->
+          <div class="admin-grid">
+            <!-- Card 1: Caregiver Telemetry & Response SLA -->
+            <div class="admin-card">
+              <div class="admin-card-head">
+                <div class="head-left">
+                  <span class="status-dot-pulse"></span>
+                  <div>
+                    <h3>Assigned Caregiver: Dr. Elena Rostova</h3>
+                    <p class="text-muted">License #MD-90412 • Hired Specialist</p>
+                  </div>
+                </div>
+                <span class="sla-badge green">98.4% SLA Compliance</span>
+              </div>
+
+              <div class="metric-row">
+                <div class="metric-box">
+                  <span class="m-val">2.4 min</span>
+                  <span class="m-lbl">Avg Response to Alerts</span>
+                </div>
+                <div class="metric-box">
+                  <span class="m-val">100%</span>
+                  <span class="m-lbl">Offline Alert Sync</span>
+                </div>
+                <div class="metric-box">
+                  <span class="m-val">Full</span>
+                  <span class="m-lbl">Prescription Visibility</span>
+                </div>
+              </div>
+
+              <div class="admin-subheading">Caregiver Permissions Scope (Master Controlled)</div>
+              <div class="permission-toggles-list">
+                <div class="perm-item">
+                  <div>
+                    <strong>View Unmasked Medical ID & Rx Dosages</strong>
+                    <p>Allows caregiver to read exact prescription bottle labels</p>
+                  </div>
+                  <input type="checkbox" checked class="perm-switch" />
+                </div>
+                <div class="perm-item">
+                  <div>
+                    <strong>Edit / Reschedule Daily Timers</strong>
+                    <p>Allows caregiver to modify dose intervals on patient phone</p>
+                  </div>
+                  <input type="checkbox" checked class="perm-switch" />
+                </div>
+                <div class="perm-item">
+                  <div>
+                    <strong>Receive Tier-3 Emergency Distress Calls (T+12m)</strong>
+                    <p>Direct priority dispatch when user misses dose</p>
+                  </div>
+                  <input type="checkbox" checked class="perm-switch" />
+                </div>
+              </div>
+            </div>
+
+            <!-- Card 2: Monitored User (Eleanor) Adherence & Autonomy Log -->
+            <div class="admin-card">
+              <div class="admin-card-head">
+                <div class="head-left">
+                  <span class="patient-avatar">👵</span>
+                  <div>
+                    <h3>Monitored Patient: Eleanor Vance (Mother)</h3>
+                    <p class="text-muted">Age: 76 • Local Device: Online (Battery: 84%)</p>
+                  </div>
+                </div>
+                <span class="compliance-badge">92% Compliance</span>
+              </div>
+
+              <div class="metric-row">
+                <div class="metric-box">
+                  <span class="m-val">14 Days</span>
+                  <span class="m-lbl">Continuous Adherence</span>
+                </div>
+                <div class="metric-box">
+                  <span class="m-val">1 Alert</span>
+                  <span class="m-lbl">Oct 15 Overdue (Resolved)</span>
+                </div>
+                <div class="metric-box">
+                  <span class="m-val">Active</span>
+                  <span class="m-lbl">Mutual Consent Status</span>
+                </div>
+              </div>
+
+              <div class="admin-subheading">Audit Log: Caregiver Actions & User Overrides</div>
+              <div class="audit-log-stream" id="admin-audit-log">
+                <div class="log-entry">
+                  <span class="log-time">Today, 08:34 AM</span>
+                  <span class="log-tag call">Caregiver Acknowledged</span>
+                  <p>Nurse Elena acknowledged Eleanor's Morning Metformin completion.</p>
+                </div>
+                <div class="log-entry alert-log">
+                  <span class="log-time">Oct 15, 09:12 PM</span>
+                  <span class="log-tag alert">Escalation Triggered</span>
+                  <p>Evening Atorvastatin missed (T+12m). Distress push sent to Nurse Elena. Acknowledged in 1.8 mins.</p>
+                </div>
+                <div class="log-entry info-log">
+                  <span class="log-time">Oct 01, 10:00 AM</span>
+                  <span class="log-tag mutual">Mutual Consent</span>
+                  <p>Master User (Aswin) bound Caregiver contract with Eleanor's SMS PIN confirmation.</p>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+
       </section>
     </main>
 
     <!-- ========================================== -->
-    <!-- UNIVERSAL SPOTLIGHT SEARCH MODAL (Ctrl + K) -->
+    <!-- USER OVERRIDE DIALOG (Autonomous Takeover) -->
     <!-- ========================================== -->
+    <div class="modal-overlay" id="override-modal">
+      <div class="modal-card">
+        <div class="modal-head">
+          <div>
+            <h2>⚖️ Autonomous Override: Reclaim Full Control</h2>
+            <p class="modal-subheading">Patient Autonomy Safeguard: You can disconnect caregiver oversight unilaterally.</p>
+          </div>
+          <button class="modal-close-btn" id="btn-close-override">✕</button>
+        </div>
+        <div class="modal-body">
+          <div class="override-box">
+            <p style="margin-bottom:12px; font-size:0.88rem; color:var(--text-secondary); line-height:1.5;">
+              As the account owner, you have the unilateral right to terminate caregiver surveillance. 
+              Executing this will <strong>immediately purge all cached medical records from Dr. Elena Rostova's phone</strong> and alert the Master User (Aswin) for legal clarity.
+            </p>
+            <div class="override-action-block">
+              <label style="font-size:0.78rem; font-weight:700; color:#fca5a5;">Reason for Override / Disconnect:</label>
+              <select id="override-reason-select" style="width:100%; margin:8px 0 16px; padding:10px; background:#0a0d14; border:1px solid var(--border-subtle); color:#fff; border-radius:8px;">
+                <option>Desire to self-manage my medications independently</option>
+                <option>Caregiver replacement required immediately</option>
+                <option>Privacy boundary dispute</option>
+                <option>Emergency temporary freeze</option>
+              </select>
+              <button class="btn-danger-sm" id="btn-execute-override" style="width:100%; padding:14px; font-size:0.95rem; font-weight:800;">
+                ⚡ Execute Immediate Caregiver Detach & Wipe
+              </button>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- UNIVERSAL SPOTLIGHT SEARCH MODAL (Ctrl + K) -->
     <div class="modal-overlay" id="search-modal">
       <div class="modal-card wide spotlight-modal">
         <div class="spotlight-input-wrapper">
@@ -350,9 +523,7 @@
       </div>
     </div>
 
-    <!-- ========================================== -->
     <!-- DAY DRILLDOWN MODAL -->
-    <!-- ========================================== -->
     <div class="modal-overlay" id="day-detail-modal">
       <div class="modal-card">
         <div class="modal-head">
@@ -377,9 +548,7 @@
       </div>
     </div>
 
-    <!-- ========================================== -->
     <!-- MODULE-FIRST "+" INGESTION MODAL -->
-    <!-- ========================================== -->
     <div class="modal-overlay" id="add-entry-modal">
       <div class="modal-card wide">
         <div class="modal-head">
@@ -390,7 +559,6 @@
           <button class="modal-close-btn" id="btn-close-add-modal">✕</button>
         </div>
         
-        <!-- Step 1: Module Picker -->
         <div class="add-step-picker" id="add-step-1">
           <div class="module-choice-grid">
             <button class="module-choice-card" data-module="pill">
@@ -421,7 +589,6 @@
           </div>
         </div>
 
-        <!-- Step 2: Contextual Form (Injected depending on selection) -->
         <div class="add-step-form hidden" id="add-step-2">
           <div class="form-back-bar">
             <button class="btn-text" id="btn-back-to-modules">← Change Module</button>
@@ -440,9 +607,7 @@
       </div>
     </div>
 
-    <!-- ========================================== -->
     <!-- ESCALATION LADDER SIMULATOR MODAL -->
-    <!-- ========================================== -->
     <div class="modal-overlay" id="escalation-modal">
       <div class="modal-card">
         <div class="modal-head">
@@ -488,9 +653,7 @@
       </div>
     </div>
 
-    <!-- ========================================== -->
-    <!-- REVOCATION & AUTONOMY MODAL -->
-    <!-- ========================================== -->
+    <!-- REVOCATION MODAL -->
     <div class="modal-overlay" id="revocation-modal">
       <div class="modal-card">
         <div class="modal-head">

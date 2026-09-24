@@ -1,10 +1,10 @@
 // ==========================================================================
-// OMNITASK — REFINED IA & WIREFRAME CONTROLLER (v2)
+// OMNITASK — REFINED IA & WIREFRAME CONTROLLER (v3 — With Master Oversight)
 // ==========================================================================
 
 const appState = {
   profileMode: 'standard', // 'standard' (Power-User) | 'elderly' (Accessible)
-  activeRole: 'user', // 'user' | 'caregiver'
+  activeRole: 'user', // 'user' | 'caregiver' | 'admin'
   streakDays: 14,
   selectedDate: '2026-10-15',
 
@@ -39,14 +39,14 @@ const appState = {
     { id: '21', date: '2026-10-22', module: 'payment', title: 'Electric Utility Bill', time: '08:00 AM', detail: 'Due in 3 days', done: false, spend: 75.0 },
   ],
 
-  // Upcoming Bills (Inside Unified Finances)
+  // Upcoming Bills
   upcomingBills: [
     { id: 'b1', title: 'Electric Utility Power Co.', amount: 75.00, dueDate: '2026-10-22', status: 'Due in 7 days', linkedCategory: 'Bills' },
     { id: 'b2', title: 'Home Broadband Internet', amount: 65.00, dueDate: '2026-10-25', status: 'Due in 10 days', linkedCategory: 'Bills' },
     { id: 'b3', title: 'Health Insurance Premium', amount: 280.00, dueDate: '2026-10-29', status: 'Upcoming', linkedCategory: 'Insurance' }
   ],
 
-  // Spent Ledger Entries (Manual + Auto-linked)
+  // Spent Ledger Entries
   expenses: [
     { date: '2026-10-03', category: 'Groceries', title: 'Weekly Market Run', module: 'Manual', amount: 92.50 },
     { date: '2026-10-05', category: 'Bills', title: 'Internet Broadband Bill', module: 'Payment-Linked', amount: 65.00 },
@@ -63,6 +63,7 @@ const appState = {
 // ==========================================================================
 document.addEventListener('DOMContentLoaded', () => {
   initAdaptiveProfile();
+  initRoleSwitcher();
   initNavigation();
   initCalendar();
   initFinancesModule();
@@ -71,11 +72,47 @@ document.addEventListener('DOMContentLoaded', () => {
   initModuleAddModal();
   initEscalationLadder();
   initFitnessModule();
-  initRevocation();
+  initRevocationAndOverride();
+  initMasterAdminCockpit();
 });
 
 // ==========================================================================
-// 1. ADAPTIVE PROFILE SWITCHER (Power-User vs Elderly)
+// 1. ROLE SWITCHER (Self, Caregiver, Master Admin)
+// ==========================================================================
+function initRoleSwitcher() {
+  const roleButtons = document.querySelectorAll('.role-chip');
+
+  roleButtons.forEach(btn => {
+    btn.addEventListener('click', () => {
+      roleButtons.forEach(b => b.classList.remove('active'));
+      btn.classList.add('active');
+      const selectedRole = btn.getAttribute('data-role');
+      appState.activeRole = selectedRole;
+
+      if (selectedRole === 'admin') {
+        // Switch view directly to Master Oversight Cockpit
+        document.querySelectorAll('.view-panel').forEach(p => p.classList.remove('active'));
+        document.querySelectorAll('.nav-item').forEach(n => n.classList.remove('active'));
+        document.getElementById('view-admin-oversight')?.classList.add('active');
+        document.getElementById('nav-admin-oversight')?.classList.add('active');
+      } else if (selectedRole === 'user') {
+        document.querySelectorAll('.view-panel').forEach(p => p.classList.remove('active'));
+        document.querySelectorAll('.nav-item').forEach(n => n.classList.remove('active'));
+        document.getElementById('view-home')?.classList.add('active');
+        document.getElementById('nav-home')?.classList.add('active');
+      } else if (selectedRole === 'caregiver') {
+        document.querySelectorAll('.view-panel').forEach(p => p.classList.remove('active'));
+        document.querySelectorAll('.nav-item').forEach(n => n.classList.remove('active'));
+        document.getElementById('view-routines')?.classList.add('active');
+        document.getElementById('nav-routines')?.classList.add('active');
+        alert('Switched to Caregiver View: Filtered to Eleanor Vance\'s medication compliance stream.');
+      }
+    });
+  });
+}
+
+// ==========================================================================
+// 2. ADAPTIVE PROFILE SWITCHER
 // ==========================================================================
 function initAdaptiveProfile() {
   const btnStandard = document.getElementById('btn-mode-standard');
@@ -92,7 +129,6 @@ function initAdaptiveProfile() {
 
     if (mode === 'elderly') {
       appRoot.classList.add('elderly-mode');
-      // Show elderly specific view
       document.querySelectorAll('.view-panel').forEach(p => p.classList.remove('active'));
       document.querySelectorAll('.nav-item').forEach(n => n.classList.remove('active'));
       document.getElementById('view-elderly-today').classList.add('active');
@@ -105,7 +141,6 @@ function initAdaptiveProfile() {
     }
   }
 
-  // SOS button in elderly mode
   document.getElementById('btn-elderly-sos')?.addEventListener('click', () => {
     alert('🚨 DISTRESS CALL INITIATED: Calling linked caregiver Dr. Elena Rostova and sending current location + medication status.');
   });
@@ -146,7 +181,106 @@ function renderElderlyView() {
 }
 
 // ==========================================================================
-// 2. NAVIGATION & TABS
+// 3. MASTER ADMIN OVERSIGHT COCKPIT
+// ==========================================================================
+function initMasterAdminCockpit() {
+  const btnReplaceCaregiver = document.getElementById('btn-admin-replace-caregiver');
+  const btnInstantScrub = document.getElementById('btn-admin-instant-scrub');
+  const auditLog = document.getElementById('admin-audit-log');
+
+  btnReplaceCaregiver?.addEventListener('click', () => {
+    const newName = prompt('Enter new registered Caregiver / Nurse name:', 'Nurse Marcus Chen');
+    if (newName) {
+      alert(`Master Override: Caregiver replaced with ${newName}. Dr. Elena Rostova\'s access terminated immediately and credentials rotated.`);
+      // Add entry to audit log
+      const entry = document.createElement('div');
+      entry.className = 'log-entry alert-log';
+      entry.innerHTML = `
+        <span class="log-time">Just Now</span>
+        <span class="log-tag alert">Master Reassignment</span>
+        <p>Master User (Aswin) re-assigned Caregiver to ${newName}. Prior session revoked.</p>
+      `;
+      auditLog.prepend(entry);
+    }
+  });
+
+  btnInstantScrub?.addEventListener('click', () => {
+    if (confirm('Execute instant remote wipe? This will purge all cached medical records, prescriptions, and dose logs from the Caregiver device immediately.')) {
+      alert('⚡ REMOTE DATA SCRUB EXECUTED: All patient data wiped from Caregiver device.');
+      const entry = document.createElement('div');
+      entry.className = 'log-entry alert-log';
+      entry.innerHTML = `
+        <span class="log-time">Just Now</span>
+        <span class="log-tag alert">Remote Data Scrub</span>
+        <p>Master User executed immediate remote wipe on Caregiver device.</p>
+      `;
+      auditLog.prepend(entry);
+    }
+  });
+}
+
+// ==========================================================================
+// 4. USER AUTONOMY OVERRIDE
+// ==========================================================================
+function initRevocationAndOverride() {
+  const btnTriggerOverride = document.getElementById('btn-elderly-trigger-override');
+  const overrideModal = document.getElementById('override-modal');
+  const btnCloseOverride = document.getElementById('btn-close-override');
+  const btnExecuteOverride = document.getElementById('btn-execute-override');
+  const auditLog = document.getElementById('admin-audit-log');
+
+  btnTriggerOverride?.addEventListener('click', () => {
+    overrideModal?.classList.add('active');
+  });
+
+  btnCloseOverride?.addEventListener('click', () => {
+    overrideModal?.classList.remove('active');
+  });
+
+  btnExecuteOverride?.addEventListener('click', () => {
+    const reason = document.getElementById('override-reason-select').value;
+    overrideModal?.classList.remove('active');
+    alert(`⚖️ AUTONOMOUS OVERRIDE CONFIRMED: Caregiver disconnected immediately. Reason: "${reason}". Account reverted to independent personal management.`);
+
+    if (auditLog) {
+      const entry = document.createElement('div');
+      entry.className = 'log-entry alert-log';
+      entry.innerHTML = `
+        <span class="log-time">Just Now</span>
+        <span class="log-tag alert">Patient Unilateral Override</span>
+        <p>Eleanor Vance triggered autonomy override: "${reason}". Caregiver disconnected.</p>
+      `;
+      auditLog.prepend(entry);
+    }
+
+    // Hide caregiver card in sidebar
+    const caregiverCard = document.getElementById('caregiver-status-card');
+    if (caregiverCard) caregiverCard.style.display = 'none';
+  });
+
+  // Routine revocation modal in sidebar
+  const btnOpenRevoke = document.getElementById('btn-open-revoke');
+  const revokeModal = document.getElementById('revocation-modal');
+  const btnCloseRevoke = document.getElementById('btn-close-revocation');
+  const btnConfirmCode = document.getElementById('btn-confirm-code-revoke');
+  const btnUnilateral = document.getElementById('btn-unilateral-revoke');
+
+  btnOpenRevoke?.addEventListener('click', () => revokeModal.classList.add('active'));
+  btnCloseRevoke?.addEventListener('click', () => revokeModal.classList.remove('active'));
+
+  function tearDown() {
+    const caregiverCard = document.getElementById('caregiver-status-card');
+    if (caregiverCard) caregiverCard.style.display = 'none';
+    revokeModal.classList.remove('active');
+    alert('Caregiver access revoked immediately. All sensitive data scrubbed from former caregiver device.');
+  }
+
+  btnConfirmCode?.addEventListener('click', tearDown);
+  btnUnilateral?.addEventListener('click', tearDown);
+}
+
+// ==========================================================================
+// 5. NAVIGATION & TABS
 // ==========================================================================
 function initNavigation() {
   const navButtons = document.querySelectorAll('.nav-item');
@@ -166,7 +300,7 @@ function initNavigation() {
 }
 
 // ==========================================================================
-// 3. CALENDAR WITH REFINED NON-ALARMING DENSITY PALETTE
+// 6. CALENDAR
 // ==========================================================================
 function initCalendar() {
   const calendarGrid = document.getElementById('calendar-grid');
@@ -203,7 +337,6 @@ function initCalendar() {
         const count = dayItems.length;
         const hasMissed = dayItems.some(item => item.isMissed);
 
-        // REFINED NON-ALARMING PALETTE
         let densityClass = 'density-zero';
         let countText = '';
 
@@ -214,7 +347,7 @@ function initCalendar() {
           densityClass = 'density-medium'; // Ocean Blue
           countText = `${count} tasks`;
         } else if (count >= 8) {
-          densityClass = 'density-high'; // Royal Violet (Productive)
+          densityClass = 'density-high'; // Royal Violet
           countText = `${count} tasks`;
         }
 
@@ -240,7 +373,6 @@ function initCalendar() {
       }
     }
 
-    // Weekly spend breakdown card
     const weeklySpendCell = document.createElement('div');
     weeklySpendCell.className = 'weekly-spend-card';
     weeklySpendCell.innerHTML = `
@@ -250,18 +382,15 @@ function initCalendar() {
     calendarGrid.appendChild(weeklySpendCell);
   }
 
-  // Update total monthly spend
   const totalMonthly = appState.expenses.reduce((sum, item) => sum + item.amount, 0);
   const monthTotalEl = document.getElementById('month-total-spend');
   if (monthTotalEl) monthTotalEl.textContent = `$${totalMonthly.toFixed(2)}`;
 
-  // Upcoming bills total
   const totalUpcomingBills = appState.upcomingBills.reduce((sum, b) => sum + b.amount, 0);
   const billsTotalEl = document.getElementById('month-bills-due');
   if (billsTotalEl) billsTotalEl.textContent = `$${totalUpcomingBills.toFixed(2)}`;
 }
 
-// Day Drilldown Modal
 function openDayDetail(dateStr, dayNum, items, daySpend) {
   appState.selectedDate = dateStr;
   const modal = document.getElementById('day-detail-modal');
@@ -328,7 +457,6 @@ function openDayDetail(dateStr, dayNum, items, daySpend) {
   modal.classList.add('active');
 }
 
-// Close day modal listeners
 document.getElementById('btn-close-day-modal')?.addEventListener('click', () => {
   document.getElementById('day-detail-modal')?.classList.remove('active');
 });
@@ -341,7 +469,7 @@ document.getElementById('btn-add-to-this-date')?.addEventListener('click', () =>
 });
 
 // ==========================================================================
-// 4. UNIFIED FINANCES (UPCOMING BILLS & SPENT LEDGER)
+// 7. UNIFIED FINANCES
 // ==========================================================================
 function initFinancesModule() {
   const btnBills = document.getElementById('btn-finance-bills');
@@ -392,7 +520,6 @@ function renderBillsGrid() {
 
     const payBtn = card.querySelector('.btn-mark-bill-paid');
     payBtn.addEventListener('click', () => {
-      // Move from upcoming bills into expense ledger automatically
       appState.upcomingBills = appState.upcomingBills.filter(b => b.id !== bill.id);
       appState.expenses.unshift({
         date: '2026-10-15',
@@ -435,7 +562,7 @@ function renderExpenseTable() {
 }
 
 // ==========================================================================
-// 5. HEALTH & ROUTINES HUB
+// 8. HEALTH & ROUTINES HUB
 // ==========================================================================
 function initRoutinesModule() {
   const stream = document.getElementById('reminders-stream');
@@ -493,7 +620,7 @@ function initRoutinesModule() {
 }
 
 // ==========================================================================
-// 6. UNIVERSAL SPOTLIGHT SEARCH (Ctrl + K)
+// 9. UNIVERSAL SPOTLIGHT SEARCH (Ctrl + K)
 // ==========================================================================
 function initSpotlightSearch() {
   const modal = document.getElementById('search-modal');
@@ -516,7 +643,6 @@ function initSpotlightSearch() {
   trigger?.addEventListener('click', openSearch);
   btnClose?.addEventListener('click', closeSearch);
 
-  // Keyboard shortcut Ctrl + K / Cmd + K / ESC
   window.addEventListener('keydown', (e) => {
     if ((e.ctrlKey || e.metaKey) && e.key.toLowerCase() === 'k') {
       e.preventDefault();
@@ -533,7 +659,6 @@ function initSpotlightSearch() {
   function renderSearchResults(query) {
     results.innerHTML = '';
     
-    // Search both tasks and expenses
     const taskMatches = appState.items.filter(item => 
       !query || item.title.toLowerCase().includes(query) || item.detail.toLowerCase().includes(query)
     );
@@ -591,7 +716,7 @@ function initSpotlightSearch() {
 }
 
 // ==========================================================================
-// 7. MODULE-FIRST "+" INGESTION MODAL
+// 10. MODULE-FIRST "+" INGESTION MODAL
 // ==========================================================================
 function initModuleAddModal() {
   const addModal = document.getElementById('add-entry-modal');
@@ -737,7 +862,7 @@ function initModuleAddModal() {
 }
 
 // ==========================================================================
-// 8. SAFETY ESCALATION & AUTONOMY
+// 11. ESCALATION & FITNESS
 // ==========================================================================
 function initEscalationLadder() {
   const btnOpen = document.getElementById('btn-escalation-demo');
@@ -816,25 +941,4 @@ function initFitnessModule() {
       chatBox.scrollTop = chatBox.scrollHeight;
     }, 600);
   });
-}
-
-function initRevocation() {
-  const btnOpenRevoke = document.getElementById('btn-open-revoke');
-  const revokeModal = document.getElementById('revocation-modal');
-  const btnCloseRevoke = document.getElementById('btn-close-revocation');
-  const btnConfirmCode = document.getElementById('btn-confirm-code-revoke');
-  const btnUnilateral = document.getElementById('btn-unilateral-revoke');
-  const caregiverCard = document.getElementById('caregiver-status-card');
-
-  btnOpenRevoke?.addEventListener('click', () => revokeModal.classList.add('active'));
-  btnCloseRevoke?.addEventListener('click', () => revokeModal.classList.remove('active'));
-
-  function tearDown() {
-    caregiverCard.style.display = 'none';
-    revokeModal.classList.remove('active');
-    alert('Caregiver access revoked immediately. All sensitive data scrubbed from former caregiver device.');
-  }
-
-  btnConfirmCode?.addEventListener('click', tearDown);
-  btnUnilateral?.addEventListener('click', tearDown);
 }
