@@ -308,18 +308,20 @@
       border-radius: 8px;
       padding: 3px;
       border: 1px solid var(--surface-border);
+      gap: 2px;
     }
 
     .sort-mode-btn {
       background: transparent;
       border: none;
       color: var(--text-muted);
-      padding: 0.25rem 0.75rem;
+      padding: 0.25rem 0.65rem;
       border-radius: 6px;
-      font-size: 0.75rem;
-      font-weight: 600;
+      font-size: 0.73rem;
+      font-weight: 700;
       cursor: pointer;
       transition: all 0.15s;
+      white-space: nowrap;
     }
 
     .sort-mode-btn.active {
@@ -835,7 +837,8 @@
     </div>
 
     <div class="sort-mode-switch">
-      <button class="sort-mode-btn active" id="btnClosed" onclick="setSortMode('closed')">Closed 4-Bucket Sort</button>
+      <button class="sort-mode-btn active" id="btnClosed6" onclick="setSortMode('closed-6')">6-Bucket Domain Sort</button>
+      <button class="sort-mode-btn" id="btnClosed4" onclick="setSortMode('closed-4')">4-Bucket Streamlined Sort</button>
       <button class="sort-mode-btn" id="btnOpen" onclick="setSortMode('open')">Open Sort (Custom)</button>
     </div>
   </div>
@@ -879,7 +882,7 @@
       <!-- Modal Tabs -->
       <nav class="modal-tabs">
         <button class="modal-tab-btn active" onclick="switchModalTab('tab-guide')">📖 1. How to Sort (Guide)</button>
-        <button class="modal-tab-btn" onclick="switchModalTab('tab-theory')">⚖️ 2. Why 4 vs 5 vs 6 Buckets?</button>
+        <button class="modal-tab-btn" onclick="switchModalTab('tab-theory')">⚖️ 2. 6-Bucket vs 4-Bucket Debate</button>
         <button class="modal-tab-btn" onclick="switchModalTab('tab-patterns')">🧠 3. Open Sort Mental Models</button>
         <button class="modal-tab-btn" onclick="switchModalTab('tab-cards')">🃏 4. 24 Cards Reference</button>
       </nav>
@@ -922,26 +925,31 @@
         </div>
       </div>
 
-      <!-- Tab 2: Why 4 Buckets? -->
+      <!-- Tab 2: 6-Bucket vs 4-Bucket Debate -->
       <div class="modal-tab-content" id="tab-theory">
         <div class="theory-box">
-          <h3>📱 The Mobile Bottom Navigation Rule (Hick's Law & Thumb Zone)</h3>
+          <h3>📂 The 6-Bucket Domain Model (Targeting Natural Granularity)</h3>
           <p>
-            Industry design standards (Apple HIG and Google Material Design) strictly recommend <strong>3 to 5 bottom tabs</strong>. Exceeding 5 tabs creates tiny, cramped touch targets that cause misclicks (especially for elderly users with tremors).
+            This 6-bucket model isolates distinct life domains into dedicated categories to test whether users prefer granular domain separation:
           </p>
-          <p>
-            Our baseline hypothesis uses <strong>4 tabs</strong> (<em>Home Calendar, Reminders & Health, Fitness, Finances</em>) by unifying Pills and Bills under "Reminders" because they share the same functional model:
-            $$\text{Due Date / Time} + \text{Mark-Done Action}$$
-          </p>
+          <ul>
+            <li><strong>💊 Health & Medicine:</strong> <code>C-01</code> (Pill), <code>C-02</code> (Medical ID), <code>C-03</code> (Doctor Appt), <code>C-16</code> (Emergency Buzz)</li>
+            <li><strong>💳 Bills & Money:</strong> <code>C-04</code> (Utility Bill), <code>C-05</code> (Rent), <code>C-15</code> (Grocery Expense), <code>C-21</code> (Spent Ledger)</li>
+            <li><strong>🏋️ Exercise & Fitness:</strong> <code>C-12</code> (Gym Session), <code>C-13</code> (AI Workout), <code>C-14</code> (Weekly Goal)</li>
+            <li><strong>✨ Personal Habits:</strong> <code>C-06</code> (Guitar), <code>C-07</code> (Water Intake)</li>
+            <li><strong>📅 Calendar & Planning:</strong> <code>C-08</code> (Month View), <code>C-09</code> (Day Timeline), <code>C-10</code> (Daily Spend)</li>
+            <li><strong>🛡️ Caregiver & Safety:</strong> <code>C-17</code> (Caregiver Feed), <code>C-18</code> (Privacy Pause), <code>C-19</code> (Caregiver Freeze)</li>
+          </ul>
         </div>
 
         <div class="theory-box">
-          <h3>🔬 Competing Information Architecture Models We Are Testing</h3>
+          <h3>📱 The 4-Bucket Streamlined Model (Mobile Thumb-Zone Rule)</h3>
+          <p>
+            Apple HIG and Material Design 3 recommend <strong>3 to 5 bottom tabs</strong>. The 4-bucket model consolidates Pills and Bills under "Reminders" ($ \text{Due Date} + \text{Mark Done} $) to keep the mobile bottom navigation uncluttered.
+          </p>
           <ul>
-            <li><strong>Model 1 (Current 4-Tab Hub):</strong> <code>Calendar</code> | <code>Reminders & Health</code> | <code>Fitness</code> | <code>Finances</code></li>
-            <li><strong>Model 2 (5-Tab Health Split):</strong> <code>Calendar</code> | <code>Health & Rx</code> | <code>Tasks & Bills</code> | <code>Fitness</code> | <code>Finances</code></li>
-            <li><strong>Model 3 (5-Tab Safety Split):</strong> <code>Calendar</code> | <code>Routines & Bills</code> | <code>Fitness</code> | <code>Finances</code> | <code>Caregiver & Safety</code></li>
-            <li><strong>Model 4 (6-Tab Desktop Architecture):</strong> Separates Medications, Bills, Fitness, Habits, Caregiver, and Calendar into full standalone hubs.</li>
+            <li><strong>Model A (4-Tab Hub):</strong> <code>Calendar</code> | <code>Reminders & Health</code> | <code>Fitness</code> | <code>Finances</code></li>
+            <li><strong>Model B (6-Domain Hub):</strong> The 6 dedicated categories above.</li>
           </ul>
         </div>
       </div>
@@ -1050,7 +1058,7 @@
       { id: 'C-24', title: 'Bill-to-Expense Auto-Link', desc: 'When paying a utility bill, automatically recording it in expense ledger.' }
     ];
 
-    let currentMode = 'closed';
+    let currentMode = 'closed-6'; // 'closed-6' | 'closed-4' | 'open'
     let categories = [];
     let cardPlacements = {}; // cardId -> categoryId or null (deck)
     let searchFilter = '';
@@ -1090,8 +1098,7 @@
       cardPlacements = prevState.cardPlacements;
       currentMode = prevState.currentMode;
 
-      document.getElementById('btnClosed').classList.toggle('active', currentMode === 'closed');
-      document.getElementById('btnOpen').classList.toggle('active', currentMode === 'open');
+      updateModeSwitchButtons();
 
       renderDeck();
       renderCategories();
@@ -1112,12 +1119,17 @@
       cardPlacements = nextState.cardPlacements;
       currentMode = nextState.currentMode;
 
-      document.getElementById('btnClosed').classList.toggle('active', currentMode === 'closed');
-      document.getElementById('btnOpen').classList.toggle('active', currentMode === 'open');
+      updateModeSwitchButtons();
 
       renderDeck();
       renderCategories();
       updateHistoryButtons();
+    }
+
+    function updateModeSwitchButtons() {
+      document.getElementById('btnClosed6').classList.toggle('active', currentMode === 'closed-6');
+      document.getElementById('btnClosed4').classList.toggle('active', currentMode === 'closed-4');
+      document.getElementById('btnOpen').classList.toggle('active', currentMode === 'open');
     }
 
     function init() {
@@ -1153,7 +1165,18 @@
     }
 
     function setupCategories() {
-      if (currentMode === 'closed') {
+      if (currentMode === 'closed-6') {
+        // 6-Bucket Specific Domain Groupings
+        categories = [
+          { id: 'cat-health', title: '💊 Health & Medicine' },
+          { id: 'cat-bills', title: '💳 Bills & Money' },
+          { id: 'cat-fitness', title: '🏋️ Exercise & Fitness' },
+          { id: 'cat-habits', title: '✨ Personal Habits' },
+          { id: 'cat-calendar', title: '📅 Calendar & Planning' },
+          { id: 'cat-caregiver', title: '🛡️ Caregiver & Safety' }
+        ];
+      } else if (currentMode === 'closed-4') {
+        // 4-Bucket Streamlined Bottom-Nav Groupings
         categories = [
           { id: 'cat-home', title: '📅 1. Calendar Aggregator' },
           { id: 'cat-reminders', title: '🔔 2. Reminders & Health' },
@@ -1161,6 +1184,7 @@
           { id: 'cat-finances', title: '💳 4. Finances & Budget' }
         ];
       } else {
+        // Open Sort Mode
         categories = [
           { id: 'cat-custom-1', title: 'Group 1 (Click to Rename)' },
           { id: 'cat-custom-2', title: 'Group 2 (Click to Rename)' }
@@ -1174,8 +1198,7 @@
       if (confirm("Switching modes will reset current card placements. Continue?")) {
         saveState();
         currentMode = mode;
-        document.getElementById('btnClosed').classList.toggle('active', mode === 'closed');
-        document.getElementById('btnOpen').classList.toggle('active', mode === 'open');
+        updateModeSwitchButtons();
         setupCategories();
         renderDeck();
         renderCategories();
@@ -1249,7 +1272,7 @@
 
         bucket.innerHTML = `
           <div class="bucket-header">
-            <input type="text" class="bucket-title-input" value="${cat.title}" onchange="updateCategoryTitle('${cat.id}', this.value)" ${currentMode === 'closed' ? 'readonly' : ''}>
+            <input type="text" class="bucket-title-input" value="${cat.title}" onchange="updateCategoryTitle('${cat.id}', this.value)" ${currentMode.startsWith('closed') ? 'readonly' : ''}>
             <span class="bucket-count">${assignedCards.length}</span>
           </div>
           <div class="bucket-cards" id="cards-container-${cat.id}">
