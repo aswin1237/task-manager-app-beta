@@ -1,0 +1,818 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>OmniTask — Interactive UX Card Sorting Study & Printable Kit</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&family=JetBrains+Mono:wght@400;600&display=swap" rel="stylesheet">
+  <style>
+    :root {
+      --bg: #0a0d14;
+      --surface: #101622;
+      --surface-border: #1e293b;
+      --surface-hover: #162032;
+      --text: #f8fafc;
+      --text-muted: #94a3b8;
+      --accent: #6366f1;
+      --accent-hover: #4f46e5;
+      --sage: #4ade80;
+      --ocean: #38bdf8;
+      --violet: #c084fc;
+      --red: #f87171;
+      --radius: 12px;
+    }
+
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+
+    body {
+      font-family: 'Plus Jakarta Sans', -apple-system, BlinkMacSystemFont, sans-serif;
+      background-color: var(--bg);
+      color: var(--text);
+      min-height: 100vh;
+      display: flex;
+      flex-direction: column;
+    }
+
+    /* Screen UI */
+    header {
+      background: var(--surface);
+      border-bottom: 1px solid var(--surface-border);
+      padding: 1rem 1.5rem;
+      display: flex;
+      flex-wrap: wrap;
+      justify-content: space-between;
+      align-items: center;
+      gap: 1rem;
+      position: sticky;
+      top: 0;
+      z-index: 100;
+    }
+
+    .brand-title {
+      display: flex;
+      align-items: center;
+      gap: 0.75rem;
+    }
+
+    .brand-badge {
+      background: rgba(99, 102, 241, 0.2);
+      color: var(--accent);
+      border: 1px solid var(--accent);
+      padding: 0.25rem 0.6rem;
+      border-radius: 6px;
+      font-size: 0.75rem;
+      font-weight: 700;
+      font-family: 'JetBrains Mono', monospace;
+    }
+
+    .brand-title h1 {
+      font-size: 1.15rem;
+      font-weight: 700;
+      letter-spacing: -0.02em;
+    }
+
+    .header-controls {
+      display: flex;
+      align-items: center;
+      flex-wrap: wrap;
+      gap: 0.75rem;
+    }
+
+    .input-group {
+      display: flex;
+      align-items: center;
+      gap: 0.5rem;
+      background: var(--bg);
+      padding: 0.35rem 0.75rem;
+      border-radius: 8px;
+      border: 1px solid var(--surface-border);
+    }
+
+    .input-group label {
+      font-size: 0.75rem;
+      color: var(--text-muted);
+      font-weight: 600;
+    }
+
+    .input-group input {
+      background: transparent;
+      border: none;
+      color: var(--text);
+      font-size: 0.85rem;
+      outline: none;
+      font-family: inherit;
+    }
+
+    .btn {
+      background: var(--accent);
+      color: white;
+      border: none;
+      padding: 0.45rem 0.9rem;
+      border-radius: 8px;
+      font-size: 0.85rem;
+      font-weight: 600;
+      cursor: pointer;
+      display: inline-flex;
+      align-items: center;
+      gap: 0.4rem;
+      transition: all 0.2s;
+    }
+
+    .btn:hover {
+      background: var(--accent-hover);
+      transform: translateY(-1px);
+    }
+
+    .btn-secondary {
+      background: var(--surface-border);
+      color: var(--text);
+    }
+
+    .btn-secondary:hover {
+      background: #334155;
+    }
+
+    .btn-outline {
+      background: transparent;
+      border: 1px solid var(--surface-border);
+      color: var(--text-muted);
+    }
+
+    .btn-outline:hover {
+      border-color: var(--accent);
+      color: var(--text);
+    }
+
+    /* Study Instruction Banner */
+    .study-intro {
+      background: linear-gradient(90deg, rgba(99, 102, 241, 0.1) 0%, rgba(56, 189, 248, 0.05) 100%);
+      border-bottom: 1px solid var(--surface-border);
+      padding: 0.85rem 1.5rem;
+      font-size: 0.85rem;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      gap: 1rem;
+    }
+
+    .sort-mode-switch {
+      display: flex;
+      background: var(--surface);
+      border-radius: 8px;
+      padding: 3px;
+      border: 1px solid var(--surface-border);
+    }
+
+    .sort-mode-btn {
+      background: transparent;
+      border: none;
+      color: var(--text-muted);
+      padding: 0.25rem 0.75rem;
+      border-radius: 6px;
+      font-size: 0.75rem;
+      font-weight: 600;
+      cursor: pointer;
+      transition: all 0.15s;
+    }
+
+    .sort-mode-btn.active {
+      background: var(--accent);
+      color: white;
+    }
+
+    /* Main Workspace */
+    .workspace {
+      display: grid;
+      grid-template-columns: 360px 1fr;
+      flex: 1;
+      height: calc(100vh - 130px);
+      overflow: hidden;
+    }
+
+    /* Deck Panel */
+    .deck-panel {
+      background: var(--surface);
+      border-right: 1px solid var(--surface-border);
+      display: flex;
+      flex-direction: column;
+      height: 100%;
+    }
+
+    .panel-header {
+      padding: 0.85rem 1rem;
+      border-bottom: 1px solid var(--surface-border);
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+    }
+
+    .panel-header h2 {
+      font-size: 0.95rem;
+      font-weight: 700;
+      display: flex;
+      align-items: center;
+      gap: 0.5rem;
+    }
+
+    .count-pill {
+      background: var(--bg);
+      color: var(--accent);
+      padding: 0.15rem 0.5rem;
+      border-radius: 12px;
+      font-size: 0.75rem;
+      font-family: 'JetBrains Mono', monospace;
+      font-weight: 700;
+      border: 1px solid var(--surface-border);
+    }
+
+    .deck-cards-list {
+      padding: 0.85rem;
+      overflow-y: auto;
+      flex: 1;
+      display: flex;
+      flex-direction: column;
+      gap: 0.65rem;
+    }
+
+    /* Card Component */
+    .sort-card {
+      background: var(--bg);
+      border: 1px solid var(--surface-border);
+      border-radius: var(--radius);
+      padding: 0.75rem 0.85rem;
+      cursor: grab;
+      user-select: none;
+      transition: all 0.2s;
+      position: relative;
+    }
+
+    .sort-card:hover {
+      border-color: var(--accent);
+      background: var(--surface-hover);
+      transform: translateY(-2px);
+      box-shadow: 0 4px 12px rgba(0,0,0,0.3);
+    }
+
+    .sort-card.dragging {
+      opacity: 0.4;
+      cursor: grabbing;
+    }
+
+    .card-meta {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-bottom: 0.35rem;
+    }
+
+    .card-id {
+      font-size: 0.7rem;
+      font-family: 'JetBrains Mono', monospace;
+      font-weight: 700;
+      color: var(--ocean);
+      background: rgba(56, 189, 248, 0.1);
+      padding: 0.1rem 0.35rem;
+      border-radius: 4px;
+    }
+
+    .card-title {
+      font-size: 0.88rem;
+      font-weight: 700;
+      color: var(--text);
+      line-height: 1.3;
+      margin-bottom: 0.25rem;
+    }
+
+    .card-desc {
+      font-size: 0.76rem;
+      color: var(--text-muted);
+      line-height: 1.4;
+    }
+
+    .mobile-move-select {
+      margin-top: 0.5rem;
+      width: 100%;
+      background: var(--surface);
+      color: var(--text);
+      border: 1px solid var(--surface-border);
+      border-radius: 6px;
+      padding: 0.25rem 0.5rem;
+      font-size: 0.75rem;
+    }
+
+    /* Canvas / Buckets Area */
+    .canvas-panel {
+      padding: 1.25rem;
+      overflow-y: auto;
+      background: var(--bg);
+      display: flex;
+      flex-direction: column;
+      gap: 1rem;
+    }
+
+    .canvas-actions {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+    }
+
+    .categories-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+      gap: 1rem;
+      align-items: start;
+    }
+
+    .category-bucket {
+      background: var(--surface);
+      border: 2px dashed var(--surface-border);
+      border-radius: var(--radius);
+      min-height: 240px;
+      display: flex;
+      flex-direction: column;
+      transition: all 0.2s;
+    }
+
+    .category-bucket.drag-over {
+      border-color: var(--accent);
+      background: rgba(99, 102, 241, 0.05);
+    }
+
+    .bucket-header {
+      padding: 0.75rem 0.85rem;
+      border-bottom: 1px solid var(--surface-border);
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      gap: 0.5rem;
+    }
+
+    .bucket-title-input {
+      background: transparent;
+      border: none;
+      color: var(--text);
+      font-weight: 700;
+      font-size: 0.9rem;
+      outline: none;
+      width: 100%;
+      font-family: inherit;
+    }
+
+    .bucket-title-input:focus {
+      border-bottom: 1px solid var(--accent);
+    }
+
+    .bucket-count {
+      font-size: 0.75rem;
+      color: var(--text-muted);
+      font-family: 'JetBrains Mono', monospace;
+    }
+
+    .bucket-cards {
+      padding: 0.75rem;
+      display: flex;
+      flex-direction: column;
+      gap: 0.5rem;
+      flex: 1;
+      min-height: 150px;
+    }
+
+    .bucket-placeholder {
+      color: var(--text-muted);
+      font-size: 0.75rem;
+      text-align: center;
+      margin-top: 2.5rem;
+      font-style: italic;
+    }
+
+    /* Modal for Results & Export */
+    .modal-backdrop {
+      position: fixed;
+      inset: 0;
+      background: rgba(0,0,0,0.7);
+      backdrop-filter: blur(4px);
+      display: none;
+      align-items: center;
+      justify-content: center;
+      z-index: 200;
+      padding: 1rem;
+    }
+
+    .modal-box {
+      background: var(--surface);
+      border: 1px solid var(--surface-border);
+      border-radius: var(--radius);
+      max-width: 680px;
+      width: 100%;
+      max-height: 85vh;
+      overflow-y: auto;
+      padding: 1.5rem;
+      display: flex;
+      flex-direction: column;
+      gap: 1rem;
+    }
+
+    .modal-box h2 {
+      font-size: 1.25rem;
+    }
+
+    .results-code {
+      background: var(--bg);
+      border: 1px solid var(--surface-border);
+      padding: 1rem;
+      border-radius: 8px;
+      font-family: 'JetBrains Mono', monospace;
+      font-size: 0.8rem;
+      color: var(--ocean);
+      white-space: pre-wrap;
+      max-height: 300px;
+      overflow-y: auto;
+    }
+
+    /* Printable 24-Card Layout (@media print) */
+    .print-sheet {
+      display: none;
+    }
+
+    @media print {
+      body {
+        background: white !important;
+        color: black !important;
+      }
+      header, .study-intro, .workspace, .modal-backdrop {
+        display: none !important;
+      }
+      .print-sheet {
+        display: grid !important;
+        grid-template-columns: repeat(2, 1fr);
+        gap: 12px;
+        padding: 12px;
+      }
+      .print-card-box {
+        border: 2px dashed #475569;
+        padding: 16px;
+        border-radius: 8px;
+        page-break-inside: avoid;
+        min-height: 130px;
+        display: flex;
+        flex-direction: column;
+        justify-content: space-between;
+      }
+      .print-id {
+        font-family: monospace;
+        font-weight: bold;
+        font-size: 14px;
+        color: #1e293b;
+      }
+      .print-title {
+        font-size: 16px;
+        font-weight: 800;
+        margin: 6px 0;
+        color: #0f172a;
+      }
+      .print-desc {
+        font-size: 12px;
+        color: #334155;
+        line-height: 1.35;
+      }
+    }
+
+    @media (max-width: 768px) {
+      .workspace {
+        grid-template-columns: 1fr;
+        height: auto;
+      }
+      .deck-panel {
+        max-height: 350px;
+      }
+    }
+  </style>
+</head>
+<body>
+
+  <!-- Screen Header -->
+  <header>
+    <div class="brand-title">
+      <span class="brand-badge">UX FIELD KIT</span>
+      <h1>OmniTask Card Sorting Study</h1>
+    </div>
+    <div class="header-controls">
+      <div class="input-group">
+        <label for="pName">Participant:</label>
+        <input type="text" id="pName" placeholder="e.g. Eleanor Vance / Classmate">
+      </div>
+      <div class="input-group">
+        <label for="pRole">Archetype:</label>
+        <input type="text" id="pRole" placeholder="Senior / Pro / Caregiver">
+      </div>
+      <button class="btn btn-secondary" onclick="window.print()">🖨️ Print 24 Cut-Out Cards</button>
+      <button class="btn" onclick="exportResults()">💾 Export Results</button>
+    </div>
+  </header>
+
+  <!-- Instructions Bar -->
+  <div class="study-intro">
+    <div>
+      <strong>Participant Instructions:</strong> Drag each card from the left deck into the category bucket where you would intuitively expect to find it inside the app.
+    </div>
+    <div class="sort-mode-switch">
+      <button class="sort-mode-btn active" id="btnClosed" onclick="setSortMode('closed')">Closed 4-Bucket Sort</button>
+      <button class="sort-mode-btn" id="btnOpen" onclick="setSortMode('open')">Open Sort (Custom)</button>
+    </div>
+  </div>
+
+  <!-- Workspace -->
+  <main class="workspace">
+    <!-- Unsorted Deck -->
+    <section class="deck-panel">
+      <div class="panel-header">
+        <h2>🃏 Unsorted Feature Cards</h2>
+        <span class="count-pill" id="deckCount">24 Cards</span>
+      </div>
+      <div class="deck-cards-list" id="deckList" ondragover="allowDrop(event)" ondrop="dropToDeck(event)">
+        <!-- Cards generated dynamically -->
+      </div>
+    </section>
+
+    <!-- Canvas with Categories -->
+    <section class="canvas-panel">
+      <div class="canvas-actions">
+        <h2 style="font-size: 1rem; font-weight: 700;">📂 Category Buckets</h2>
+        <button class="btn btn-outline" onclick="addCustomCategory()">+ Add Custom Category</button>
+      </div>
+      <div class="categories-grid" id="categoriesGrid">
+        <!-- Categories generated dynamically -->
+      </div>
+    </section>
+  </main>
+
+  <!-- Modal for Results Export -->
+  <div class="modal-backdrop" id="exportModal">
+    <div class="modal-box">
+      <h2>📊 Card Sorting Study Results</h2>
+      <p style="font-size: 0.85rem; color: var(--text-muted);">
+        Copy and paste these results into your research logs or spreadsheet to analyze similarity co-occurrence and dendrogram clustering.
+      </p>
+      <div class="results-code" id="resultsJson"></div>
+      <div style="display: flex; justify-content: flex-end; gap: 0.5rem;">
+        <button class="btn btn-secondary" onclick="closeModal()">Close</button>
+        <button class="btn" onclick="copyResults()">📋 Copy JSON Data</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- Printable 24 Cards Sheet for In-Person Paper Cutting -->
+  <div class="print-sheet" id="printSheet">
+    <!-- Printable cards generated dynamically -->
+  </div>
+
+  <script>
+    // Master 24 Cards Database
+    const MASTER_CARDS = [
+      { id: 'C-01', title: 'Morning Prescription Pill', desc: 'Daily medicine reminder with dosage (e.g. Metformin 500mg) and time.' },
+      { id: 'C-02', title: 'Medical ID & Rx Card', desc: 'Showing pharmacist doctor notes, pill photo, Rx #, and expiry date.' },
+      { id: 'C-03', title: 'Doctor Consultation', desc: 'Scheduled hospital or clinic appointment with location and time.' },
+      { id: 'C-04', title: 'Electricity Utility Bill', desc: 'Monthly recurring bill reminder with payee, amount ($75), and due date.' },
+      { id: 'C-05', title: 'Rent / Mortgage Payment', desc: 'Large monthly fixed payment due on the 1st of every month.' },
+      { id: 'C-06', title: 'Guitar Practice Routine', desc: 'Daily personal creative habit (tracked via streak or duration).' },
+      { id: 'C-07', title: 'Daily Water Intake (2.5L)', desc: 'Micro-habit tracking daily water consumption volume.' },
+      { id: 'C-08', title: 'Full Month Calendar View', desc: 'Monthly grid showing all planned activities and density of the day.' },
+      { id: 'C-09', title: 'Day Drilldown Timeline', desc: 'Hourly breakdown of meetings, pills, and routines on a selected date.' },
+      { id: 'C-10', title: 'Daily Spending Summary', desc: 'Seeing total dollars spent today calculated across transactions.' },
+      { id: 'C-11', title: 'Monthly Budget Forecast', desc: 'Projected remaining balance calculating upcoming bills + past spend.' },
+      { id: 'C-12', title: 'Gym Workout Session', desc: 'Retrospective log of weightlifting sets, reps, and exercises completed.' },
+      { id: 'C-13', title: 'AI Workout Routine Plan', desc: 'Chatbox that generates a 4-day weekly workout split based on goals.' },
+      { id: 'C-14', title: 'Weekly Workout Goal', desc: 'Target aim to exercise 4 days per week with streak tracking.' },
+      { id: 'C-15', title: 'Grocery Store Expense', desc: 'Logging an immediate $45 food receipt into a categorized ledger.' },
+      { id: 'C-16', title: 'Missed Pill Emergency Buzz', desc: 'Escalated alert after 12 minutes notifying family caregiver.' },
+      { id: 'C-17', title: 'Caregiver Adherence Feed', desc: 'Nurse or family dashboard checking if senior completed morning pills.' },
+      { id: 'C-18', title: 'Temporary Privacy Pause', desc: '1-tap muting of caregiver monitoring for 2h / 6h / 24h during family time.' },
+      { id: 'C-19', title: 'Caregiver Revoke / Freeze', desc: 'Senior instantly disconnecting nurse access due to friction.' },
+      { id: 'C-20', title: 'Universal Search (Ctrl+K)', desc: 'Instant search across all medications, bills, workouts, and dates.' },
+      { id: 'C-21', title: 'Categorized Spent Ledger', desc: 'Table sorting spending into Food, Transport, Utilities, Health, Other.' },
+      { id: 'C-22', title: 'Offline Alert to Caregiver', desc: 'Instant ping to caregiver when senior phone drops off cellular network.' },
+      { id: 'C-23', title: 'Large Senior Font Toggle', desc: 'Accessibility switch increasing UI text to 24pt+ with high contrast.' },
+      { id: 'C-24', title: 'Bill-to-Expense Auto-Link', desc: 'When paying a utility bill, automatically recording it in expense ledger.' }
+    ];
+
+    let currentMode = 'closed';
+    let categories = [];
+    let cardPlacements = {}; // cardId -> categoryId or null (deck)
+
+    function init() {
+      setupCategories();
+      renderDeck();
+      renderCategories();
+      renderPrintSheet();
+    }
+
+    function setupCategories() {
+      if (currentMode === 'closed') {
+        categories = [
+          { id: 'cat-home', title: '📅 1. Calendar Aggregator' },
+          { id: 'cat-reminders', title: '🔔 2. Reminders & Health' },
+          { id: 'cat-fitness', title: '🏋️ 3. Fitness Planner' },
+          { id: 'cat-finances', title: '💳 4. Finances & Budget' }
+        ];
+      } else {
+        categories = [
+          { id: 'cat-custom-1', title: 'Group 1 (Rename me)' },
+          { id: 'cat-custom-2', title: 'Group 2 (Rename me)' }
+        ];
+      }
+      cardPlacements = {};
+      MASTER_CARDS.forEach(c => { cardPlacements[c.id] = null; });
+    }
+
+    function setSortMode(mode) {
+      if (confirm("Switching modes will reset current card placements. Continue?")) {
+        currentMode = mode;
+        document.getElementById('btnClosed').classList.toggle('active', mode === 'closed');
+        document.getElementById('btnOpen').classList.toggle('active', mode === 'open');
+        setupCategories();
+        renderDeck();
+        renderCategories();
+      }
+    }
+
+    function renderDeck() {
+      const deck = document.getElementById('deckList');
+      deck.innerHTML = '';
+      const unsorted = MASTER_CARDS.filter(c => cardPlacements[c.id] === null);
+      document.getElementById('deckCount').textContent = `${unsorted.length} Cards Remaining`;
+
+      if (unsorted.length === 0) {
+        deck.innerHTML = '<div style="color: var(--sage); text-align: center; margin-top: 2rem; font-weight: 700;">🎉 All 24 cards placed!</div>';
+        return;
+      }
+
+      unsorted.forEach(card => {
+        deck.appendChild(createCardElement(card));
+      });
+    }
+
+    function createCardElement(card) {
+      const div = document.createElement('div');
+      div.className = 'sort-card';
+      div.id = 'card-' + card.id;
+      div.draggable = true;
+      div.ondragstart = (e) => drag(e, card.id);
+
+      div.innerHTML = `
+        <div class="card-meta">
+          <span class="card-id">${card.id}</span>
+        </div>
+        <div class="card-title">${card.title}</div>
+        <div class="card-desc">${card.desc}</div>
+        <select class="mobile-move-select" onchange="moveCardViaSelect('${card.id}', this.value)">
+          <option value="">Move to...</option>
+          <option value="deck">🃏 Unsorted Deck</option>
+          ${categories.map(cat => `<option value="${cat.id}">${cat.title}</option>`).join('')}
+        </select>
+      `;
+      return div;
+    }
+
+    function renderCategories() {
+      const grid = document.getElementById('categoriesGrid');
+      grid.innerHTML = '';
+
+      categories.forEach(cat => {
+        const bucket = document.createElement('div');
+        bucket.className = 'category-bucket';
+        bucket.id = 'bucket-' + cat.id;
+        bucket.ondragover = allowDrop;
+        bucket.ondrop = (e) => dropToBucket(e, cat.id);
+
+        const assignedCards = MASTER_CARDS.filter(c => cardPlacements[c.id] === cat.id);
+
+        bucket.innerHTML = `
+          <div class="bucket-header">
+            <input type="text" class="bucket-title-input" value="${cat.title}" onchange="updateCategoryTitle('${cat.id}', this.value)" ${currentMode === 'closed' ? 'readonly' : ''}>
+            <span class="bucket-count">${assignedCards.length}</span>
+          </div>
+          <div class="bucket-cards" id="cards-container-${cat.id}">
+            ${assignedCards.length === 0 ? '<div class="bucket-placeholder">Drop cards here</div>' : ''}
+          </div>
+        `;
+
+        grid.appendChild(bucket);
+
+        const container = bucket.querySelector(`#cards-container-${cat.id}`);
+        assignedCards.forEach(card => {
+          container.appendChild(createCardElement(card));
+        });
+      });
+    }
+
+    function addCustomCategory() {
+      const newId = 'cat-custom-' + Date.now();
+      categories.push({ id: newId, title: 'New Category ' + (categories.length + 1) });
+      renderCategories();
+    }
+
+    function updateCategoryTitle(catId, newTitle) {
+      const cat = categories.find(c => c.id === catId);
+      if (cat) cat.title = newTitle;
+    }
+
+    /* Drag & Drop Handlers */
+    function allowDrop(e) {
+      e.preventDefault();
+    }
+
+    function drag(e, cardId) {
+      e.dataTransfer.setData('text/plain', cardId);
+    }
+
+    function dropToBucket(e, catId) {
+      e.preventDefault();
+      const cardId = e.dataTransfer.getData('text/plain');
+      if (cardId) {
+        cardPlacements[cardId] = catId;
+        renderDeck();
+        renderCategories();
+      }
+    }
+
+    function dropToDeck(e) {
+      e.preventDefault();
+      const cardId = e.dataTransfer.getData('text/plain');
+      if (cardId) {
+        cardPlacements[cardId] = null;
+        renderDeck();
+        renderCategories();
+      }
+    }
+
+    function moveCardViaSelect(cardId, targetVal) {
+      if (!targetVal) return;
+      if (targetVal === 'deck') {
+        cardPlacements[cardId] = null;
+      } else {
+        cardPlacements[cardId] = targetVal;
+      }
+      renderDeck();
+      renderCategories();
+    }
+
+    /* Export & Analysis */
+    function exportResults() {
+      const pName = document.getElementById('pName').value || 'Anonymous Participant';
+      const pRole = document.getElementById('pRole').value || 'General User';
+
+      const results = {
+        study: 'OmniTask Card Sorting Field Study',
+        timestamp: new Date().toISOString(),
+        participant: { name: pName, role: pRole },
+        mode: currentMode,
+        placements: {}
+      };
+
+      categories.forEach(cat => {
+        const assigned = MASTER_CARDS.filter(c => cardPlacements[c.id] === cat.id);
+        results.placements[cat.title] = assigned.map(c => ({ id: c.id, title: c.title }));
+      });
+
+      const unassigned = MASTER_CARDS.filter(c => cardPlacements[c.id] === null);
+      if (unassigned.length > 0) {
+        results.placements['[Unassigned]'] = unassigned.map(c => ({ id: c.id, title: c.title }));
+      }
+
+      document.getElementById('resultsJson').textContent = JSON.stringify(results, null, 2);
+      document.getElementById('exportModal').style.display = 'flex';
+    }
+
+    function closeModal() {
+      document.getElementById('exportModal').style.display = 'none';
+    }
+
+    function copyResults() {
+      const text = document.getElementById('resultsJson').textContent;
+      navigator.clipboard.writeText(text).then(() => {
+        alert("Results JSON copied to clipboard!");
+      });
+    }
+
+    /* Print Template */
+    function renderPrintSheet() {
+      const printContainer = document.getElementById('printSheet');
+      printContainer.innerHTML = '';
+      MASTER_CARDS.forEach(card => {
+        const div = document.createElement('div');
+        div.className = 'print-card-box';
+        div.innerHTML = `
+          <div class="print-id">${card.id} • OmniTask Field Card</div>
+          <div class="print-title">${card.title}</div>
+          <div class="print-desc">${card.desc}</div>
+        `;
+        printContainer.appendChild(div);
+      });
+    }
+
+    window.onload = init;
+  </script>
+</body>
+</html>

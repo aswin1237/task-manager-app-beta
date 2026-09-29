@@ -3,6 +3,7 @@
 > Complete, production-grade Information Architecture (IA), sitemap, benchmark comparison, and interactive wireframe prototype for the OmniTask Website & Mobile App.
 >
 > 📚 **Consolidated Research & Specification Documents:**
+> - [Interactive Card Sorting Web App & Printable Kit](card_sort.html)
 > - [Master Information Architecture Specification (v4.1)](docs/specs/INFORMATION_ARCHITECTURE_MASTER_SPEC.md)
 > - [Master UX Research Studies, Datasets & Card Sorting Kit](docs/research/UX_RESEARCH_STUDIES_AND_DATA.md)
 > - [UX Research Synthesis & Architectural Blueprint](docs/research/UX_RESEARCH_SYNTHESIS.md)
@@ -138,6 +139,7 @@ task-manager-app-beta/
 ├── .agents/                               # Antigravity agent configuration & rules
 │   └── rules/github_sync.md               # GitHub sync conventions
 ├── index.html                             # Web application entry point (Clean design canvas)
+├── card_sort.html                         # Interactive UX Card Sorting Web App & Printable Kit
 ├── style.css                              # Core CSS styling & typography
 ├── app.js                                 # Application interaction logic
 ├── sync.bat                               # Root 1-click sync runner (for desktop double-click)
@@ -147,9 +149,20 @@ task-manager-app-beta/
 
 ---
 
-## 6. How to Run the Prototype Locally
+## 6. How to Run the Applications Locally
 
-Simply open `index.html` in any modern web browser, or launch via PowerShell:
+### A. Run the Interactive Card Sorting Field Tool
+Open `card_sort.html` in your browser or launch via PowerShell:
+```powershell
+Start-Process .\card_sort.html
+```
+* **Interactive Drag & Drop:** Drag any of the 24 cards into buckets or use dropdowns on mobile.
+* **Open & Closed Sort Modes:** Toggle between 4 pre-set buckets and custom participant categories.
+* **1-Click Export:** Click *"💾 Export Results"* to copy clean JSON data for similarity matrix analysis.
+* **Physical Print Mode:** Click *"🖨️ Print 24 Cut-Out Cards"* to print high-contrast cards formatted with dashed cut-out borders!
+
+### B. Run the App Prototype Canvas
+Open `index.html` in your browser or launch via PowerShell:
 ```powershell
 Start-Process .\index.html
 ```
