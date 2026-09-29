@@ -1,2 +1,2 @@
 @echo off
-powershell -ExecutionPolicy Bypass -File "%~dp0sync.ps1" %*
+powershell -ExecutionPolicy Bypass -File "%~dp0scripts\sync.ps1" %*

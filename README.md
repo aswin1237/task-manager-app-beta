@@ -2,11 +2,11 @@
 
 > Complete, production-grade Information Architecture (IA), sitemap, benchmark comparison, and interactive wireframe prototype for the OmniTask Website & Mobile App.
 >
-> 📚 **Core Research & Specification Documents:**
-> - [UX Research Synthesis & Architectural Blueprint](UX_RESEARCH_SYNTHESIS.md)
-> - [Master UX Research & Academic Case Study](UX_RESEARCH_AND_DOCUMENTATION.md)
-> - [Full Conversation & Decision Record](task-manager-app-full-conversation-record.md)
-> - [Information Architecture Spec v4 (PDF)](task-manager-app-ia-spec-v4.pdf) | [v1 Markdown Spec](task-manager-app-ia-spec.md)
+> 📚 **Consolidated Research & Specification Documents:**
+> - [UX Research Synthesis & Architectural Blueprint](docs/research/UX_RESEARCH_SYNTHESIS.md)
+> - [Master UX Research & Academic Case Study](docs/research/UX_RESEARCH_AND_DOCUMENTATION.md)
+> - [Full Conversation & Decision Record](docs/research/task-manager-app-full-conversation-record.md)
+> - [Information Architecture Spec v4 (PDF)](docs/specs/pdfs/task-manager-app-ia-spec-v4.pdf) | [v1 Markdown Spec](docs/specs/task-manager-app-ia-spec.md)
 
 ---
 
@@ -112,16 +112,34 @@ To balance patient dignity with medical safety, OmniTask features a **3-tiered a
 
 ---
 
-## 5. Prototype Files in this Repository
-
-| File | Purpose |
-| :--- | :--- |
-| [`UX_RESEARCH_AND_DOCUMENTATION.md`](./UX_RESEARCH_AND_DOCUMENTATION.md) | **Master Academic & UX Research Specification:** 3 Personas, Empathy Maps, Competitor Gaps, Cognitive UX Laws, WCAG AAA accessibility, and NN/g Heuristics Audit. |
-| [`index.html`](./index.html) | Clean canvas workspace ready for next design version (Trial UI archived in `trial-v1-archive` branch). |
-| [`style.css`](./style.css) | Core typography and canvas styling. |
-| [`app.js`](./app.js) | Core event controller. |
-| [`task-manager-app-full-conversation-record.md`](./task-manager-app-full-conversation-record.md) | Complete raw specification record behind all versions. |
-| [`sync.bat`](./sync.bat) | 1-click script to stage, commit, and push updates to this GitHub repository. |
+## 5. Consolidated Repository Architecture
+ 
+```
+task-manager-app-beta/
+├── docs/                                  # All project research, specifications & assets
+│   ├── research/                          # UX research, personas, empathy maps & transcripts
+│   │   ├── UX_RESEARCH_AND_DOCUMENTATION.md      # Master academic case study (NIFT)
+│   │   ├── UX_RESEARCH_SYNTHESIS.md              # Executive UX research & flow synthesis
+│   │   └── task-manager-app-full-conversation-record.md # Complete unabridged decision log
+│   └── specs/                             # Information Architecture specifications
+│       ├── task-manager-app-ia-spec.md           # Baseline IA markdown spec
+│       └── pdfs/                                 # Polished visual spec PDF deliverables
+│           ├── task-manager-app-ia-spec-v1.pdf   # v1 baseline spec PDF
+│           ├── task-manager-app-ia-spec-v2.pdf   # v2 fitness & escalation spec PDF
+│           ├── task-manager-app-ia-spec-v3.pdf   # v3 roles & autonomy spec PDF
+│           └── task-manager-app-ia-spec-v4.pdf   # v4 complete 6-flow end-to-end spec PDF
+├── scripts/                               # Automation & repository maintenance scripts
+│   ├── sync.bat                           # Windows batch sync runner
+│   └── sync.ps1                           # Robust PowerShell auto-commit & push script
+├── .agents/                               # Antigravity agent configuration & rules
+│   └── rules/github_sync.md               # GitHub sync conventions
+├── index.html                             # Web application entry point (Clean design canvas)
+├── style.css                              # Core CSS styling & typography
+├── app.js                                 # Application interaction logic
+├── sync.bat                               # Root 1-click sync runner (for desktop double-click)
+├── .gitignore                             # Git ignore rules
+└── README.md                              # Master repository guide & documentation
+```
 
 ---
 
