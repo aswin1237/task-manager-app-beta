@@ -1,6 +1,12 @@
 # OmniTask — Information Architecture & Design System Specification
 
 > Complete, production-grade Information Architecture (IA), sitemap, benchmark comparison, and interactive wireframe prototype for the OmniTask Website & Mobile App.
+>
+> 📚 **Core Research & Specification Documents:**
+> - [UX Research Synthesis & Architectural Blueprint](UX_RESEARCH_SYNTHESIS.md)
+> - [Master UX Research & Academic Case Study](UX_RESEARCH_AND_DOCUMENTATION.md)
+> - [Full Conversation & Decision Record](task-manager-app-full-conversation-record.md)
+> - [Information Architecture Spec v4 (PDF)](task-manager-app-ia-spec-v4.pdf) | [v1 Markdown Spec](task-manager-app-ia-spec.md)
 
 ---
 
