@@ -260,13 +260,14 @@
       flex-wrap: wrap;
       justify-content: space-between;
       align-items: center;
-      gap: 1rem;
+      gap: 0.85rem;
     }
 
     .intro-text-wrapper {
       display: flex;
       align-items: center;
-      gap: 0.75rem;
+      flex-wrap: wrap;
+      gap: 0.65rem;
       flex: 1;
     }
 
@@ -274,19 +275,30 @@
       background: var(--surface);
       color: var(--accent);
       border: 1px solid var(--accent);
-      padding: 0.2rem 0.55rem;
+      padding: 0.22rem 0.6rem;
       border-radius: 20px;
-      font-size: 0.72rem;
+      font-size: 0.74rem;
       font-weight: 700;
       cursor: pointer;
-      display: flex;
+      display: inline-flex;
       align-items: center;
-      gap: 0.3rem;
+      gap: 0.35rem;
       transition: all 0.15s;
     }
 
     .guide-chip:hover {
       background: var(--accent);
+      color: white;
+    }
+
+    .guide-chip-alt {
+      background: var(--surface);
+      color: var(--ocean);
+      border: 1px solid var(--ocean);
+    }
+
+    .guide-chip-alt:hover {
+      background: var(--ocean);
       color: white;
     }
 
@@ -543,11 +555,11 @@
       font-style: italic;
     }
 
-    /* Guide & Instructions Modal */
+    /* Modal Architecture with Tabs */
     .modal-backdrop {
       position: fixed;
       inset: 0;
-      background: rgba(0,0,0,0.6);
+      background: rgba(0,0,0,0.65);
       backdrop-filter: blur(4px);
       display: none;
       align-items: center;
@@ -560,27 +572,70 @@
       background: var(--surface);
       border: 1px solid var(--surface-border);
       border-radius: var(--radius);
-      max-width: 680px;
+      max-width: 760px;
       width: 100%;
-      max-height: 85vh;
+      max-height: 88vh;
       overflow-y: auto;
       padding: 1.5rem;
       display: flex;
       flex-direction: column;
-      gap: 1rem;
+      gap: 1.1rem;
       box-shadow: var(--shadow-md);
     }
 
+    .modal-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+    }
+
     .modal-box h2 {
-      font-size: 1.2rem;
+      font-size: 1.25rem;
       font-weight: 800;
       color: var(--text);
+    }
+
+    /* Modal Nav Tabs */
+    .modal-tabs {
+      display: flex;
+      gap: 0.4rem;
+      border-bottom: 1px solid var(--surface-border);
+      padding-bottom: 0.5rem;
+      overflow-x: auto;
+    }
+
+    .modal-tab-btn {
+      background: transparent;
+      border: none;
+      padding: 0.45rem 0.85rem;
+      border-radius: 6px;
+      font-size: 0.8rem;
+      font-weight: 700;
+      color: var(--text-muted);
+      cursor: pointer;
+      transition: all 0.15s;
+      white-space: nowrap;
+    }
+
+    .modal-tab-btn.active {
+      background: var(--accent-light);
+      color: var(--accent);
+    }
+
+    .modal-tab-content {
+      display: none;
+      flex-direction: column;
+      gap: 1rem;
+    }
+
+    .modal-tab-content.active {
+      display: flex;
     }
 
     .guide-steps {
       display: flex;
       flex-direction: column;
-      gap: 0.85rem;
+      gap: 0.75rem;
     }
 
     .guide-step-card {
@@ -627,6 +682,35 @@
       border-radius: 8px;
       font-size: 0.8rem;
       line-height: 1.4;
+    }
+
+    .theory-box {
+      background: var(--bg);
+      border: 1px solid var(--surface-border);
+      border-radius: 8px;
+      padding: 1rem;
+      display: flex;
+      flex-direction: column;
+      gap: 0.5rem;
+    }
+
+    .theory-box h3 {
+      font-size: 0.95rem;
+      font-weight: 800;
+      color: var(--text);
+    }
+
+    .theory-box p, .theory-box li {
+      font-size: 0.8rem;
+      color: var(--text-muted);
+      line-height: 1.45;
+    }
+
+    .theory-box ul {
+      padding-left: 1.25rem;
+      display: flex;
+      flex-direction: column;
+      gap: 0.35rem;
     }
 
     .results-code {
@@ -746,7 +830,8 @@
   <div class="study-intro">
     <div class="intro-text-wrapper">
       <span>💡 <strong>Quick Instructions:</strong> Drag cards from the left deck into the category buckets where you intuitively expect them to live.</span>
-      <button class="guide-chip" onclick="openGuideModal()">📖 How to Do This Sort (Guide)</button>
+      <button class="guide-chip" onclick="openModalWithTab('tab-guide')">📖 How to Sort (Guide)</button>
+      <button class="guide-chip guide-chip-alt" onclick="openModalWithTab('tab-theory')">🧠 Category Theory & Mental Models</button>
     </div>
 
     <div class="sort-mode-switch">
@@ -783,54 +868,135 @@
     </section>
   </main>
 
-  <!-- Guide & Onboarding Modal -->
-  <div class="modal-backdrop" id="guideModal">
+  <!-- Master Information & Guide Modal with Tabs -->
+  <div class="modal-backdrop" id="infoModal">
     <div class="modal-box">
-      <h2>📖 How Card Sorting Works & Participant Guide</h2>
-      <p style="font-size: 0.85rem; color: var(--text-muted);">
-        Thank you for helping us design <strong>OmniTask</strong>! Card sorting is a proven UX research exercise that helps us understand how you naturally organize tasks, health reminders, and finances.
-      </p>
+      <div class="modal-header">
+        <h2>📚 UX Card Sorting Knowledge Base & Guide</h2>
+        <button class="btn btn-secondary" style="padding: 0.25rem 0.6rem;" onclick="closeInfoModal()">✕</button>
+      </div>
 
-      <div class="guide-steps">
+      <!-- Modal Tabs -->
+      <nav class="modal-tabs">
+        <button class="modal-tab-btn active" onclick="switchModalTab('tab-guide')">📖 1. How to Sort (Guide)</button>
+        <button class="modal-tab-btn" onclick="switchModalTab('tab-theory')">⚖️ 2. Why 4 vs 5 vs 6 Buckets?</button>
+        <button class="modal-tab-btn" onclick="switchModalTab('tab-patterns')">🧠 3. Open Sort Mental Models</button>
+        <button class="modal-tab-btn" onclick="switchModalTab('tab-cards')">🃏 4. 24 Cards Reference</button>
+      </nav>
+
+      <!-- Tab 1: How to Do the Sort -->
+      <div class="modal-tab-content active" id="tab-guide">
+        <div class="guide-steps">
+          <div class="guide-step-card">
+            <div class="step-num">1</div>
+            <div class="step-content">
+              <h3>Read the 24 Feature Cards</h3>
+              <p>On the left panel, browse the 24 cards representing everyday tasks (prescriptions, utility bills, workouts, habits, and caregiver alerts).</p>
+            </div>
+          </div>
+          <div class="guide-step-card">
+            <div class="step-num">2</div>
+            <div class="step-content">
+              <h3>Group Related Items Together</h3>
+              <p>Drag and drop cards into the category bucket where you would naturally expect to find them inside an app menu. (On phones, use the dropdown below each card).</p>
+            </div>
+          </div>
+          <div class="guide-step-card">
+            <div class="step-num">3</div>
+            <div class="step-content">
+              <h3>Rename or Create Custom Categories</h3>
+              <p>In Open Sort mode, click <em>"+ Add Custom Category"</em> or click any category header to type your own title!</p>
+            </div>
+          </div>
+          <div class="guide-step-card">
+            <div class="step-num">4</div>
+            <div class="step-content">
+              <h3>Export When Done</h3>
+              <p>When all 24 cards are placed, click <em>"💾 Export Data"</em> to generate your study results!</p>
+            </div>
+          </div>
+        </div>
+
+        <div class="reassurance-callout">
+          🌟 <strong>Golden Rule:</strong> There are <strong>no right or wrong answers</strong>! We are testing our design, not you. Place things wherever makes the most sense to your daily routine.
+        </div>
+      </div>
+
+      <!-- Tab 2: Why 4 Buckets? -->
+      <div class="modal-tab-content" id="tab-theory">
+        <div class="theory-box">
+          <h3>📱 The Mobile Bottom Navigation Rule (Hick's Law & Thumb Zone)</h3>
+          <p>
+            Industry design standards (Apple HIG and Google Material Design) strictly recommend <strong>3 to 5 bottom tabs</strong>. Exceeding 5 tabs creates tiny, cramped touch targets that cause misclicks (especially for elderly users with tremors).
+          </p>
+          <p>
+            Our baseline hypothesis uses <strong>4 tabs</strong> (<em>Home Calendar, Reminders & Health, Fitness, Finances</em>) by unifying Pills and Bills under "Reminders" because they share the same functional model:
+            $$\text{Due Date / Time} + \text{Mark-Done Action}$$
+          </p>
+        </div>
+
+        <div class="theory-box">
+          <h3>🔬 Competing Information Architecture Models We Are Testing</h3>
+          <ul>
+            <li><strong>Model 1 (Current 4-Tab Hub):</strong> <code>Calendar</code> | <code>Reminders & Health</code> | <code>Fitness</code> | <code>Finances</code></li>
+            <li><strong>Model 2 (5-Tab Health Split):</strong> <code>Calendar</code> | <code>Health & Rx</code> | <code>Tasks & Bills</code> | <code>Fitness</code> | <code>Finances</code></li>
+            <li><strong>Model 3 (5-Tab Safety Split):</strong> <code>Calendar</code> | <code>Routines & Bills</code> | <code>Fitness</code> | <code>Finances</code> | <code>Caregiver & Safety</code></li>
+            <li><strong>Model 4 (6-Tab Desktop Architecture):</strong> Separates Medications, Bills, Fitness, Habits, Caregiver, and Calendar into full standalone hubs.</li>
+          </ul>
+        </div>
+      </div>
+
+      <!-- Tab 3: Open Sort Mental Models -->
+      <div class="modal-tab-content" id="tab-patterns">
+        <div class="theory-box">
+          <h3>🧠 The 3 Common Mental Models in Open Card Sorting</h3>
+          <p>When participants do an Open Sort (with no pre-set categories), their groupings almost always reveal one of these three distinct psychological frameworks:</p>
+        </div>
+
         <div class="guide-step-card">
-          <div class="step-num">1</div>
+          <div class="step-num" style="background: var(--ocean);">A</div>
           <div class="step-content">
-            <h3>Read the 24 Feature Cards</h3>
-            <p>On the left panel, you will see 24 cards representing everyday features (such as taking a prescription pill, paying an electricity bill, or logging a gym workout).</p>
+            <h3>Pattern A: Domain-Specific Grouping (Common for Young Adults)</h3>
+            <p>Users create 5 to 6 distinct topical silos: <em>"Health & Meds"</em>, <em>"Bills & Payments"</em>, <em>"Exercise"</em>, <em>"Habits"</em>, <em>"Calendar"</em>, and <em>"Caregiver Settings"</em>.</p>
           </div>
         </div>
 
         <div class="guide-step-card">
-          <div class="step-num">2</div>
+          <div class="step-num" style="background: var(--sage);">B</div>
           <div class="step-content">
-            <h3>Group Related Items Together</h3>
-            <p>Drag and drop cards into the category bucket where you would naturally expect to find them inside an app navigation menu. (On phones, use the dropdown below each card).</p>
+            <h3>Pattern B: Urgency & Frequency Grouping (Common for Seniors)</h3>
+            <p>Seniors group by routine frequency: <em>"Things I Do Every Single Day"</em> (Pills, Water), <em>"Monthly Bills & Big Appointments"</em> (Rent, Doctor), and <em>"Emergency & Help"</em> (SOS Buzz, Caregiver).</p>
           </div>
         </div>
 
         <div class="guide-step-card">
-          <div class="step-num">3</div>
+          <div class="step-num" style="background: var(--violet);">C</div>
           <div class="step-content">
-            <h3>Rename or Create New Categories</h3>
-            <p>If the existing categories don't fit your mental model, click <em>"+ Add Custom Category"</em> or click on any category title to rename it!</p>
-          </div>
-        </div>
-
-        <div class="guide-step-card">
-          <div class="step-num">4</div>
-          <div class="step-content">
-            <h3>Export When Done</h3>
-            <p>When all 24 cards are placed, click <em>"💾 Export Data"</em> to generate your study results!</p>
+            <h3>Pattern C: Role-Based Grouping (Common for Nurses & Guardians)</h3>
+            <p>Healthcare professionals group by authority: <em>"Patient Daily View"</em> (Simple pills, Today feed), <em>"Caregiver Telemetry"</em> (Adherence feed, Medical ID), and <em>"Personal Finances"</em>.</p>
           </div>
         </div>
       </div>
 
-      <div class="reassurance-callout">
-        🌟 <strong>Golden Rule:</strong> There are <strong>no right or wrong answers</strong>! We are testing our design, not you. Place things wherever makes the most sense to your daily routine.
+      <!-- Tab 4: 24 Cards Reference -->
+      <div class="modal-tab-content" id="tab-cards">
+        <div class="theory-box">
+          <h3>🃏 Master 24-Card Taxonomy Breakdown</h3>
+          <p>24 cards represents the exact <strong>Goldilocks Zone (20–30 cards)</strong> in HCI research—offering full coverage across 4 domains + edge cases without inducing cognitive fatigue.</p>
+          <ul>
+            <li><strong>Health & Reminders (5 cards):</strong> C-01 (Pill), C-02 (Medical ID), C-03 (Doctor Appt), C-04 (Utility Bill), C-05 (Rent)</li>
+            <li><strong>Habits (2 cards):</strong> C-06 (Guitar Practice), C-07 (Daily Water Intake)</li>
+            <li><strong>Calendar Aggregator (3 cards):</strong> C-08 (Month Grid), C-09 (Day Timeline), C-10 (Daily Spend)</li>
+            <li><strong>Finances (3 cards):</strong> C-11 (Budget Forecast), C-15 (Grocery Expense), C-21 (Spent Ledger)</li>
+            <li><strong>Fitness (3 cards):</strong> C-12 (Gym Session), C-13 (AI Workout Plan), C-14 (Weekly Goal)</li>
+            <li><strong>Safety & Autonomy (4 cards):</strong> C-16 (Emergency Buzz), C-17 (Caregiver Feed), C-18 (Privacy Pause), C-19 (Caregiver Freeze)</li>
+            <li><strong>System & Accessibility (4 cards):</strong> C-20 (Ctrl+K Search), C-22 (Offline Alert), C-23 (Senior Font), C-24 (Bill-to-Expense Auto-Link)</li>
+          </ul>
+        </div>
       </div>
 
       <div style="display: flex; justify-content: flex-end;">
-        <button class="btn" onclick="closeGuideModal()">Got It, Let's Start!</button>
+        <button class="btn" onclick="closeInfoModal()">Close Guide</button>
       </div>
     </div>
   </div>
@@ -1156,15 +1322,30 @@
       renderCategories();
     }
 
-    /* Modals & Export */
-    function openGuideModal() {
-      document.getElementById('guideModal').style.display = 'flex';
+    /* Modal Navigation */
+    function openModalWithTab(tabId) {
+      document.getElementById('infoModal').style.display = 'flex';
+      switchModalTab(tabId);
     }
 
-    function closeGuideModal() {
-      document.getElementById('guideModal').style.display = 'none';
+    function switchModalTab(tabId) {
+      document.querySelectorAll('.modal-tab-btn').forEach(btn => btn.classList.remove('active'));
+      document.querySelectorAll('.modal-tab-content').forEach(content => content.classList.remove('active'));
+
+      const targetContent = document.getElementById(tabId);
+      if (targetContent) targetContent.classList.add('active');
+
+      const btnIndex = ['tab-guide', 'tab-theory', 'tab-patterns', 'tab-cards'].indexOf(tabId);
+      if (btnIndex >= 0) {
+        document.querySelectorAll('.modal-tab-btn')[btnIndex].classList.add('active');
+      }
     }
 
+    function closeInfoModal() {
+      document.getElementById('infoModal').style.display = 'none';
+    }
+
+    /* Export Results */
     function exportResults() {
       const pName = document.getElementById('pName').value || 'Anonymous Participant';
       const pRole = document.getElementById('pRole').value || 'General User';
