@@ -1,4 +1,6 @@
-# Task Manager App — Information Architecture Spec (v1)
+# Task Manager App — Information Architecture Spec (v1 Baseline)
+
+> ⚠️ **Note:** This document represents the initial **v1 baseline specification**. For the complete, unabridged specification with all 16 sections, 6 system flows, role permissions, and escalation ladders, see the **[Master Information Architecture Specification (v4.1)](INFORMATION_ARCHITECTURE_MASTER_SPEC.md)**.
 
 ## 1. Core concept
 A calendar-centric task manager where the Home screen is a live calendar, and four separate life-domain modules feed into it: **Fitness, Reminders (Pill / Payment / Appointment / Custom), and Expense**. The calendar is a pure aggregator — it displays and previews, it doesn't own the underlying data.

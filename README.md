@@ -3,6 +3,7 @@
 > Complete, production-grade Information Architecture (IA), sitemap, benchmark comparison, and interactive wireframe prototype for the OmniTask Website & Mobile App.
 >
 > 📚 **Consolidated Research & Specification Documents:**
+> - [Master Information Architecture Specification (v4.1)](docs/specs/INFORMATION_ARCHITECTURE_MASTER_SPEC.md)
 > - [UX Research Synthesis & Architectural Blueprint](docs/research/UX_RESEARCH_SYNTHESIS.md)
 > - [Master UX Research & Academic Case Study](docs/research/UX_RESEARCH_AND_DOCUMENTATION.md)
 > - [Full Conversation & Decision Record](docs/research/task-manager-app-full-conversation-record.md)
@@ -122,6 +123,7 @@ task-manager-app-beta/
 │   │   ├── UX_RESEARCH_SYNTHESIS.md              # Executive UX research & flow synthesis
 │   │   └── task-manager-app-full-conversation-record.md # Complete unabridged decision log
 │   └── specs/                             # Information Architecture specifications
+│       ├── INFORMATION_ARCHITECTURE_MASTER_SPEC.md # Master IA spec (v4.1 with all 6 Mermaid flows)
 │       ├── task-manager-app-ia-spec.md           # Baseline IA markdown spec
 │       └── pdfs/                                 # Polished visual spec PDF deliverables
 │           ├── task-manager-app-ia-spec-v1.pdf   # v1 baseline spec PDF
