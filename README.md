@@ -4,6 +4,7 @@
 >
 > 📚 **Consolidated Research & Specification Documents:**
 > - [Master Information Architecture Specification (v4.1)](docs/specs/INFORMATION_ARCHITECTURE_MASTER_SPEC.md)
+> - [Master UX Research Studies, Datasets & Card Sorting Kit](docs/research/UX_RESEARCH_STUDIES_AND_DATA.md)
 > - [UX Research Synthesis & Architectural Blueprint](docs/research/UX_RESEARCH_SYNTHESIS.md)
 > - [Master UX Research & Academic Case Study](docs/research/UX_RESEARCH_AND_DOCUMENTATION.md)
 > - [Full Conversation & Decision Record](docs/research/task-manager-app-full-conversation-record.md)
@@ -119,6 +120,7 @@ To balance patient dignity with medical safety, OmniTask features a **3-tiered a
 task-manager-app-beta/
 ├── docs/                                  # All project research, specifications & assets
 │   ├── research/                          # UX research, personas, empathy maps & transcripts
+│   │   ├── UX_RESEARCH_STUDIES_AND_DATA.md       # Master datasets, Card Sorting kit & 6-phase test data
 │   │   ├── UX_RESEARCH_AND_DOCUMENTATION.md      # Master academic case study (NIFT)
 │   │   ├── UX_RESEARCH_SYNTHESIS.md              # Executive UX research & flow synthesis
 │   │   └── task-manager-app-full-conversation-record.md # Complete unabridged decision log
