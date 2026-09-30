@@ -702,6 +702,35 @@
       gap: 0.4rem;
     }
 
+    /* Floating Toast Notification */
+    .toast-popup {
+      position: fixed;
+      bottom: 72px;
+      left: 50%;
+      transform: translateX(-50%);
+      background: var(--surface);
+      color: var(--text);
+      border: 1.5px solid var(--accent);
+      box-shadow: 0 8px 24px rgba(0,0,0,0.25);
+      padding: 0.6rem 1.1rem;
+      border-radius: 24px;
+      font-size: 0.8rem;
+      font-weight: 700;
+      z-index: 300;
+      display: flex;
+      align-items: center;
+      gap: 0.5rem;
+      cursor: pointer;
+      animation: slideUpToast 0.22s cubic-bezier(0.16, 1, 0.3, 1) forwards;
+      max-width: 90vw;
+      text-align: center;
+    }
+
+    @keyframes slideUpToast {
+      from { opacity: 0; transform: translate(-50%, 20px); }
+      to { opacity: 1; transform: translate(-50%, 0); }
+    }
+
     /* Modal Architecture with Tabs */
     .modal-backdrop {
       position: fixed;
@@ -897,13 +926,8 @@
       .categories-grid {
         grid-template-columns: 1fr 1fr;
       }
-      .input-group input {
-        width: 80px;
-      }
-    }
-
-    /* Mobile Phone (<= 640px e.g. iPhone / Android) */
-    @media (max-width: 640px) {
+    /* Mobile Phone (<= 768px e.g. iPhone / Android / Narrow viewport) */
+    @media (max-width: 768px) {
       header {
         padding: 0.6rem 0.85rem;
         gap: 0.5rem;
@@ -924,29 +948,81 @@
       .study-intro {
         padding: 0.5rem 0.85rem;
       }
+      .sort-mode-switch {
+        width: 100%;
+        display: flex;
+      }
+      .sort-mode-btn {
+        flex: 1;
+        padding: 0.35rem 0.4rem;
+        font-size: 0.72rem;
+      }
       .mobile-view-tabs {
         display: flex;
+        background: var(--surface);
+        border-bottom: 1px solid var(--surface-border);
+        padding: 0.4rem 0.75rem;
+        gap: 0.35rem;
+        position: sticky;
+        top: 0;
+        z-index: 50;
+      }
+      .mobile-tab-btn {
+        flex: 1;
+        background: var(--surface-hover);
+        border: 1px solid var(--surface-border);
+        color: var(--text-muted);
+        padding: 0.4rem 0.5rem;
+        border-radius: 8px;
+        font-size: 0.74rem;
+        font-weight: 700;
+        cursor: pointer;
+        display: inline-flex;
+        align-items: center;
+        justify-content: center;
+        gap: 0.25rem;
+        white-space: nowrap;
+        transition: all 0.15s;
+      }
+      .mobile-tab-btn.active {
+        background: var(--accent);
+        color: white;
+        border-color: var(--accent);
+        box-shadow: var(--shadow-sm);
       }
       .workspace {
         grid-template-columns: 1fr;
         height: auto;
-        display: block;
+        display: flex;
+        flex-direction: column;
+        gap: 1.25rem;
+        padding-bottom: 70px;
       }
+      /* Default: BOTH Deck and Buckets are visible in a scrollable stack */
       .deck-panel {
-        display: block;
+        display: flex;
         height: auto;
         border-right: none;
+        border-bottom: 2px solid var(--surface-border);
+        max-height: none;
       }
       .canvas-panel {
-        display: none;
+        display: flex;
         height: auto;
         padding: 0.85rem;
+        max-height: none;
       }
-      /* When mobile user switches to buckets view */
-      body.mobile-show-canvas .deck-panel {
+      /* Specific view modes when user chooses to filter */
+      body.mobile-view-deck .deck-panel {
+        display: flex;
+      }
+      body.mobile-view-deck .canvas-panel {
         display: none;
       }
-      body.mobile-show-canvas .canvas-panel {
+      body.mobile-view-canvas .deck-panel {
+        display: none;
+      }
+      body.mobile-view-canvas .canvas-panel {
         display: flex;
       }
       .categories-grid {
@@ -954,6 +1030,44 @@
       }
       .mobile-bottom-hud {
         display: flex;
+      }
+      .mobile-jump-bar {
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        background: var(--surface-hover);
+        border: 1px solid var(--surface-border);
+        border-radius: 8px;
+        padding: 0.5rem 0.75rem;
+        margin-bottom: 0.75rem;
+        font-size: 0.76rem;
+      }
+      .mobile-cat-pill-row {
+        display: flex;
+        overflow-x: auto;
+        gap: 0.35rem;
+        padding-bottom: 0.35rem;
+        margin-bottom: 0.5rem;
+        -webkit-overflow-scrolling: touch;
+      }
+      .mobile-cat-pill {
+        background: var(--surface);
+        border: 1px solid var(--surface-border);
+        color: var(--text);
+        padding: 0.25rem 0.55rem;
+        border-radius: 14px;
+        font-size: 0.7rem;
+        font-weight: 600;
+        white-space: nowrap;
+        cursor: pointer;
+        display: inline-flex;
+        align-items: center;
+        gap: 0.25rem;
+      }
+      .mobile-cat-pill:hover, .mobile-cat-pill:active {
+        background: var(--accent-light);
+        border-color: var(--accent);
+        color: var(--accent);
       }
     }
 
@@ -1064,34 +1178,54 @@
 
   <!-- Mobile View Tabs (Only visible on small phones) -->
   <nav class="mobile-view-tabs">
-    <button class="mobile-tab-btn active" id="mobileTabDeck" onclick="switchMobileView('deck')">
-      🃏 Cards Deck (<span id="mobileDeckBadge">24</span>)
+    <button class="mobile-tab-btn active" id="mobileTabAll" onclick="switchMobileView('all')">
+      📜 All (Deck + Buckets)
+    </button>
+    <button class="mobile-tab-btn" id="mobileTabDeck" onclick="switchMobileView('deck')">
+      🃏 Cards (<span id="mobileDeckBadge">24</span>)
     </button>
     <button class="mobile-tab-btn" id="mobileTabCanvas" onclick="switchMobileView('canvas')">
-      📂 Categories (<span id="mobileBucketBadge">0/24</span>)
+      📂 Buckets (<span id="mobileBucketBadge">0/24</span>)
     </button>
   </nav>
 
   <!-- Main Workspace -->
   <main class="workspace">
     <!-- Unsorted Deck Panel -->
-    <section class="deck-panel">
+    <section class="deck-panel" id="deckSection">
       <div class="panel-header">
         <h2>🃏 Unsorted Deck</h2>
         <span class="count-pill" id="deckCount">24 Cards</span>
       </div>
+
+      <!-- Quick Category Jump Row on Mobile -->
+      <div class="mobile-cat-pill-row" id="mobileCatPillRow"></div>
+
       <div class="deck-search">
         <input type="text" id="deckSearchInput" placeholder="🔍 Search/Filter 24 cards..." oninput="filterDeck(this.value)">
       </div>
+
+      <div class="mobile-jump-bar">
+        <span>📍 <strong>Need to see where cards go?</strong></span>
+        <button class="btn btn-secondary" style="padding: 0.25rem 0.6rem; font-size: 0.74rem; min-height: 28px;" onclick="scrollToBuckets()">
+          ⬇️ View Buckets (<span id="jumpBucketCount">0/24</span>)
+        </button>
+      </div>
+
       <div class="deck-cards-list" id="deckList" ondragover="allowDrop(event)" ondrop="dropToDeck(event)">
         <!-- Cards generated dynamically -->
       </div>
     </section>
 
     <!-- Canvas Panel with Buckets -->
-    <section class="canvas-panel">
+    <section class="canvas-panel" id="canvasSection">
       <div class="canvas-actions">
-        <h2 style="font-size: 1rem; font-weight: 700;">📂 Category Buckets</h2>
+        <div style="display: flex; align-items: center; gap: 0.5rem; flex-wrap: wrap;">
+          <h2 style="font-size: 1rem; font-weight: 700;">📂 Category Buckets (Drop Zones)</h2>
+          <button class="btn btn-secondary" style="padding: 0.25rem 0.55rem; font-size: 0.74rem; min-height: 28px;" onclick="scrollToDeck()">
+            ⬆️ Back to Cards
+          </button>
+        </div>
         <button class="btn btn-outline" onclick="addCustomCategory()">+ Add Custom Category</button>
       </div>
       <div class="categories-grid" id="categoriesGrid">
@@ -1099,6 +1233,9 @@
       </div>
     </section>
   </main>
+
+  <!-- Floating Toast Feedback for Mobile 1-Tap Sort -->
+  <div id="toastNotification" class="toast-popup" style="display:none;"></div>
 
   <!-- Mobile Sticky Bottom Floating HUD -->
   <div class="mobile-bottom-hud">
@@ -1332,17 +1469,112 @@
     function updateProgressHUD() {
       const placedCount = MASTER_CARDS.filter(c => cardPlacements[c.id] !== null).length;
       const total = MASTER_CARDS.length;
+      const remaining = total - placedCount;
       const pct = Math.round((placedCount / total) * 100);
 
       const hudText = document.getElementById('hudProgressText');
       const hudFill = document.getElementById('hudProgressFill');
       const mobileBadge = document.getElementById('mobileBucketBadge');
       const deckBadge = document.getElementById('mobileDeckBadge');
+      const jumpBucketCount = document.getElementById('jumpBucketCount');
 
       if (hudText) hudText.textContent = `${placedCount} / ${total} Sorted (${pct}%)`;
       if (hudFill) hudFill.style.width = pct + '%';
       if (mobileBadge) mobileBadge.textContent = `${placedCount}/${total}`;
-      if (deckBadge) deckBadge.textContent = total - placedCount;
+      if (deckBadge) deckBadge.textContent = remaining;
+      if (jumpBucketCount) jumpBucketCount.textContent = `${placedCount}/${total}`;
+
+      renderCategoryJumpPills();
+    }
+
+    function renderCategoryJumpPills() {
+      const container = document.getElementById('mobileCatPillRow');
+      if (!container) return;
+      container.innerHTML = '';
+
+      categories.forEach(cat => {
+        const count = MASTER_CARDS.filter(c => cardPlacements[c.id] === cat.id).length;
+        const btn = document.createElement('button');
+        btn.className = 'mobile-cat-pill';
+        btn.innerHTML = `${cat.title} <strong>(${count})</strong>`;
+        btn.onclick = () => scrollToBucket(cat.id);
+        container.appendChild(btn);
+      });
+    }
+
+    let activeMobileView = 'all';
+
+    function switchMobileView(view) {
+      activeMobileView = view;
+      document.body.classList.remove('mobile-view-all', 'mobile-view-deck', 'mobile-view-canvas');
+      
+      if (view === 'deck') {
+        document.body.classList.add('mobile-view-deck');
+      } else if (view === 'canvas') {
+        document.body.classList.add('mobile-view-canvas');
+      } else {
+        document.body.classList.add('mobile-view-all');
+      }
+
+      document.getElementById('mobileTabAll').classList.toggle('active', view === 'all');
+      document.getElementById('mobileTabDeck').classList.toggle('active', view === 'deck');
+      document.getElementById('mobileTabCanvas').classList.toggle('active', view === 'canvas');
+    }
+
+    function scrollToBuckets() {
+      if (activeMobileView === 'deck') {
+        switchMobileView('all');
+      }
+      setTimeout(() => {
+        const el = document.getElementById('canvasSection');
+        if (el) el.scrollIntoView({ behavior: 'smooth', block: 'start' });
+      }, 50);
+    }
+
+    function scrollToDeck() {
+      if (activeMobileView === 'canvas') {
+        switchMobileView('all');
+      }
+      setTimeout(() => {
+        const el = document.getElementById('deckSection');
+        if (el) el.scrollIntoView({ behavior: 'smooth', block: 'start' });
+      }, 50);
+    }
+
+    function scrollToBucket(catId) {
+      if (activeMobileView === 'deck') {
+        switchMobileView('all');
+      }
+      setTimeout(() => {
+        const el = document.getElementById('bucket-' + catId);
+        if (el) {
+          el.scrollIntoView({ behavior: 'smooth', block: 'center' });
+          el.classList.add('drag-over');
+          setTimeout(() => el.classList.remove('drag-over'), 900);
+        }
+      }, 60);
+    }
+
+    let toastTimeout = null;
+    function showToast(message, targetCatId = null) {
+      const toast = document.getElementById('toastNotification');
+      if (!toast) return;
+      if (toastTimeout) clearTimeout(toastTimeout);
+
+      toast.innerHTML = message;
+      toast.style.display = 'flex';
+
+      toast.onclick = () => {
+        if (targetCatId) {
+          scrollToBucket(targetCatId);
+        } else {
+          scrollToDeck();
+        }
+      };
+
+      toastTimeout = setTimeout(() => {
+        toast.style.display = 'none';
+      }, 2600);
     }
 
     function undoAction() {
@@ -1393,13 +1625,6 @@
       document.getElementById('btnClosed6').classList.toggle('active', currentMode === 'closed-6');
       document.getElementById('btnClosed4').classList.toggle('active', currentMode === 'closed-4');
       document.getElementById('btnOpen').classList.toggle('active', currentMode === 'open');
-    }
-
-    function switchMobileView(view) {
-      const isCanvas = view === 'canvas';
-      document.body.classList.toggle('mobile-show-canvas', isCanvas);
-      document.getElementById('mobileTabDeck').classList.toggle('active', !isCanvas);
-      document.getElementById('mobileTabCanvas').classList.toggle('active', isCanvas);
     }
 
     function init() {
@@ -1598,6 +1823,14 @@
       renderDeck();
       renderCategories();
       updateProgressHUD();
+
+      const card = MASTER_CARDS.find(c => c.id === cardId);
+      if (targetCatId) {
+        const cat = categories.find(c => c.id === targetCatId);
+        showToast(`✅ Moved <strong>${cardId}</strong> to <em>${cat ? cat.title : 'Bucket'}</em> <span style="text-decoration: underline; margin-left: 6px; font-size: 0.74rem;">(View ⬇️)</span>`, targetCatId);
+      } else {
+        showToast(`↩️ Returned <strong>${cardId}</strong> to Unsorted Deck`);
+      }
     }
 
     /* Drag & Drop Handlers (Desktop & Mouse) */
