@@ -907,6 +907,18 @@
        RESPONSIVE BREAKPOINTS (Laptop, Tablet & Phone)
        ========================================================================= */
 
+    /* Desktop Default: Hide mobile-only controls */
+    .mobile-view-tabs,
+    .mobile-jump-bar,
+    .mobile-cat-pill-row,
+    .mobile-only {
+      display: none !important;
+    }
+
+    /* =========================================================================
+       RESPONSIVE BREAKPOINTS (Laptop, Tablet & iPhone 16 Mobile)
+       ========================================================================= */
+
     /* Tablet Landscape & Small Laptop (901px - 1150px) */
     @media (max-width: 1150px) {
       .workspace {
@@ -917,8 +929,8 @@
       }
     }
 
-    /* Tablet Portrait (641px - 900px) */
-    @media (max-width: 900px) {
+    /* Tablet Portrait (769px - 900px) */
+    @media (max-width: 900px) and (min-width: 769px) {
       .workspace {
         grid-template-columns: 300px 1fr;
         height: calc(100vh - 120px);
@@ -926,111 +938,220 @@
       .categories-grid {
         grid-template-columns: 1fr 1fr;
       }
-    /* Mobile Phone (<= 768px e.g. iPhone / Android / Narrow viewport) */
+    }
+
+    /* =========================================================================
+       iPhone 16 & Mobile Phone Optimization (<= 768px)
+       Tuned specifically for 393px - 430px (iPhone 16 / Pro / Plus / Max)
+       ========================================================================= */
     @media (max-width: 768px) {
+      body {
+        padding-bottom: env(safe-area-inset-bottom, 20px);
+      }
+
+      .mobile-view-tabs,
+      .mobile-jump-bar,
+      .mobile-cat-pill-row,
+      .mobile-only {
+        display: flex !important;
+      }
+
       header {
-        padding: 0.6rem 0.85rem;
+        padding: 0.6rem 0.85rem calc(0.6rem + env(safe-area-inset-top, 0px));
         gap: 0.5rem;
       }
+
       .brand-title h1 {
         font-size: 0.95rem;
       }
+
       .header-controls {
         width: 100%;
-        justify-content: space-between;
+        display: grid;
+        grid-template-columns: 1fr 1fr;
+        gap: 0.4rem;
       }
-      .input-group {
-        flex: 1;
+
+      .header-controls .input-group {
+        padding: 0.25rem 0.45rem;
       }
-      .input-group input {
+
+      .header-controls .input-group input {
         width: 100%;
+        font-size: 0.76rem;
       }
+
+      .header-actions-row {
+        grid-column: span 2;
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        gap: 0.35rem;
+      }
+
       .study-intro {
         padding: 0.5rem 0.85rem;
+        gap: 0.5rem;
       }
+
+      .intro-text-wrapper {
+        font-size: 0.74rem;
+      }
+
       .sort-mode-switch {
         width: 100%;
         display: flex;
+        background: var(--surface-hover);
+        padding: 3px;
+        border-radius: 10px;
+        border: 1px solid var(--surface-border);
       }
+
       .sort-mode-btn {
         flex: 1;
-        padding: 0.35rem 0.4rem;
+        padding: 0.38rem 0.25rem;
         font-size: 0.72rem;
+        border-radius: 7px;
+        border: none;
       }
+
+      /* iOS 18 Segmented Control */
       .mobile-view-tabs {
-        display: flex;
         background: var(--surface);
         border-bottom: 1px solid var(--surface-border);
-        padding: 0.4rem 0.75rem;
+        padding: 0.45rem 0.85rem;
         gap: 0.35rem;
         position: sticky;
         top: 0;
         z-index: 50;
+        box-shadow: var(--shadow-sm);
       }
+
       .mobile-tab-btn {
         flex: 1;
         background: var(--surface-hover);
         border: 1px solid var(--surface-border);
         color: var(--text-muted);
-        padding: 0.4rem 0.5rem;
+        padding: 0.45rem 0.35rem;
         border-radius: 8px;
-        font-size: 0.74rem;
+        font-size: 0.75rem;
         font-weight: 700;
         cursor: pointer;
         display: inline-flex;
         align-items: center;
         justify-content: center;
-        gap: 0.25rem;
+        gap: 0.2rem;
         white-space: nowrap;
         transition: all 0.15s;
+        min-height: 36px;
       }
+
       .mobile-tab-btn.active {
         background: var(--accent);
         color: white;
         border-color: var(--accent);
-        box-shadow: var(--shadow-sm);
+        box-shadow: 0 2px 8px rgba(79, 70, 229, 0.25);
       }
+
       .workspace {
         grid-template-columns: 1fr;
         height: auto;
         display: flex;
         flex-direction: column;
         gap: 1.25rem;
-        padding-bottom: 70px;
+        padding: 0.75rem 0.85rem 80px;
       }
+
       /* Default: BOTH Deck and Buckets are visible in a scrollable stack */
       .deck-panel {
         display: flex;
         height: auto;
         border-right: none;
-        border-bottom: 2px solid var(--surface-border);
+        border: 1px solid var(--surface-border);
+        border-radius: var(--radius);
         max-height: none;
+        padding: 0.85rem;
+        background: var(--surface);
       }
+
       .canvas-panel {
         display: flex;
         height: auto;
-        padding: 0.85rem;
+        padding: 0;
         max-height: none;
+        background: transparent;
       }
+
       /* Specific view modes when user chooses to filter */
       body.mobile-view-deck .deck-panel {
         display: flex;
       }
       body.mobile-view-deck .canvas-panel {
-        display: none;
+        display: none !important;
       }
       body.mobile-view-canvas .deck-panel {
-        display: none;
+        display: none !important;
       }
       body.mobile-view-canvas .canvas-panel {
         display: flex;
       }
+
+      /* iPhone 16 Touch-Optimized Cards */
+      .sort-card {
+        padding: 0.75rem 0.85rem;
+        border-radius: 12px;
+        box-shadow: 0 2px 6px rgba(0,0,0,0.04);
+      }
+
+      .card-title {
+        font-size: 0.88rem;
+        margin: 0.3rem 0;
+      }
+
+      .card-desc {
+        font-size: 0.75rem;
+        line-height: 1.35;
+      }
+
+      /* 2-Column Balanced Quick Assign Chips for iPhone */
+      .quick-assign-chips {
+        display: grid;
+        grid-template-columns: repeat(2, 1fr);
+        gap: 0.35rem;
+      }
+
+      .chip-btn {
+        padding: 0.35rem 0.45rem;
+        font-size: 0.72rem;
+        min-height: 36px;
+        justify-content: center;
+        text-align: center;
+        border-radius: 8px;
+        line-height: 1.2;
+      }
+
       .categories-grid {
         grid-template-columns: 1fr;
+        gap: 0.85rem;
       }
+
+      .category-bucket {
+        min-height: 160px;
+        border-radius: 12px;
+      }
+
+      .category-bucket .quick-assign-chips {
+        grid-template-columns: 1fr 1fr;
+      }
+
       .mobile-bottom-hud {
         display: flex;
+        padding: 0.65rem 1rem calc(0.65rem + env(safe-area-inset-bottom, 12px));
+        backdrop-filter: blur(20px);
+        -webkit-backdrop-filter: blur(20px);
+        background: var(--surface);
       }
+
       .mobile-jump-bar {
         display: flex;
         align-items: center;
@@ -1038,10 +1159,11 @@
         background: var(--surface-hover);
         border: 1px solid var(--surface-border);
         border-radius: 8px;
-        padding: 0.5rem 0.75rem;
+        padding: 0.45rem 0.75rem;
         margin-bottom: 0.75rem;
-        font-size: 0.76rem;
+        font-size: 0.74rem;
       }
+
       .mobile-cat-pill-row {
         display: flex;
         overflow-x: auto;
@@ -1050,6 +1172,7 @@
         margin-bottom: 0.5rem;
         -webkit-overflow-scrolling: touch;
       }
+
       .mobile-cat-pill {
         background: var(--surface);
         border: 1px solid var(--surface-border);
@@ -1064,6 +1187,7 @@
         align-items: center;
         gap: 0.25rem;
       }
+
       .mobile-cat-pill:hover, .mobile-cat-pill:active {
         background: var(--accent-light);
         border-color: var(--accent);
@@ -1140,24 +1264,26 @@
         <input type="text" id="pRole" placeholder="Senior / Pro">
       </div>
 
-      <!-- Undo / Redo Toolbar -->
-      <div class="history-group">
-        <button class="history-btn" id="btnUndo" onclick="undoAction()" disabled title="Undo (Ctrl+Z)">
-          ↩️
+      <div class="header-actions-row">
+        <!-- Undo / Redo Toolbar -->
+        <div class="history-group">
+          <button class="history-btn" id="btnUndo" onclick="undoAction()" disabled title="Undo (Ctrl+Z)">
+            ↩️
+          </button>
+          <button class="history-btn" id="btnRedo" onclick="redoAction()" disabled title="Redo (Ctrl+Y)">
+            ↪️
+          </button>
+        </div>
+
+        <!-- Theme Switcher -->
+        <button class="theme-toggle-btn" id="themeToggleBtn" onclick="toggleTheme()" title="Switch Light/Dark Mode">
+          ☀️ Light
         </button>
-        <button class="history-btn" id="btnRedo" onclick="redoAction()" disabled title="Redo (Ctrl+Y)">
-          ↪️
-        </button>
+
+        <!-- Action Buttons -->
+        <button class="btn btn-secondary" onclick="window.print()">🖨️ Print</button>
+        <button class="btn" onclick="exportResults()">💾 Export</button>
       </div>
-
-      <!-- Theme Switcher -->
-      <button class="theme-toggle-btn" id="themeToggleBtn" onclick="toggleTheme()" title="Switch Light/Dark Mode">
-        ☀️ Light
-      </button>
-
-      <!-- Action Buttons -->
-      <button class="btn btn-secondary" onclick="window.print()">🖨️ Print</button>
-      <button class="btn" onclick="exportResults()">💾 Export</button>
     </div>
   </header>
 
@@ -1222,7 +1348,7 @@
       <div class="canvas-actions">
         <div style="display: flex; align-items: center; gap: 0.5rem; flex-wrap: wrap;">
           <h2 style="font-size: 1rem; font-weight: 700;">📂 Category Buckets (Drop Zones)</h2>
-          <button class="btn btn-secondary" style="padding: 0.25rem 0.55rem; font-size: 0.74rem; min-height: 28px;" onclick="scrollToDeck()">
+          <button class="btn btn-secondary mobile-only" style="padding: 0.25rem 0.55rem; font-size: 0.74rem; min-height: 28px;" onclick="scrollToDeck()">
             ⬆️ Back to Cards
           </button>
         </div>
