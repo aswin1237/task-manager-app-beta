@@ -1446,22 +1446,29 @@
     function enterDashboard() {
       toggleLoginScreen(false);
       setMode(landingPersonaRole);
+      let userName = 'Aswin';
+      let userEmail = 'aswin@omnitask.app';
       if (landingPersonaRole === 'senior') {
-        document.getElementById('activeUserName').textContent = 'Eleanor Vance';
+        userName = 'Eleanor Vance';
+        userEmail = 'eleanor.vance@senior.care';
+        document.getElementById('activeUserName').textContent = userName;
         document.getElementById('dropdownUserName').textContent = 'Eleanor Vance (Senior)';
-        document.getElementById('dropdownUserEmail').textContent = 'eleanor.vance@senior.care';
+        document.getElementById('dropdownUserEmail').textContent = userEmail;
         showToast("🔑 Logged in as Eleanor Vance (Senior Mode Active)");
       } else if (landingPersonaRole === 'caregiver') {
-        document.getElementById('activeUserName').textContent = 'John Vance';
+        userName = 'John Vance';
+        userEmail = 'john.vance@caregiver.guardian';
+        document.getElementById('activeUserName').textContent = userName;
         document.getElementById('dropdownUserName').textContent = 'John Vance (Caregiver)';
-        document.getElementById('dropdownUserEmail').textContent = 'john.vance@caregiver.guardian';
+        document.getElementById('dropdownUserEmail').textContent = userEmail;
         showToast("🔑 Logged in as John Vance (Caregiver Telemetry Active)");
       } else {
-        document.getElementById('activeUserName').textContent = 'Aswin';
-        document.getElementById('dropdownUserName').textContent = 'Aswin';
-        document.getElementById('dropdownUserEmail').textContent = 'aswin@omnitask.app';
+        document.getElementById('activeUserName').textContent = userName;
+        document.getElementById('dropdownUserName').textContent = userName;
+        document.getElementById('dropdownUserEmail').textContent = userEmail;
         showToast("🔑 Logged in as Aswin (Power User Profile)");
       }
+      saveSessionState(true, landingPersonaRole, userName, userEmail);
       renderAllViews();
     }
 
@@ -1469,8 +1476,25 @@
       toggleLoginScreen(false);
       setMode('power');
       document.getElementById('activeUserName').textContent = 'Guest User';
+      saveSessionState(true, 'power', 'Guest User', 'guest@omnitask.app');
       showToast("🚀 Logged in as Guest (Offline Demo Mode)");
       renderAllViews();
+    }
+
+    function saveSessionState(isLoggedIn, role, userName, userEmail) {
+      try {
+        const cur = JSON.parse(localStorage.getItem('omnitask_session') || '{}');
+        const session = {
+          isLoggedIn: isLoggedIn,
+          role: role || cur.role || currentRole || 'power',
+          userName: userName || cur.userName || document.getElementById('activeUserName')?.textContent || 'Aswin',
+          userEmail: userEmail || cur.userEmail || 'aswin@omnitask.app',
+          activeTab: activePrimaryTab || cur.activeTab || 'home'
+        };
+        localStorage.setItem('omnitask_session', JSON.stringify(session));
+      } catch (err) {
+        console.warn("Session save error:", err);
+      }
     }
 
     function toggleLoginScreen(show) {
@@ -1478,6 +1502,9 @@
       const app = document.getElementById('appContainer');
       if (login) login.style.display = show ? 'flex' : 'none';
       if (app) app.style.display = show ? 'none' : 'flex';
+      if (show) {
+        saveSessionState(false);
+      }
       window.scrollTo({ top: 0, behavior: 'smooth' });
     }
 
@@ -1492,6 +1519,8 @@
       document.querySelectorAll('.app-view-panel').forEach(v => v.classList.remove('active-view'));
       const targetView = document.getElementById(`view_${tab}`);
       if (targetView) targetView.classList.add('active-view');
+
+      saveSessionState(true);
 
       const tabNames = {
         home: "📅 Home Calendar Aggregator",
@@ -1545,6 +1574,7 @@
         if (oversightTab) oversightTab.style.display = 'inline-flex';
         showToast("⚡ Switched to Power User Mode: 5-Domain navigation active");
       }
+      saveSessionState(true);
       renderAllViews();
     }
 
@@ -2372,6 +2402,43 @@
     // Initial Render & Load
     window.addEventListener('DOMContentLoaded', () => {
       loadPersistedData();
+
+      // Check for active session
+      let savedSession = localStorage.getItem('omnitask_session');
+      if (savedSession) {
+        try {
+          const s = JSON.parse(savedSession);
+          if (s.isLoggedIn !== false) {
+            toggleLoginScreen(false);
+            landingPersonaRole = s.role || 'power';
+            if (s.userName) {
+              const u1 = document.getElementById('activeUserName');
+              if (u1) u1.textContent = s.userName;
+              const u2 = document.getElementById('dropdownUserName');
+              if (u2) u2.textContent = s.userName;
+            }
+            if (s.userEmail) {
+              const e1 = document.getElementById('dropdownUserEmail');
+              if (e1) e1.textContent = s.userEmail;
+            }
+            setMode(landingPersonaRole);
+            if (s.activeTab) {
+              switchPrimaryTab(s.activeTab);
+            }
+          } else {
+            toggleLoginScreen(true);
+          }
+        } catch (e) {
+          toggleLoginScreen(false);
+          setMode('power');
+        }
+      } else {
+        // Default to logged-in as Aswin
+        toggleLoginScreen(false);
+        setMode('power');
+        saveSessionState(true, 'power', 'Aswin', 'aswin@omnitask.app');
+      }
+
       renderAllViews();
     });
   </script>
