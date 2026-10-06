@@ -22,21 +22,22 @@ Four independent life-domain modules feed structured events into this aggregatio
 
 ---
 
-## 2. Navigation Architecture
+## 2. Navigation Architecture & Viewport Hierarchy
 
-OmniTask uses a persistent **4-tab bottom navigation** system:
+OmniTask employs a clean, decoupled navigation model tailored by role:
 
-| Tab | Icon | Domain Role & Underlying Data Model |
-| :--- | :---: | :--- |
-| **Home** | 📅 | **Calendar Aggregator:** Live month grid, date inspection, density heatmaps, and financial summaries. |
-| **Fitness** | 🏋️ | **Physical Health:** Workout logs (retrospective), goals (prospective), and AI plan generation. |
-| **Reminders** | 🔔 | **Schedule & Health Compliance:** Grouped hub for Pill 💊, Payment 💳, Appointment 📅, and Custom 🔔 items. |
-| **Expense** | 💳 | **Financial Management:** Categorized spending ledger rolling up into daily, weekly, and monthly totals. |
+| Tab / View | Icon | Domain Role & Underlying Data Model | Visibility Scope |
+| :--- | :---: | :--- | :--- |
+| **Home** | 📅 | **Calendar Aggregator:** Live month grid, date inspection, density heatmaps, and financial summaries. | All Roles |
+| **Fitness** | 🏋️ | **Physical Health:** Workout logs (retrospective), goals (prospective), and AI plan generation. | All Roles (Optional in Senior) |
+| **Reminders** | 🔔 | **Schedule & Health Compliance:** Grouped hub for Pill 💊, Payment 💳, Appointment 📅, and Custom 🔔 items. | All Roles |
+| **Expense** | 💳 | **Financial Management:** Categorized spending ledger rolling up into daily, weekly, and monthly totals. | Power & Caregiver |
+| **Oversight** | 🛡️ | **Household & Caregiving Command Center:** Real-time senior telemetry, caregiver audit logs, device fleet battery monitoring, PIN provisioning, 1-tap Doctor PDF export, and family expense split. | **Master User Only** |
 
-### Rationale: Principle of Choices & Cognitive Chunking
-Rather than fragmenting navigation into 5+ cluttered tabs (e.g. separate tabs for Pills, Bills, Appointments, Fitness, Calendar), **Pill and Payment reminders are structurally unified under Reminders**. Both share the exact same underlying object architecture:
-$$\text{Task Object} = \{\text{Title}, \text{Due Date / Timestamp}, \text{Recurrence Rule}, \text{Mark-Done State}\}$$
-Merging them keeps the global navigation clean and uncluttered (Hick's Law), while **domain-specific icons preserve visual distinctness**.
+### Rationale: Role Decoupling & Cognitive Purity
+Rather than cluttering the Power User's everyday personal dashboard with heavy hospital-like monitoring widgets, **Oversight is isolated into its own dedicated command page**:
+1. **Personal Life OS (Home, Fitness, Reminders, Expense):** The Power User uses the app exactly like a standard individual for their own schedule, workouts, habits, and budgets with zero cognitive friction.
+2. **Household Oversight Hub (Oversight):** When checking in on aging relatives or auditing hired caregivers, the Master User opens the Oversight page where all multi-device telemetry, prescription management, and emergency tools live together.
 
 ---
 
@@ -242,17 +243,57 @@ graph TD
     SetPass --> InstantSync
 ```
 
-### 9.2 Master User Household Oversight & Telemetry Model
-When the Master User (Aswin) logs in, they oversee both the Elder User (Eleanor Vance) and Caregiver (John Vance) via two distinct IA levels:
-1. **Level 1 — Ambient Household Telemetry Ribbon (Home Dashboard):**
-   * A persistent, non-intrusive status banner atop the Home Calendar:
-     * **Elder Status:** `👵 Eleanor Vance • Adherence: 96% • Morning Doses Taken ✅ • 2 doses remaining today`
-     * **Caregiver Status:** `🛡️ John Vance (Caregiver) • Online • Last Telemetry Sync: 12m ago`
-     * **Escalation Ladder Health:** `🟢 Normal (Idle)` *(switches to 🟡 Yellow on 15m delay; 🚨 Red on 30m overdue threshold)*.
-2. **Level 2 — Family & Security Hub (`Profile > Family Hub`):**
-   * **Elder Governance:** Remotely add/edit prescription regimens, course durations (e.g., 30-day course), refill warnings, and update the Senior 4-digit PIN (`1234`).
-   * **Caregiver Audit Trail:** Real-time log of when the caregiver logged in, acknowledged alerts, or submitted care notes.
-   * **Non-Destructive 'View-As' Simulation:** 1-tap proxy preview to inspect Eleanor's or John's exact viewport layout.
+### 9.2 The Dedicated Household Oversight Hub (5th Primary Domain View)
+To preserve cognitive clarity, the Master User's personal day (workouts, calendar, personal bills) is completely decoupled from family caregiving. The **Household Oversight Hub** lives as its own dedicated command page containing 5 core functional modules:
+
+```mermaid
+graph TD
+    MasterNav[Global Navigation / Sidebar] --> Personal[👤 Personal Life OS: Home / Fitness / Reminders / Expense]
+    MasterNav --> OversightPage[🛡️ Dedicated Household Oversight Hub]
+    
+    OversightPage --> Mod1[1. 👵 Senior Health & Adherence Engine]
+    OversightPage --> Mod2[2. 🛡️ Caregiver Audit Trail & Telemetry]
+    OversightPage --> Mod3[3. 📱 Paired Device Fleet & Battery Monitor]
+    OversightPage --> Mod4[4. 🔑 Senior PIN & Credential Hub]
+    OversightPage --> Mod5[5. 📋 1-Tap Doctor PDF & Shared Financial Split]
+```
+
+#### Module 1: 👵 Senior Health & Adherence Engine
+* **Pill Course Linear Progress Bar:** Tracks Eleanor's active prescriptions (e.g. `Metformin 500mg • Day 18/30 • 60% Complete • 12 Days Left`).
+* **Prescription & Refill Limits:** Proactive alerts when $\le 5$ days of medication remain with 1-tap Pharmacy Refill trigger.
+* **Adherence Heatmap:** Monthly calendar compliance visualization (taken on time, delayed, missed).
+
+#### Module 2: 🛡️ Caregiver Audit Trail & Telemetry
+* **Check-in Timestamp Stream:** Chronological feed recording when Caregiver John Vance logged into the portal, viewed medical charts, or submitted care notes.
+* **Escalation Trigger Threshold:** Master User configures the missed-dose response ladder delay ($15\text{m}$ Urgent Alert / $30\text{m}$ Standard / $60\text{m}$ Gentle Follow-up).
+* **Emergency Override:** Direct escalation dispatch if the caregiver fails to respond within threshold limits.
+
+#### Module 3: 📱 Paired Household Device Fleet & Battery Telemetry
+* **Hardware Fleet Monitor:** Real-time visibility into shared family hardware:
+  * `👵 Eleanor’s iPad (Living Room) • Battery: 78% • 🟢 Online`
+  * `🛡️ John’s iPhone • Battery: 92% • 🟢 Active`
+  * `👤 Aswin’s Laptop (You) • Active Now`
+* **Low-Battery Safety Alerts:** Alerts the Master User if Eleanor's tablet battery drops below $20\%$ to prevent missed audio alarms.
+
+#### Module 4: 🔑 Master Security & PIN Governance
+* **Senior 4-Digit PIN Provisioning:** Master User sets/updates Eleanor's simplified 4-digit PIN (`1234`), which syncs instantly across all shared household devices with zero-friction senior login.
+* **Caregiver Invite & Rotation:** Rotate caregiver access passwords or revoke monitoring access with 1 click, immediately triggering an instant remote cache scrub.
+
+#### Module 5: 📋 Reports & Shared Family Finances
+* **1-Tap Doctor Visit Health Summary (PDF):** Automatically compiles the past 30 days of pill compliance, doctor notes, blood pressure logs, and emergency contacts into a printable 1-page clinical document.
+* **Household Shared Expense Split:** Enables marking utility bills or pharmacy receipts as *"Family Reimbursable"* or *"Shared Household Split"* to keep family care costs organized separately from personal spend.
+
+---
+
+### 9.3 Master Profile Dropdown Architecture
+When the Master User clicks their avatar in the global header, the dropdown menu is partitioned into 4 distinct cognitive chunks:
+
+| Chunk | Content & Available Actions |
+| :--- | :--- |
+| **1. Identity & Context** | User Name (`Aswin`), Email (`aswin@omnitask.app`), Role Badge (`⚡ Master Account Owner`), Active Household (`Vance Family Circle • 3 Profiles`). |
+| **2. Household & Oversight** | • 🛡️ **Open Household Oversight Page**<br>• 👨‍👩‍👧 **Family Circle & Senior PIN Hub**<br>• 🔄 **'View As' Proxy Switcher** *(Aswin / Eleanor Vance / John Vance)* |
+| **3. Reports & Exports** | • 📋 **Export Doctor Visit Health Summary (PDF)**<br>• 📊 **Download Monthly Household Expense Statement (CSV/PDF)** |
+| **4. Security & Session** | • 👆 **Biometric / FaceID Quick-Unlock Setup**<br>• 🔒 **Lock Screen (Require Master Pass)**<br>• 🚪 **Sign Out (All Devices)** |
 
 ---
 
