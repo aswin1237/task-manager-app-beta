@@ -1,9 +1,9 @@
-# OmniTask — Complete Information Architecture Specification (Master v4.1)
+# OmniTask — Complete Information Architecture Specification (Master v4.2)
 
 > **Document Type:** Master Information Architecture (IA) Specification & System Blueprint  
 > **Project:** OmniTask (Task Manager App) — Calendar-Centric Life Dashboard  
 > **Prepared for:** Aswin (`aswin_bd_24_602`)  
-> **Version:** 4.1 (Complete Unabridged Spec with All 6 System Flows & v4 Additions)  
+> **Version:** 4.2 (Complete Unabridged Spec with Pill Course Progression & Refill Engine)  
 > **Associated Visual PDFs:** [`pdfs/task-manager-app-ia-spec-v4.pdf`](pdfs/task-manager-app-ia-spec-v4.pdf) | [`pdfs/task-manager-app-ia-spec-v3.pdf`](pdfs/task-manager-app-ia-spec-v3.pdf)  
 
 ---
@@ -16,7 +16,7 @@ OmniTask is a **calendar-centric personal operating system and task manager**. T
 
 Four independent life-domain modules feed structured events into this aggregation engine:
 1. **Fitness:** Structured workout routines, goals, and smart streaks.
-2. **Reminders:** Pill / Medical ID, Payment / Bills, Appointments, and Custom Emoji Habits.
+2. **Reminders:** Pill / Medical ID & Course Tracker, Payment / Bills, Appointments, and Custom Emoji Habits.
 3. **Expense:** Categorized spending ledger, budget breakdowns, and monthly projections.
 4. **Home (Calendar Dashboard):** Live timeline, density heatmaps, and cross-domain previews.
 
@@ -72,11 +72,24 @@ graph TD
 
 ## 4. Reminders Module (Domain Breakdown)
 
-### 4.1 Pill Reminder (Lightweight Medical ID) 💊
-* **Fields:** Drug Name, Exact Dosage Strength, Schedule (times/day), Expiration Date, Prescription Number, Prescribing Doctor, and Physical Pill Photo.
+### 4.1 Pill Reminder (Medical ID & Course Progression Engine) 💊
+* **Fields:** Drug Name, Exact Dosage Strength, Schedule (times/day), Regimen Type, Course Duration (Days), Doses Completed, Expiration Date, Prescription Number, Prescribing Doctor, and Physical Pill Photo.
+* **Course Progression & Adherence Tracker (v4.2):**
+  * **Regimen Classification:**
+    * *Fixed Course:* Temporary medications with a strict end-date (e.g., 7-day antibiotic, 14-day steroid taper, 30-day acute treatment).
+    * *Chronic / Ongoing:* Continuous daily medication with recurring refill intervals (e.g., 30-day, 60-day, 90-day bottle cycles).
+  * **Visual Progress Representation:**
+    * A dynamic linear progress bar displaying `Day X of Y Completed (Z%)` and `N Days Remaining`.
+    * Senior High-Contrast View: Prominent visual counters (e.g., `🟢 18 DAYS TAKEN • ⚪ 12 DAYS LEFT`).
+  * **Smart Refill Countdown & Alerts:**
+    * Proactive warning notification triggers when $\le 5\text{ days}$ (or $\le 15\%$) of doses remain: *"⚠️ Refill needed in 4 days — Tap to call pharmacy or request Rx renewal"*.
+  * **Course Completion Protocol:**
+    * Upon logging the final dose ($30/30\text{ days}$), the system celebrates completion (`🎉 Course Completed!`) and prompts the user to either auto-archive the medication or schedule a follow-up physician appointment.
 * **Medical ID Functionality:** Acts as an exportable/showable Medical ID card that elderly users or caregivers can hand to doctors or emergency pharmacists.
+* **Caregiver Telemetry Adherence Score:** Real-time calculation streamed to linked guardians:
+  $$\text{Adherence Rate} = \left(\frac{\text{Doses Taken On Time}}{\text{Total Scheduled Doses}}\right) \times 100\%$$
 * **Scope Definition:**
-  * **MVP:** Manual entry only.
+  * **MVP:** Manual entry only with course duration and progress engine.
   * **Deferred (v2):** External drug database auto-lookup by name or camera barcode scan (requires external pharmacology database integration).
 
 ### 4.2 Payment / Bill Reminder 💳
@@ -306,12 +319,13 @@ graph TD
 
 ---
 
-## 13. System Additions & Enhancements (v4.1)
+## 13. System Additions & Enhancements (v4.2)
 
 1. **Scoped Search Engine:** Search is implemented locally inside each respective module (*Search Pills, Search Expenses, Search Workouts*) in addition to global spotlight retrieval (`Ctrl + K`).
 2. **Smart Streaks:** Missing a routine reduces streak progress by **1 unit** rather than resetting to zero.
 3. **Typography & Appearance Settings:** Complete settings panel for custom text color, typeface selection, and font-size scaling.
-4. **Multilingual AI Voice Assistant (v2):** Speech recognition and conversational interface planned for future release.
+4. **Prescription Course & Refill Countdown Engine (v4.2):** Visual linear progress bar (`Day X of Y • Z%`), adherence rate telemetry for caregivers, smart $\le 5\text{-day}$ refill warnings, and celebratory completion protocols.
+5. **Multilingual AI Voice Assistant (v2):** Speech recognition and conversational interface planned for future release.
 
 ---
 
