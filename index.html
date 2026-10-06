@@ -3,11 +3,17 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-  <title>OmniTask — Interactive Mini Prototype (v4.4 Preview)</title>
+  <title>OmniTask — Calendar-Centric Life Operating System (Production Master v4.4)</title>
+  
+  <!-- Google Fonts: Plus Jakarta Sans & JetBrains Mono -->
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&family=JetBrains+Mono:wght@400;600;700&display=swap" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&family=JetBrains+Mono:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+  
   <style>
+    /* ==========================================================================
+       1. FIGMA DESIGN SYSTEM TOKENS & VARIABLES
+       ========================================================================== */
     :root[data-theme="dark"] {
       --bg: #090d16;
       --surface: #101624;
@@ -17,21 +23,32 @@
       --card-border: #1e2b40;
       --text: #f8fafc;
       --text-muted: #94a3b8;
+      --text-subtle: #64748b;
+      
+      /* Semantic Domain Tokens */
       --accent: #6366f1;
       --accent-hover: #4f46e5;
       --accent-light: rgba(99, 102, 241, 0.15);
+      
       --emerald: #10b981;
+      --emerald-hover: #059669;
       --emerald-bg: rgba(16, 185, 129, 0.15);
+      
       --amber: #f59e0b;
       --amber-bg: rgba(245, 158, 11, 0.15);
+      
       --rose: #f43f5e;
       --rose-bg: rgba(244, 63, 94, 0.15);
+      
       --cyan: #06b6d4;
       --cyan-bg: rgba(6, 182, 212, 0.15);
+      
       --purple: #a855f7;
       --purple-bg: rgba(168, 85, 247, 0.15);
-      --shadow-sm: 0 2px 8px rgba(0,0,0,0.3);
-      --shadow-md: 0 8px 24px rgba(0,0,0,0.45);
+      
+      --shadow-sm: 0 2px 8px rgba(0, 0, 0, 0.3);
+      --shadow-md: 0 8px 24px rgba(0, 0, 0, 0.45);
+      --shadow-glow-emerald: 0 0 16px rgba(16, 185, 129, 0.35);
       --radius: 14px;
     }
 
@@ -44,21 +61,31 @@
       --card-border: #cbd5e1;
       --text: #0f172a;
       --text-muted: #64748b;
+      --text-subtle: #94a3b8;
+      
       --accent: #4f46e5;
       --accent-hover: #4338ca;
       --accent-light: #e0e7ff;
+      
       --emerald: #16a34a;
+      --emerald-hover: #15803d;
       --emerald-bg: #dcfce7;
+      
       --amber: #d97706;
       --amber-bg: #fef3c7;
+      
       --rose: #e11d48;
       --rose-bg: #ffe4e6;
+      
       --cyan: #0284c7;
       --cyan-bg: #e0f2fe;
+      
       --purple: #9333ea;
       --purple-bg: #f3e8ff;
-      --shadow-sm: 0 2px 8px rgba(0,0,0,0.06);
-      --shadow-md: 0 8px 24px rgba(15,23,42,0.08);
+      
+      --shadow-sm: 0 2px 8px rgba(0, 0, 0, 0.06);
+      --shadow-md: 0 8px 24px rgba(15, 23, 42, 0.08);
+      --shadow-glow-emerald: 0 0 16px rgba(22, 163, 74, 0.25);
       --radius: 14px;
     }
 
@@ -70,14 +97,17 @@
       min-height: 100vh;
       display: flex;
       flex-direction: column;
-      transition: all 0.2s ease;
+      transition: background 0.2s ease, color 0.2s ease;
+      -webkit-font-smoothing: antialiased;
     }
 
-    /* Top Prototype Simulation Banner */
-    .proto-banner {
+    /* ==========================================================================
+       2. TOP SIMULATION & PERSONA BANNER
+       ========================================================================== */
+    .top-telemetry-banner {
       background: linear-gradient(90deg, #4f46e5, #06b6d4);
       color: white;
-      padding: 0.5rem 1rem;
+      padding: 0.45rem 1rem;
       font-size: 0.78rem;
       font-weight: 700;
       display: flex;
@@ -85,17 +115,20 @@
       align-items: center;
       gap: 0.5rem;
       flex-wrap: wrap;
+      z-index: 110;
     }
 
     .proto-badge {
-      background: rgba(255,255,255,0.25);
+      background: rgba(255, 255, 255, 0.25);
       padding: 0.2rem 0.5rem;
       border-radius: 6px;
       text-transform: uppercase;
       letter-spacing: 0.04em;
     }
 
-    /* Main Navigation Header */
+    /* ==========================================================================
+       3. GLOBAL HEADER & PRIMARY NAVIGATION
+       ========================================================================== */
     header {
       background: var(--surface);
       border-bottom: 1px solid var(--surface-border);
@@ -114,6 +147,7 @@
       display: flex;
       align-items: center;
       gap: 0.65rem;
+      cursor: pointer;
     }
 
     .logo-icon {
@@ -127,16 +161,17 @@
       justify-content: center;
       font-weight: 900;
       font-size: 1rem;
+      box-shadow: 0 2px 6px rgba(99, 102, 241, 0.4);
     }
 
     .brand-title {
-      font-size: 1.1rem;
+      font-size: 1.15rem;
       font-weight: 800;
       letter-spacing: -0.02em;
     }
 
-    /* Mode Switcher Pills (Power User, Senior Mode, Caregiver) */
-    .mode-switch-group {
+    /* Primary Navigation Tabs (Home, Fitness, Reminders, Expense, Oversight) */
+    .nav-tabs-group {
       display: flex;
       background: var(--surface-hover);
       border: 1px solid var(--surface-border);
@@ -145,69 +180,185 @@
       gap: 2px;
     }
 
-    .mode-btn {
+    .nav-tab-btn {
       background: transparent;
       border: none;
       color: var(--text-muted);
-      padding: 0.35rem 0.75rem;
-      border-radius: 20px;
-      font-size: 0.76rem;
+      padding: 0.4rem 0.85rem;
+      font-size: 0.82rem;
       font-weight: 700;
+      border-radius: 20px;
       cursor: pointer;
       display: flex;
       align-items: center;
-      gap: 0.3rem;
-      transition: all 0.15s;
+      gap: 0.35rem;
+      transition: all 0.15s ease;
+      font-family: inherit;
     }
 
-    .mode-btn.active {
-      background: var(--accent);
-      color: white;
+    .nav-tab-btn.active {
+      background: var(--surface);
+      color: var(--text);
       box-shadow: var(--shadow-sm);
+    }
+
+    .nav-tab-btn:hover:not(.active) {
+      color: var(--text);
+    }
+
+    /* Role Quick-Switcher Pills */
+    .role-switch-pills {
+      display: flex;
+      background: var(--bg);
+      border: 1px solid var(--surface-border);
+      padding: 2px;
+      border-radius: 18px;
+      gap: 2px;
+    }
+
+    .role-btn {
+      background: transparent;
+      border: none;
+      color: var(--text-muted);
+      padding: 0.3rem 0.65rem;
+      font-size: 0.75rem;
+      font-weight: 700;
+      border-radius: 14px;
+      cursor: pointer;
+      font-family: inherit;
+      transition: all 0.15s ease;
+    }
+
+    .role-btn.active {
+      background: var(--accent-light);
+      color: var(--accent);
     }
 
     .header-actions {
       display: flex;
       align-items: center;
       gap: 0.5rem;
+      position: relative;
     }
 
+    /* Standard Button Styles */
     .btn {
       background: var(--accent);
       color: white;
       border: none;
-      padding: 0.45rem 0.85rem;
+      padding: 0.45rem 0.9rem;
       border-radius: 8px;
-      font-size: 0.8rem;
+      font-size: 0.82rem;
       font-weight: 700;
       cursor: pointer;
       display: inline-flex;
       align-items: center;
-      gap: 0.35rem;
-      transition: all 0.15s;
+      gap: 0.4rem;
+      transition: all 0.15s ease;
+      font-family: inherit;
     }
 
-    .btn:hover { background: var(--accent-hover); transform: translateY(-1px); }
-    .btn-secondary { background: var(--surface-hover); color: var(--text); border: 1px solid var(--surface-border); }
-    .btn-emerald { background: var(--emerald); }
-    .btn-emerald:hover { filter: brightness(1.1); }
+    .btn:hover {
+      background: var(--accent-hover);
+      transform: translateY(-1px);
+    }
 
-    /* Interactive Simulation Arena */
+    .btn:active {
+      transform: translateY(0);
+    }
+
+    .btn-secondary {
+      background: var(--surface-hover);
+      color: var(--text);
+      border: 1px solid var(--surface-border);
+    }
+
+    .btn-secondary:hover {
+      background: var(--surface);
+      border-color: var(--text-muted);
+    }
+
+    .btn-emerald {
+      background: var(--emerald);
+      color: white;
+    }
+    .btn-emerald:hover { background: var(--emerald-hover); }
+
+    .btn-rose {
+      background: var(--rose);
+      color: white;
+    }
+
+    /* ==========================================================================
+       4. PROFILE DROPDOWN MENU
+       ========================================================================== */
+    .profile-dropdown-menu {
+      position: absolute;
+      top: 100%;
+      right: 0;
+      margin-top: 8px;
+      width: 320px;
+      background: var(--surface);
+      border: 1px solid var(--card-border);
+      border-radius: 16px;
+      box-shadow: var(--shadow-md);
+      display: none;
+      flex-direction: column;
+      padding: 0.6rem;
+      gap: 0.4rem;
+      z-index: 200;
+    }
+
+    .dropdown-header {
+      padding: 0.6rem 0.75rem;
+      background: var(--bg);
+      border-radius: 10px;
+      display: flex;
+      flex-direction: column;
+      gap: 0.2rem;
+    }
+
+    .dropdown-item {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding: 0.55rem 0.75rem;
+      border-radius: 8px;
+      font-size: 0.82rem;
+      font-weight: 600;
+      color: var(--text);
+      cursor: pointer;
+      transition: background 0.15s ease;
+    }
+
+    .dropdown-item:hover {
+      background: var(--surface-hover);
+    }
+
+    .dropdown-divider {
+      height: 1px;
+      background: var(--surface-border);
+      margin: 0.2rem 0;
+    }
+
+    /* ==========================================================================
+       5. VIEWPORT LAYOUT & GRID ARCHITECTURE
+       ========================================================================== */
     .app-viewport {
-      flex: 1;
-      max-width: 1300px;
+      max-width: 1440px;
       width: 100%;
       margin: 0 auto;
       padding: 1.25rem;
+      flex: 1;
       display: flex;
       flex-direction: column;
       gap: 1.25rem;
     }
 
-    /* 4-Pillar Grid (Power User View) */
+    /* 4-Pillar Grid for Power User */
     .power-grid {
       display: grid;
-      grid-template-columns: 280px 1fr 1fr 1fr;
+      grid-template-columns: repeat(4, 1fr);
       gap: 1rem;
       align-items: start;
     }
@@ -219,29 +370,20 @@
       padding: 1rem;
       display: flex;
       flex-direction: column;
-      gap: 0.85rem;
+      gap: 0.9rem;
       box-shadow: var(--shadow-sm);
     }
 
     .panel-title {
-      font-size: 0.85rem;
+      font-size: 0.92rem;
       font-weight: 800;
-      color: var(--text);
       display: flex;
-      justify-content: space-between;
       align-items: center;
-      text-transform: uppercase;
-      letter-spacing: 0.03em;
+      justify-content: space-between;
+      padding-bottom: 0.5rem;
+      border-bottom: 1px solid var(--surface-border);
     }
 
-    .pill-badge {
-      font-size: 0.7rem;
-      padding: 0.15rem 0.45rem;
-      border-radius: 12px;
-      font-weight: 700;
-    }
-
-    /* Cards */
     .module-card {
       background: var(--card-bg);
       border: 1px solid var(--card-border);
@@ -249,13 +391,12 @@
       padding: 0.85rem;
       display: flex;
       flex-direction: column;
-      gap: 0.5rem;
-      transition: all 0.15s;
-      position: relative;
+      gap: 0.6rem;
+      transition: all 0.2s ease;
     }
 
     .module-card:hover {
-      border-color: var(--accent);
+      border-color: var(--text-muted);
       box-shadow: var(--shadow-sm);
     }
 
@@ -269,7 +410,7 @@
     .card-title {
       font-size: 0.88rem;
       font-weight: 700;
-      color: var(--text);
+      line-height: 1.3;
     }
 
     .card-sub {
@@ -278,124 +419,128 @@
       line-height: 1.35;
     }
 
+    .pill-badge {
+      font-size: 0.7rem;
+      font-weight: 800;
+      padding: 0.2rem 0.5rem;
+      border-radius: 12px;
+      letter-spacing: 0.02em;
+      white-space: nowrap;
+    }
+
     /* Progress Bar */
     .progress-track {
-      width: 100%;
-      height: 8px;
       background: var(--surface-hover);
-      border-radius: 4px;
+      height: 8px;
+      border-radius: 9999px;
       overflow: hidden;
-      margin-top: 4px;
+      margin-top: 0.35rem;
     }
 
     .progress-fill {
       height: 100%;
       background: var(--emerald);
-      width: 60%;
-      transition: width 0.35s cubic-bezier(0.16, 1, 0.3, 1);
+      border-radius: 9999px;
+      transition: width 0.3s ease;
     }
 
-    /* Senior View Overrides */
+    /* ==========================================================================
+       6. SENIOR SHIELD MODE (ACCESSIBLE 24PT+ AAA STYLING)
+       ========================================================================== */
+    body.senior-mode {
+      font-size: 1.25rem;
+    }
+
     body.senior-mode .power-grid {
       grid-template-columns: 1fr;
-      max-width: 720px;
+      max-width: 820px;
       margin: 0 auto;
+      gap: 1.25rem;
     }
 
     body.senior-mode .module-card {
       padding: 1.5rem;
-      border-radius: 16px;
-      border-width: 2px;
+      border-radius: 18px;
+      border: 2px solid var(--emerald);
+      background: var(--surface);
       gap: 1rem;
     }
 
     body.senior-mode .card-title {
-      font-size: 1.35rem;
-      font-weight: 800;
+      font-size: 1.5rem !important;
+      font-weight: 800 !important;
     }
 
     body.senior-mode .card-sub {
-      font-size: 1rem;
-      line-height: 1.4;
+      font-size: 1.15rem !important;
+      color: var(--text) !important;
     }
 
-    body.senior-mode .btn {
-      font-size: 1.1rem;
-      padding: 0.85rem 1.25rem;
+    body.senior-mode .btn-senior-touch {
       min-height: 56px;
-      border-radius: 12px;
+      font-size: 1.35rem !important;
+      font-weight: 800 !important;
+      border-radius: 14px !important;
+      padding: 1rem 1.5rem !important;
       justify-content: center;
-      width: 100%;
+      background: var(--emerald);
+      color: white;
+      box-shadow: var(--shadow-glow-emerald);
     }
 
-    /* Caregiver View Overrides */
-    body.caregiver-mode .caregiver-bar {
-      display: flex !important;
+    body.senior-mode .senior-hide {
+      display: none !important;
     }
 
+    /* ==========================================================================
+       7. CAREGIVER TELEMETRY MODE STYLING
+       ========================================================================== */
     .caregiver-bar {
-      display: none;
-      background: var(--rose-bg);
+      background: rgba(244, 63, 94, 0.12);
       border: 1px solid var(--rose);
       color: var(--text);
       padding: 0.75rem 1rem;
       border-radius: 10px;
-      font-size: 0.82rem;
-      align-items: center;
-      justify-content: space-between;
-      gap: 0.75rem;
-    }
-
-    /* Floating Toast */
-    .toast-popup {
-      position: fixed;
-      bottom: 24px;
-      left: 50%;
-      transform: translateX(-50%);
-      background: var(--surface);
-      color: var(--text);
-      border: 1.5px solid var(--accent);
-      box-shadow: var(--shadow-md);
-      padding: 0.65rem 1.2rem;
-      border-radius: 24px;
-      font-size: 0.82rem;
-      font-weight: 700;
-      z-index: 300;
       display: none;
+      justify-content: space-between;
       align-items: center;
-      gap: 0.6rem;
-      animation: slideUp 0.2s ease forwards;
+      flex-wrap: wrap;
+      gap: 0.5rem;
+      font-size: 0.82rem;
     }
 
-    @keyframes slideUp {
-      from { opacity: 0; transform: translate(-50%, 15px); }
-      to { opacity: 1; transform: translate(-50%, 0); }
+    body.caregiver-mode .caregiver-bar {
+      display: flex;
     }
 
-    /* Edit Modal Drawer */
+    /* ==========================================================================
+       8. MODALS & OVERLAYS
+       ========================================================================== */
     .modal-backdrop {
       position: fixed;
-      inset: 0;
-      background: rgba(0,0,0,0.65);
-      backdrop-filter: blur(4px);
+      top: 0; left: 0; right: 0; bottom: 0;
+      background: rgba(0, 0, 0, 0.75);
+      backdrop-filter: blur(5px);
       display: none;
       align-items: center;
       justify-content: center;
-      z-index: 200;
       padding: 1rem;
+      z-index: 500;
     }
 
     .modal-box {
       background: var(--surface);
       border: 1px solid var(--surface-border);
-      border-radius: var(--radius);
-      max-width: 480px;
+      border-radius: 20px;
+      max-width: 580px;
       width: 100%;
-      padding: 1.25rem;
+      padding: 1.5rem;
+      box-shadow: var(--shadow-md);
       display: flex;
       flex-direction: column;
       gap: 1rem;
-      box-shadow: var(--shadow-md);
+      max-height: 90vh;
+      overflow-y: auto;
     }
 
     .form-group {
@@ -414,7 +559,7 @@
       background: var(--bg);
       border: 1px solid var(--surface-border);
       color: var(--text);
-      padding: 0.5rem 0.75rem;
+      padding: 0.55rem 0.8rem;
       border-radius: 8px;
       font-size: 0.85rem;
       outline: none;
@@ -425,88 +570,121 @@
       border-color: var(--accent);
     }
 
-    /* Mobile Responsive */
-    @media (max-width: 900px) {
-      .power-grid {
-        grid-template-columns: 1fr;
-      }
+    /* Floating Toast */
+    .toast-popup {
+      position: fixed;
+      bottom: 24px;
+      right: 24px;
+      background: var(--surface);
+      color: var(--text);
+      border: 1px solid var(--accent);
+      padding: 0.75rem 1.25rem;
+      border-radius: 12px;
+      box-shadow: var(--shadow-md);
+      display: none;
+      align-items: center;
+      gap: 0.75rem;
+      z-index: 1000;
+      font-size: 0.82rem;
+      font-weight: 600;
+      animation: slideUp 0.25s ease-out;
+    }
+
+    @keyframes slideUp {
+      from { transform: translateY(20px); opacity: 0; }
+      to { transform: translateY(0); opacity: 1; }
+    }
+
+    /* Mobile Responsive Rules */
+    @media (max-width: 1024px) {
+      .power-grid { grid-template-columns: repeat(2, 1fr); }
+    }
+
+    @media (max-width: 768px) {
+      .power-grid { grid-template-columns: 1fr; }
+      .nav-tabs-group { overflow-x: auto; max-width: 100%; }
+      header { flex-direction: column; align-items: stretch; }
     }
   </style>
 </head>
 <body>
 
-  <!-- Simulation Header Banner -->
-  <div class="proto-banner">
+  <!-- Top Prototype & Switcher Banner -->
+  <div class="top-telemetry-banner">
     <div style="display:flex; align-items:center; gap:0.5rem;">
-      <span class="proto-badge">Interactive Mini Prototype</span>
-      <span>OmniTask v4.4 • Login Gateway & Core Simulation</span>
+      <span class="proto-badge">OmniTask v4.4 Master</span>
+      <span>Calendar-Centric Life OS & Multi-Role Governance</span>
     </div>
-    <div style="font-size:0.74rem;">
-      <button class="btn btn-secondary" style="padding:0.2rem 0.5rem; font-size:0.72rem; color:white; border-color:rgba(255,255,255,0.4);" onclick="toggleLoginScreen(true)">🚪 Switch User / Login Screen</button>
+    <div style="display:flex; align-items:center; gap:0.5rem;">
+      <button class="btn btn-secondary" style="padding:0.2rem 0.5rem; font-size:0.72rem; color:white; border-color:rgba(255,255,255,0.4);" onclick="toggleLoginScreen(true)">
+        🚪 Switch Account / Login Portal
+      </button>
     </div>
   </div>
 
-  <!-- FULL SCREEN LOGIN & ONBOARDING GATEWAY (Landing Page) -->
-  <div id="loginScreen" style="display: flex; min-height: calc(100vh - 40px); align-items: center; justify-content: center; padding: 1.5rem; background: radial-gradient(circle at top, rgba(99,102,241,0.18), transparent 70%), var(--bg);">
-    <div style="background: var(--surface); border: 1px solid var(--surface-border); border-radius: 20px; max-width: 540px; width: 100%; padding: 2rem; box-shadow: var(--shadow-md); display: flex; flex-direction: column; gap: 1.25rem;">
+  <!-- ==========================================================================
+       LOGIN & PERSONA GATEWAY (Landing View)
+       ========================================================================== -->
+  <div id="loginScreen" style="display:flex; min-height:calc(100vh - 40px); align-items:center; justify-content:center; padding:1.5rem; background:radial-gradient(circle at top, rgba(99,102,241,0.18), transparent 70%), var(--bg);">
+    <div style="background:var(--surface); border:1px solid var(--surface-border); border-radius:20px; max-width:540px; width:100%; padding:2rem; box-shadow:var(--shadow-md); display:flex; flex-direction:column; gap:1.25rem;">
       
-      <!-- Brand & Heading -->
-      <div style="text-align: center; display: flex; flex-direction: column; align-items: center; gap: 0.5rem;">
-        <div class="logo-icon" style="width: 48px; height: 48px; font-size: 1.35rem; border-radius: 12px; margin-bottom: 4px;">OT</div>
-        <h1 style="font-size: 1.5rem; font-weight: 800; letter-spacing: -0.02em;">Welcome to OmniTask</h1>
-        <p style="font-size: 0.82rem; color: var(--text-muted); line-height: 1.4;">Select your persona to test the specialized interface & safety engines:</p>
+      <!-- Brand & Title -->
+      <div style="text-align:center; display:flex; flex-direction:column; align-items:center; gap:0.4rem;">
+        <div class="logo-icon" style="width:48px; height:48px; font-size:1.35rem; border-radius:12px; margin-bottom:4px;">OT</div>
+        <h1 style="font-size:1.5rem; font-weight:800; letter-spacing:-0.02em;">Welcome to OmniTask</h1>
+        <p style="font-size:0.82rem; color:var(--text-muted); line-height:1.4;">Select your persona to explore the specialized interface and safety engines:</p>
       </div>
 
-      <!-- 3 Persona Cards -->
-      <div style="display: flex; flex-direction: column; gap: 0.6rem;">
+      <!-- 3 Persona Selector Cards -->
+      <div style="display:flex; flex-direction:column; gap:0.6rem;">
         
         <!-- Persona 1: Power User -->
-        <div class="module-card persona-landing-card" id="landPower" onclick="pickLandingPersona('power')" style="cursor: pointer; border: 2px solid var(--accent); background: var(--surface-hover); padding: 0.9rem;">
-          <div style="display: flex; justify-content: space-between; align-items: center;">
-            <div style="font-size: 0.92rem; font-weight: 800;">👤 Personal & Power User (Aswin)</div>
-            <span class="pill-badge" id="landBadgePower" style="background: var(--accent-light); color: var(--accent);">Active Selection</span>
+        <div class="module-card persona-landing-card" id="landPower" onclick="pickLandingPersona('power')" style="cursor:pointer; border:2px solid var(--accent); background:var(--surface-hover); padding:0.9rem;">
+          <div style="display:flex; justify-content:space-between; align-items:center;">
+            <div style="font-size:0.92rem; font-weight:800;">👤 Personal & Power User (Aswin)</div>
+            <span class="pill-badge" id="landBadgePower" style="background:var(--accent-light); color:var(--accent);">Active</span>
           </div>
-          <div class="card-sub" style="margin-top: 3px;">4-Pillar split dashboard, smart streaks, budget forecasts, and keyboard hotkeys.</div>
+          <div class="card-sub" style="margin-top:3px;">4-Pillar modular dashboard, workout streaks, budget forecasts, and Oversight Hub.</div>
         </div>
 
         <!-- Persona 2: Senior User -->
-        <div class="module-card persona-landing-card" id="landSenior" onclick="pickLandingPersona('senior')" style="cursor: pointer; border: 1px solid var(--card-border); padding: 0.9rem;">
-          <div style="display: flex; justify-content: space-between; align-items: center;">
-            <div style="font-size: 0.92rem; font-weight: 800;">👵 Senior User (Eleanor Vance)</div>
-            <span class="pill-badge" id="landBadgeSenior" style="background: var(--emerald-bg); color: var(--emerald); display: none;">Accessible AAA</span>
+        <div class="module-card persona-landing-card" id="landSenior" onclick="pickLandingPersona('senior')" style="cursor:pointer; border:1px solid var(--card-border); padding:0.9rem;">
+          <div style="display:flex; justify-content:space-between; align-items:center;">
+            <div style="font-size:0.92rem; font-weight:800;">👵 Senior Mode (Eleanor Vance)</div>
+            <span class="pill-badge" id="landBadgeSenior" style="background:var(--emerald-bg); color:var(--emerald); display:none;">Senior Shield</span>
           </div>
-          <div class="card-sub" style="margin-top: 3px;">High-contrast 24pt+ bold text, 56dp oversized touch buttons, voice read-outs.</div>
+          <div class="card-sub" style="margin-top:3px;">High-contrast 24pt+ typography, 56dp touch targets, and voice audio readouts.</div>
         </div>
 
         <!-- Persona 3: Caregiver -->
-        <div class="module-card persona-landing-card" id="landCaregiver" onclick="pickLandingPersona('caregiver')" style="cursor: pointer; border: 1px solid var(--card-border); padding: 0.9rem;">
-          <div style="display: flex; justify-content: space-between; align-items: center;">
-            <div style="font-size: 0.92rem; font-weight: 800;">🛡️ Caregiver Account (John Vance)</div>
-            <span class="pill-badge" id="landBadgeCaregiver" style="background: var(--rose-bg); color: var(--rose); display: none;">Monitoring</span>
+        <div class="module-card persona-landing-card" id="landCaregiver" onclick="pickLandingPersona('caregiver')" style="cursor:pointer; border:1px solid var(--card-border); padding:0.9rem;">
+          <div style="display:flex; justify-content:space-between; align-items:center;">
+            <div style="font-size:0.92rem; font-weight:800;">🛡️ Caregiver Account (John Vance)</div>
+            <span class="pill-badge" id="landBadgeCaregiver" style="background:var(--rose-bg); color:var(--rose); display:none;">Telemetry</span>
           </div>
-          <div class="card-sub" style="margin-top: 3px;">Live adherence telemetry stream, privacy pauses, and emergency escalation alerts.</div>
+          <div class="card-sub" style="margin-top:3px;">Live adherence telemetry stream, patient calling, and escalation emergency ladder.</div>
         </div>
 
       </div>
 
       <!-- Auth Inputs -->
-      <div style="display: flex; flex-direction: column; gap: 0.75rem; background: var(--bg); padding: 1rem; border-radius: 12px; border: 1px solid var(--surface-border);">
+      <div style="display:flex; flex-direction:column; gap:0.75rem; background:var(--bg); padding:1rem; border-radius:12px; border:1px solid var(--surface-border);">
         <div class="form-group">
-          <label style="font-size: 0.74rem; font-weight: 700; color: var(--text-muted);">Account Email / ID</label>
+          <label style="font-size:0.74rem; font-weight:700; color:var(--text-muted);">Account Email / ID</label>
           <input type="text" class="form-input" id="landEmail" value="aswin@omnitask.app">
         </div>
         <div class="form-group">
-          <label style="font-size: 0.74rem; font-weight: 700; color: var(--text-muted);" id="landPassLabel">Password</label>
+          <label style="font-size:0.74rem; font-weight:700; color:var(--text-muted);" id="landPassLabel">Password</label>
           <input type="password" class="form-input" id="landPass" value="••••••••">
         </div>
       </div>
 
-      <!-- Action CTAs -->
-      <div style="display: flex; flex-direction: column; gap: 0.6rem;">
-        <button class="btn" style="justify-content: center; padding: 0.75rem; font-size: 0.9rem; border-radius: 10px;" onclick="enterDashboard()">
+      <!-- Submit CTAs -->
+      <div style="display:flex; flex-direction:column; gap:0.6rem;">
+        <button class="btn" style="justify-content:center; padding:0.75rem; font-size:0.9rem; border-radius:10px;" onclick="enterDashboard()">
           🔑 Sign In & Launch Dashboard
         </button>
-        <button class="btn btn-secondary" style="justify-content: center; padding: 0.65rem; font-size: 0.82rem; border-radius: 10px;" onclick="enterDashboardGuest()">
+        <button class="btn btn-secondary" style="justify-content:center; padding:0.65rem; font-size:0.82rem; border-radius:10px;" onclick="enterDashboardGuest()">
           🚀 Continue as Guest (Instant Offline Demo)
         </button>
       </div>
@@ -514,284 +692,489 @@
     </div>
   </div>
 
-  <!-- MAIN APP CONTAINER (Hidden on initial landing until sign-in) -->
-  <div id="appContainer" style="display: none; flex-direction: column; min-height: 100vh;">
+  <!-- ==========================================================================
+       MAIN APP CONTAINER
+       ========================================================================== -->
+  <div id="appContainer" style="display:none; flex-direction:column; min-height:100vh;">
 
-    <!-- Screen Header -->
+    <!-- Global App Header -->
     <header>
-      <div class="brand-group">
+      <div class="brand-group" onclick="switchPrimaryTab('home')">
         <div class="logo-icon">OT</div>
         <div>
           <div class="brand-title">OmniTask</div>
         </div>
       </div>
 
-      <!-- Mode Switcher -->
-      <div class="mode-switch-group">
-        <button class="mode-btn active" id="btnPower" onclick="setMode('power')">⚡ Power User</button>
-        <button class="mode-btn" id="btnSenior" onclick="setMode('senior')">👵 Senior Mode</button>
-        <button class="mode-btn" id="btnCaregiver" onclick="setMode('caregiver')">🛡️ Caregiver</button>
+      <!-- Primary Navigation Tabs -->
+      <div class="nav-tabs-group" id="mainNavTabs">
+        <button class="nav-tab-btn active" id="tabHome" onclick="switchPrimaryTab('home')">📅 Home Calendar</button>
+        <button class="nav-tab-btn" id="tabReminders" onclick="switchPrimaryTab('reminders')">🔔 Reminders & Pills</button>
+        <button class="nav-tab-btn" id="tabExpense" onclick="switchPrimaryTab('expense')">💳 Expenses</button>
+        <button class="nav-tab-btn" id="tabFitness" onclick="switchPrimaryTab('fitness')">🏋️ Fitness</button>
+        <button class="nav-tab-btn" id="tabOversight" onclick="switchPrimaryTab('oversight')" style="border-left:1px solid var(--surface-border); margin-left:4px; color:var(--cyan);">
+          🛡️ Household Oversight
+        </button>
       </div>
 
-      <!-- Actions & Profile Portal -->
-      <div class="header-actions">
-        <!-- Family & Security Master Hub Button -->
-        <button class="btn btn-secondary" onclick="openFamilySettingsModal()" id="btnFamilySettings" title="Master User: Manage Senior 4-Digit PIN & Caregiver Access">
-          👨‍👩‍👧 Family & PIN Hub
-        </button>
+      <!-- Persona Fast Switcher -->
+      <div class="role-switch-pills">
+        <button class="role-btn active" id="btnRolePower" onclick="setMode('power')">⚡ Power</button>
+        <button class="role-btn" id="btnRoleSenior" onclick="setMode('senior')">👵 Senior</button>
+        <button class="role-btn" id="btnRoleCaregiver" onclick="setMode('caregiver')">🛡️ Caregiver</button>
+      </div>
 
-        <!-- Log Out / Switch Persona Button -->
-        <button class="btn btn-secondary" style="border-radius:20px; padding:0.35rem 0.75rem;" onclick="toggleLoginScreen(true)" id="userProfileBtn">
-          👤 <span id="activeUserName">Aswin</span> <span style="font-size:0.7rem; opacity:0.7;">(Switch ▾)</span>
+      <!-- Header Actions -->
+      <div class="header-actions">
+        <button class="btn btn-secondary" onclick="openFamilySettingsModal()" id="btnHeaderFamily" title="Master User: Senior PIN & Household Hub">
+          👨‍👩‍👧 Family Hub
         </button>
 
         <button class="btn btn-secondary" onclick="toggleTheme()" id="themeBtn">☀️ Light</button>
-        <button class="btn" onclick="openAddModal()">➕ Add Task</button>
+        <button class="btn" onclick="openQuickAddModal()">➕ Add Entry</button>
+
+        <!-- Profile Button with Dropdown Trigger -->
+        <button class="btn btn-secondary" style="border-radius:20px; padding:0.35rem 0.75rem;" onclick="toggleProfileDropdown()" id="userProfileBtn">
+          👤 <span id="activeUserName">Aswin</span> <span style="font-size:0.7rem; opacity:0.7;">▾</span>
+        </button>
+
+        <!-- Master Profile Dropdown Menu -->
+        <div class="profile-dropdown-menu" id="profileDropdown">
+          <div class="dropdown-header">
+            <div style="font-weight:800; font-size:0.88rem;" id="dropdownUserName">Aswin</div>
+            <div style="font-size:0.72rem; color:var(--text-muted);" id="dropdownUserEmail">aswin@omnitask.app</div>
+            <span class="pill-badge" style="background:var(--accent-light); color:var(--accent); align-self:flex-start; margin-top:2px;">⚡ Master Account Owner</span>
+          </div>
+
+          <div class="dropdown-item" onclick="switchPrimaryTab('oversight'); toggleProfileDropdown();">
+            <span>🛡️ Household Oversight Hub</span>
+            <span style="font-size:0.7rem; color:var(--cyan);">Open →</span>
+          </div>
+          <div class="dropdown-item" onclick="openFamilySettingsModal(); toggleProfileDropdown();">
+            <span>👨‍👩‍👧 Family Circle & Senior PIN</span>
+            <span style="font-size:0.7rem; color:var(--emerald);">1234</span>
+          </div>
+
+          <div class="dropdown-divider"></div>
+
+          <div class="dropdown-item" onclick="printDoctorSummary(); toggleProfileDropdown();">
+            <span>📋 Doctor Visit Summary (PDF)</span>
+            <span>📄</span>
+          </div>
+          <div class="dropdown-item" onclick="exportExpenseCSV(); toggleProfileDropdown();">
+            <span>📊 Export Expense Ledger (CSV)</span>
+            <span>💾</span>
+          </div>
+
+          <div class="dropdown-divider"></div>
+
+          <div class="dropdown-item" onclick="toggleLoginScreen(true); toggleProfileDropdown();" style="color:var(--rose);">
+            <span>🚪 Sign Out / Switch User</span>
+            <span>→</span>
+          </div>
+        </div>
+
       </div>
     </header>
 
     <!-- Main Viewport Arena -->
     <main class="app-viewport">
 
-    <!-- Master User Ambient Family Telemetry Ribbon (Shown in Power User Mode) -->
-    <div id="masterTelemetryRibbon" style="background:var(--surface); border:1px solid var(--surface-border); border-left:4px solid var(--accent); padding:0.6rem 1rem; border-radius:10px; margin-bottom:1rem; display:flex; justify-content:space-between; align-items:center; flex-wrap:wrap; gap:0.5rem; font-size:0.78rem;">
-      <div style="display:flex; align-items:center; gap:0.75rem;">
-        <span><strong>👨‍👩‍👧 Family Circle:</strong> 👵 Eleanor Vance (96% Adherence • Day 18/30 ✅)</span>
-        <span style="color:var(--text-muted);">|</span>
-        <span>🛡️ Caregiver John Vance: <em>Active • Online</em></span>
-      </div>
-      <div style="display:flex; gap:0.4rem; align-items:center;">
-        <span class="pill-badge" style="background:var(--emerald-bg); color:var(--emerald);">Escalation: Normal</span>
-        <button class="btn btn-secondary" style="padding:0.2rem 0.5rem; font-size:0.72rem;" onclick="openFamilySettingsModal()">⚙️ Manage</button>
-      </div>
-    </div>
-
-    <!-- Senior Mode Dignity & Privacy Bar (Shown in Senior Mode only) -->
-    <div id="seniorDignityBar" style="background:var(--emerald-bg); border:1.5px solid var(--emerald); padding:0.75rem 1rem; border-radius:12px; margin-bottom:1rem; display:none; justify-content:space-between; align-items:center; flex-wrap:wrap; gap:0.75rem;">
-      <div style="display:flex; align-items:center; gap:0.5rem; color:var(--emerald); font-weight:800; font-size:0.95rem;">
-        <span>🛡️ Monitored by Caregiver John Vance</span>
-        <span class="pill-badge" style="background:var(--surface); color:var(--emerald); font-size:0.75rem;">Adherence 96%</span>
-      </div>
-      <button class="btn btn-secondary" style="background:var(--surface); border:1.5px solid var(--emerald); font-weight:800; padding:0.4rem 0.8rem;" onclick="triggerSeniorPrivacyPause()">
-        🔒 Pause Caregiver Telemetry (2 Hrs)
-      </button>
-    </div>
-
-    <!-- Caregiver Alert Bar (Shown in Caregiver Mode) -->
-    <div class="caregiver-bar" id="caregiverBar">
-      <div>
-        <strong>🛡️ Caregiver Telemetry Active:</strong> Monitored Patient: <em>Eleanor Vance (Senior Profile)</em>
-      </div>
-      <div style="display:flex; gap:0.5rem; align-items:center;">
-        <span class="pill-badge" style="background:var(--emerald-bg); color:var(--emerald);">Adherence: 96%</span>
-        <span class="pill-badge" style="background:rgba(6,182,212,0.15); color:var(--cyan);" id="cgLiveStatus">🟢 Stream: Live</span>
-        <button class="btn btn-secondary" style="padding:0.25rem 0.5rem; font-size:0.72rem;" onclick="callSeniorPatient()">📞 Call Eleanor</button>
-      </div>
-    </div>
-
-    <!-- 4-Pillar Grid -->
-    <div class="power-grid">
-
-      <!-- Column 1: Calendar Aggregator -->
-      <section class="column-panel" id="colCalendar">
-        <div class="panel-title">
-          <span>📅 Calendar Aggregator</span>
-          <span class="pill-badge" style="background:var(--cyan-bg); color:var(--cyan);">Oct 2026</span>
+      <!-- Ambient Master User Telemetry Ribbon (Shown in Power Mode) -->
+      <div id="masterTelemetryRibbon" style="background:var(--surface); border:1px solid var(--surface-border); border-left:4px solid var(--accent); padding:0.6rem 1rem; border-radius:10px; display:flex; justify-content:space-between; align-items:center; flex-wrap:wrap; gap:0.5rem; font-size:0.78rem;">
+        <div style="display:flex; align-items:center; gap:0.75rem;">
+          <span><strong>👨‍👩‍👧 Family Circle:</strong> 👵 Eleanor Vance (96% Adherence • Day 18/30 ✅)</span>
+          <span style="color:var(--text-muted);">|</span>
+          <span>🛡️ Caregiver John Vance: <em>Active • Online</em></span>
         </div>
-
-        <div style="background:var(--bg); border:1px solid var(--surface-border); border-radius:8px; padding:0.75rem; text-align:center;">
-          <div style="font-size:0.75rem; color:var(--text-muted);">Today's Date</div>
-          <div style="font-size:1.25rem; font-weight:800; margin:4px 0;">Tuesday, Oct 6</div>
-          <div style="font-size:0.74rem; color:var(--emerald); font-weight:700;">🟢 4 Events Aggregated</div>
+        <div style="display:flex; gap:0.4rem; align-items:center;">
+          <span class="pill-badge" style="background:var(--emerald-bg); color:var(--emerald);">Escalation: Normal</span>
+          <button class="btn btn-secondary" style="padding:0.2rem 0.5rem; font-size:0.72rem;" onclick="switchPrimaryTab('oversight')">🛡️ View Oversight</button>
         </div>
+      </div>
 
-        <div class="module-card">
-          <div class="card-top">
-            <div class="card-title">💰 Today's Spend Total</div>
-            <span class="pill-badge" style="background:var(--amber-bg); color:var(--amber);" id="calDailySpend">$120.00</span>
-          </div>
-          <div class="card-sub" id="calSpendDesc">Auto-calculated from paid utility bills and groceries.</div>
+      <!-- Senior Dignity & Audio Readout Bar (Shown in Senior Mode) -->
+      <div id="seniorDignityBar" style="background:var(--emerald-bg); border:2px solid var(--emerald); padding:0.9rem 1.25rem; border-radius:14px; display:none; justify-content:space-between; align-items:center; flex-wrap:wrap; gap:0.75rem;">
+        <div style="display:flex; align-items:center; gap:0.6rem; color:var(--emerald); font-weight:800; font-size:1.1rem;">
+          <span>🛡️ Monitored by Caregiver John Vance</span>
+          <span class="pill-badge" style="background:var(--surface); color:var(--emerald); font-size:0.85rem;">Adherence 96%</span>
         </div>
-
-        <div class="module-card">
-          <div class="card-top">
-            <div class="card-title">🚨 Escalation Ladder</div>
-            <span class="pill-badge" style="background:var(--emerald-bg); color:var(--emerald);">Normal</span>
-          </div>
-          <div class="card-sub">All morning doses logged on time. Escalation timer is idle.</div>
-        </div>
-      </section>
-
-      <!-- Column 2: Pill Reminders & Course Progress -->
-      <section class="column-panel" id="colPills">
-        <div class="panel-title">
-          <span>💊 Health & Medicine</span>
-          <span class="pill-badge" style="background:var(--emerald-bg); color:var(--emerald);" id="pillCourseStatus">Day 18 / 30</span>
-        </div>
-
-        <!-- Pill Card with Live Progress Bar -->
-        <div class="module-card" id="cardPill">
-          <div class="card-top">
-            <div>
-              <div class="card-title">Metformin 500mg</div>
-              <div class="card-sub">Dr. Sarah Lin • Rx #89421 • 2x Daily</div>
-            </div>
-            <button class="btn btn-secondary" style="padding:0.2rem 0.45rem; font-size:0.7rem;" onclick="openEditModal('pill')">✏️</button>
-          </div>
-
-          <!-- Progress Bar -->
-          <div style="margin-top:0.4rem;">
-            <div style="display:flex; justify-content:space-between; font-size:0.72rem; font-weight:700;">
-              <span>Course Progress: <span id="pillPctText">60%</span></span>
-              <span id="pillRemainingText">12 Days Left</span>
-            </div>
-            <div class="progress-track">
-              <div class="progress-fill" id="pillProgressBar" style="width: 60%;"></div>
-            </div>
-          </div>
-
-          <!-- Refill Alert Banner -->
-          <div style="background:var(--amber-bg); border:1px solid var(--amber); color:var(--text); border-radius:6px; padding:0.4rem 0.6rem; font-size:0.72rem; display:flex; align-items:center; gap:0.3rem;" id="pillRefillAlert">
-            <span>⚠️ <strong>Refill Alert:</strong> Pharmacy renewal in 5 days.</span>
-          </div>
-
-          <button class="btn btn-emerald" onclick="takePillDose()" id="btnTakePill">
-            ✅ Take Dose (Day <span id="btnPillDay">18</span>/30)
+        <div style="display:flex; gap:0.5rem;">
+          <button class="btn btn-secondary" style="background:var(--surface); border:2px solid var(--emerald); font-weight:800;" onclick="speakSeniorSchedule()">
+            🗣️ Listen to Schedule (Voice)
+          </button>
+          <button class="btn btn-secondary" style="background:var(--surface); border:2px solid var(--emerald); font-weight:800;" onclick="triggerSeniorPrivacyPause()">
+            🔒 Pause Telemetry (2 Hrs)
           </button>
         </div>
+      </div>
 
-        <!-- Medical ID Quick Button -->
-        <div class="module-card" style="background:var(--surface-hover);">
-          <div class="card-title" style="font-size:0.8rem;">📋 Emergency Medical ID</div>
-          <div class="card-sub">Exportable offline ID card for doctors and EMTs.</div>
-          <button class="btn btn-secondary" style="font-size:0.74rem; padding:0.35rem 0.6rem;" onclick="showMedicalId()">Show Medical ID</button>
+      <!-- Caregiver Telemetry Active Bar (Shown in Caregiver Mode) -->
+      <div class="caregiver-bar" id="caregiverBar">
+        <div>
+          <strong>🛡️ Caregiver Telemetry Active:</strong> Monitored Patient: <em>Eleanor Vance (Senior Profile)</em>
         </div>
-      </section>
-
-      <!-- Column 3: Bills & Budget Ledger -->
-      <section class="column-panel" id="colBills">
-        <div class="panel-title">
-          <span>💳 Bills & Budget</span>
-          <span class="pill-badge" style="background:var(--amber-bg); color:var(--amber);" id="budgetLeftBadge">$680 Left</span>
+        <div style="display:flex; gap:0.5rem; align-items:center;">
+          <span class="pill-badge" style="background:var(--emerald-bg); color:var(--emerald);">Adherence: 96%</span>
+          <span class="pill-badge" style="background:rgba(6,182,212,0.15); color:var(--cyan);" id="cgLiveStatus">🟢 Stream: Live</span>
+          <button class="btn btn-secondary" style="padding:0.25rem 0.5rem; font-size:0.72rem;" onclick="callSeniorPatient()">📞 Call Eleanor</button>
         </div>
+      </div>
 
-        <!-- Bill Reminder with Auto-Link -->
-        <div class="module-card" id="cardBill">
-          <div class="card-top">
-            <div>
-              <div class="card-title">Electric Utility Bill</div>
-              <div class="card-sub">ConEd • Due Oct 8 (2 Days Left)</div>
+      <!-- ======================================================================
+           VIEW 1: PRIMARY 4-PILLAR DASHBOARD (Home Calendar Aggregator)
+           ====================================================================== -->
+      <div id="viewHomeDashboard">
+        <div class="power-grid">
+
+          <!-- Column 1: Calendar Aggregator -->
+          <section class="column-panel" id="colCalendar">
+            <div class="panel-title">
+              <span>📅 Calendar Aggregator</span>
+              <span class="pill-badge" style="background:var(--cyan-bg); color:var(--cyan);">Oct 2026</span>
             </div>
-            <button class="btn btn-secondary" style="padding:0.2rem 0.45rem; font-size:0.7rem;" onclick="openEditModal('bill')">✏️</button>
-          </div>
 
-          <div style="font-size:1.15rem; font-weight:800; color:var(--text);" id="billAmountText">$120.00</div>
-
-          <div style="font-size:0.7rem; color:var(--text-muted);" id="billStatusText">
-            ⚡ Status: <strong style="color:var(--amber);">Pending Payment</strong>
-          </div>
-
-          <button class="btn" onclick="payBillAutoLink()" id="btnPayBill">
-            💳 Pay Bill & Auto-Link to Expense
-          </button>
-        </div>
-
-        <!-- Expense Ledger Preview -->
-        <div class="module-card">
-          <div class="card-title" style="font-size:0.8rem;">📊 Expense Ledger (Oct)</div>
-          <div style="display:flex; flex-direction:column; gap:0.35rem; font-size:0.74rem;" id="ledgerList">
-            <div style="display:flex; justify-content:space-between;">
-              <span>🛒 Whole Foods</span>
-              <strong>$45.20</strong>
+            <!-- Date Inspector Card -->
+            <div style="background:var(--bg); border:1px solid var(--surface-border); border-radius:10px; padding:0.85rem; text-align:center;">
+              <div style="font-size:0.75rem; color:var(--text-muted);">Selected Date</div>
+              <div style="font-size:1.25rem; font-weight:800; margin:4px 0;" id="calSelectedDateText">Tuesday, Oct 6</div>
+              <div style="font-size:0.74rem; color:var(--emerald); font-weight:700;" id="calEventCountBadge">🟢 4 Events Aggregated</div>
             </div>
-            <div style="display:flex; justify-content:space-between;">
-              <span>☕ Blue Bottle Coffee</span>
-              <strong>$6.50</strong>
+
+            <!-- Mini Month Heatmap Matrix -->
+            <div style="display:grid; grid-template-columns:repeat(7, 1fr); gap:4px; text-align:center; font-size:0.7rem; font-weight:700;">
+              <span style="color:var(--text-muted);">M</span><span style="color:var(--text-muted);">T</span><span style="color:var(--text-muted);">W</span><span style="color:var(--text-muted);">T</span><span style="color:var(--text-muted);">F</span><span style="color:var(--text-muted);">S</span><span style="color:var(--text-muted);">S</span>
+              <button class="btn-secondary" style="padding:4px; border-radius:4px; font-size:0.7rem;" onclick="selectCalendarDay(5)">5</button>
+              <button class="btn" style="padding:4px; border-radius:4px; font-size:0.7rem; background:var(--accent);" onclick="selectCalendarDay(6)">6</button>
+              <button class="btn-secondary" style="padding:4px; border-radius:4px; font-size:0.7rem;" onclick="selectCalendarDay(7)">7</button>
+              <button class="btn-secondary" style="padding:4px; border-radius:4px; font-size:0.7rem;" onclick="selectCalendarDay(8)">8</button>
+              <button class="btn-secondary" style="padding:4px; border-radius:4px; font-size:0.7rem;" onclick="selectCalendarDay(9)">9</button>
+              <button class="btn-secondary" style="padding:4px; border-radius:4px; font-size:0.7rem;" onclick="selectCalendarDay(10)">10</button>
+              <button class="btn-secondary" style="padding:4px; border-radius:4px; font-size:0.7rem;" onclick="selectCalendarDay(11)">11</button>
+            </div>
+
+            <!-- Daily Spend Total -->
+            <div class="module-card">
+              <div class="card-top">
+                <div class="card-title">💰 Today's Spend Total</div>
+                <span class="pill-badge" style="background:var(--amber-bg); color:var(--amber);" id="calDailySpend">$120.00</span>
+              </div>
+              <div class="card-sub" id="calSpendDesc">Auto-calculated from paid bills and grocery expenses.</div>
+            </div>
+
+            <!-- Escalation Ladder -->
+            <div class="module-card senior-hide">
+              <div class="card-top">
+                <div class="card-title">🚨 Escalation Ladder</div>
+                <span class="pill-badge" style="background:var(--emerald-bg); color:var(--emerald);">Idle (Normal)</span>
+              </div>
+              <div class="card-sub">All morning regimens confirmed on time. Escalation timer is idle.</div>
+            </div>
+          </section>
+
+          <!-- Column 2: Pill Reminders & Course Progress -->
+          <section class="column-panel" id="colPills">
+            <div class="panel-title">
+              <span>💊 Health & Medicine</span>
+              <span class="pill-badge" style="background:var(--emerald-bg); color:var(--emerald);" id="pillCourseStatus">Day 18 / 30</span>
+            </div>
+
+            <!-- Active Rx Card -->
+            <div class="module-card" id="cardPill">
+              <div class="card-top">
+                <div>
+                  <div class="card-title">Metformin 500mg</div>
+                  <div class="card-sub">Dr. Sarah Lin • Rx #89421 • 2x Daily</div>
+                </div>
+                <button class="btn btn-secondary senior-hide" style="padding:0.2rem 0.45rem; font-size:0.7rem;" onclick="openEditModal('pill')">✏️</button>
+              </div>
+
+              <!-- Progress Bar -->
+              <div>
+                <div style="display:flex; justify-content:space-between; font-size:0.72rem; font-weight:700;">
+                  <span>Course Progress: <span id="pillPctText">60%</span></span>
+                  <span style="color:var(--text-muted);" id="pillRemainingText">12 Days Left</span>
+                </div>
+                <div class="progress-track">
+                  <div class="progress-fill" id="pillProgressBar" style="width:60%;"></div>
+                </div>
+              </div>
+
+              <!-- Refill Alert -->
+              <div style="background:var(--amber-bg); border:1px solid var(--amber); border-radius:6px; padding:0.4rem 0.6rem; font-size:0.72rem; color:var(--amber); font-weight:700;" id="refillAlertBox">
+                ⚠️ Refill Alert: Pharmacy renewal in 5 days.
+              </div>
+
+              <!-- Action Button -->
+              <button class="btn btn-emerald btn-senior-touch" id="btnTakeDose" onclick="takePillDose()">
+                ✓ Take Dose (<span id="btnPillDay">18</span> / 30)
+              </button>
+            </div>
+
+            <!-- Medical ID Card -->
+            <div class="module-card">
+              <div class="card-top">
+                <div class="card-title">📋 Emergency Medical ID</div>
+              </div>
+              <div class="card-sub">Exportable offline clinical record for doctors and EMTs.</div>
+              <button class="btn btn-secondary btn-senior-touch" onclick="showMedicalId()">
+                Show Medical ID
+              </button>
+            </div>
+          </section>
+
+          <!-- Column 3: Bills & Expense Ledger -->
+          <section class="column-panel" id="colBills">
+            <div class="panel-title">
+              <span>💳 Bills & Budget</span>
+              <span class="pill-badge" style="background:var(--amber-bg); color:var(--amber);" id="budgetRemaining">$680 Left</span>
+            </div>
+
+            <!-- Electric Utility Bill Card -->
+            <div class="module-card" id="cardBill">
+              <div class="card-top">
+                <div>
+                  <div class="card-title" id="billNameText">Electric Utility Bill</div>
+                  <div class="card-sub">ConEd • Due Oct 8 (2 Days Left)</div>
+                </div>
+                <button class="btn btn-secondary senior-hide" style="padding:0.2rem 0.45rem; font-size:0.7rem;" onclick="openEditModal('bill')">✏️</button>
+              </div>
+
+              <div style="font-size:1.35rem; font-weight:800; font-family:'JetBrains Mono',monospace;" id="billAmountText">$120.00</div>
+              <div class="card-sub" id="billStatusText">⚡ Status: <strong style="color:var(--amber);">Pending Payment</strong></div>
+
+              <button class="btn" style="background:var(--accent);" id="btnPayBill" onclick="payBillAutoLink()">
+                💳 Pay Bill & Auto-Link to Expense
+              </button>
+            </div>
+
+            <!-- Live Expense Ledger -->
+            <div class="module-card senior-hide">
+              <div class="card-top">
+                <div class="card-title">📊 Expense Ledger (Oct)</div>
+                <span class="pill-badge" style="background:var(--surface-hover); color:var(--text);">3 Entries</span>
+              </div>
+
+              <div style="display:flex; flex-direction:column; gap:0.4rem; font-size:0.75rem;" id="ledgerList">
+                <div style="display:flex; justify-content:space-between;">
+                  <span>🛒 Whole Foods</span>
+                  <strong>$45.20</strong>
+                </div>
+                <div style="display:flex; justify-content:space-between;">
+                  <span>☕ Blue Bottle Coffee</span>
+                  <strong>$6.50</strong>
+                </div>
+              </div>
+            </div>
+          </section>
+
+          <!-- Column 4: Fitness & Habits -->
+          <section class="column-panel" id="colFit">
+            <div class="panel-title">
+              <span>🏋️ Fitness & Habits</span>
+              <span class="pill-badge" style="background:var(--purple-bg); color:var(--purple);" id="streakBadgeText">4-Day Streak</span>
+            </div>
+
+            <!-- Workout Routine -->
+            <div class="module-card">
+              <div class="card-top">
+                <div>
+                  <div class="card-title">Upper Body & Core</div>
+                  <div class="card-sub">AI Routine • Chest, Triceps & Abs</div>
+                </div>
+                <span class="pill-badge" style="background:var(--purple-bg); color:var(--purple);">3 Sets</span>
+              </div>
+
+              <div style="font-size:0.74rem; color:var(--text-muted);">
+                • Bench Press: 3 × 10 (135 lbs)<br>
+                • Incline Dumbbell: 3 × 12 (45 lbs)<br>
+                • Plank: 3 × 60s
+              </div>
+
+              <button class="btn btn-secondary btn-senior-touch" onclick="completeWorkout()" id="btnWorkout">
+                💪 Log Workout Complete
+              </button>
+            </div>
+
+            <!-- Emoji Habit Cluster -->
+            <div class="module-card senior-hide">
+              <div class="card-top">
+                <div class="card-title">✨ Same-Day Habit Cluster</div>
+                <span class="pill-badge" style="background:var(--cyan-bg); color:var(--cyan);" id="habitClusterCount">🎸 ×3</span>
+              </div>
+              <div class="card-sub">
+                • 09:00 AM: Scale practice (15m)<br>
+                • 02:00 PM: Song study (20m)<br>
+                • 07:00 PM: Chord drills (15m)
+              </div>
+              <button class="btn btn-secondary" style="font-size:0.72rem; padding:0.3rem 0.6rem;" onclick="logHabitIncrement()">➕ Log Habit</button>
+            </div>
+          </section>
+
+        </div>
+      </div>
+
+      <!-- ======================================================================
+           VIEW 2: DEDICATED HOUSEHOLD OVERSIGHT HUB (5th Primary Domain View)
+           ====================================================================== -->
+      <div id="viewOversight" style="display:none; flex-direction:column; gap:1.25rem;">
+        
+        <div style="display:flex; justify-content:space-between; align-items:center; flex-wrap:wrap; gap:0.5rem; background:var(--surface); border:1px solid var(--surface-border); border-radius:14px; padding:1.25rem;">
+          <div>
+            <h2 style="font-size:1.35rem; font-weight:800; display:flex; align-items:center; gap:0.5rem;">
+              <span>🛡️ Household Oversight & Caregiver Command Center</span>
+            </h2>
+            <p style="font-size:0.82rem; color:var(--text-muted); margin-top:3px;">
+              Master Account: <strong>Aswin</strong> • Monitored Family: <strong>Eleanor Vance (Senior)</strong> & <strong>John Vance (Caregiver)</strong>
+            </p>
+          </div>
+          <div style="display:flex; gap:0.5rem;">
+            <button class="btn" style="background:var(--accent);" onclick="printDoctorSummary()">📋 1-Tap Doctor PDF Summary</button>
+            <button class="btn btn-secondary" onclick="openFamilySettingsModal()">⚙️ Manage Credentials & PIN</button>
+          </div>
+        </div>
+
+        <div style="display:grid; grid-template-columns:repeat(3, 1fr); gap:1rem;">
+          
+          <!-- Oversight Card 1: Eleanor Vance Health & Adherence -->
+          <div class="column-panel">
+            <div class="panel-title">
+              <span>👵 Eleanor Vance (Senior Health)</span>
+              <span class="pill-badge" style="background:var(--emerald-bg); color:var(--emerald);">Adherence 96%</span>
+            </div>
+            
+            <div class="module-card">
+              <div class="card-title">Metformin 500mg Regimen</div>
+              <div class="card-sub">Course Progress: <strong>Day 18 of 30 (60%)</strong></div>
+              <div class="progress-track">
+                <div class="progress-fill" style="width:60%;"></div>
+              </div>
+              <div style="font-size:0.75rem; color:var(--text-muted); margin-top:4px;">
+                • Prescribing Physician: Dr. Sarah Lin (555-0199)<br>
+                • Refill Status: 5 Days Remaining (Warning Dispatched)<br>
+                • Morning Dose: Logged at 08:30 AM ✅
+              </div>
+            </div>
+
+            <div class="module-card">
+              <div class="card-title">Emergency Medical ID & Direct Call</div>
+              <div class="card-sub">Blood Type: O+ • Allergy: Penicillin</div>
+              <button class="btn btn-secondary" onclick="callSeniorPatient()">📞 Call Eleanor's Residence</button>
             </div>
           </div>
-        </div>
-      </section>
 
-      <!-- Column 4: Fitness & Habits -->
-      <section class="column-panel" id="colFit">
-        <div class="panel-title">
-          <span>🏋️ Fitness & Habits</span>
-          <span class="pill-badge" style="background:var(--purple-bg); color:var(--purple);">4-Day Streak</span>
-        </div>
-
-        <!-- Workout Routine -->
-        <div class="module-card">
-          <div class="card-top">
-            <div>
-              <div class="card-title">Upper Body & Core</div>
-              <div class="card-sub">AI Routine • Chest, Triceps & Abs</div>
+          <!-- Oversight Card 2: Caregiver John Vance Audit Trail -->
+          <div class="column-panel">
+            <div class="panel-title">
+              <span>🛡️ Caregiver John Vance (Audit Log)</span>
+              <span class="pill-badge" style="background:var(--rose-bg); color:var(--rose);">Online • Active</span>
             </div>
-            <span class="pill-badge" style="background:var(--purple-bg); color:var(--purple);">3 Sets</span>
+
+            <div class="module-card">
+              <div class="card-title">Real-Time Caregiver Activity Stream</div>
+              <div style="display:flex; flex-direction:column; gap:0.4rem; font-size:0.74rem; color:var(--text-muted);">
+                <div>• <strong>10:45 AM:</strong> Viewed Metformin adherence chart.</div>
+                <div>• <strong>08:35 AM:</strong> Acknowledged morning dose completion.</div>
+                <div>• <strong>Yesterday 07:15 PM:</strong> Logged note: <em>"Eleanor walked 20 mins."</em></div>
+              </div>
+            </div>
+
+            <div class="module-card">
+              <div class="card-title">Escalation Timer Setting</div>
+              <div class="card-sub">Threshold before family dispatch: <strong>30 Minutes</strong></div>
+              <button class="btn btn-secondary" onclick="openFamilySettingsModal()">⚙️ Adjust Escalation Interval</button>
+            </div>
           </div>
 
-          <div style="font-size:0.74rem; color:var(--text-muted);">
-            • Bench Press: 3 × 10 (135 lbs)<br>
-            • Incline Dumbbell: 3 × 12 (45 lbs)<br>
-            • Plank: 3 × 60s
+          <!-- Oversight Card 3: Paired Device Fleet & Battery -->
+          <div class="column-panel">
+            <div class="panel-title">
+              <span>📱 Paired Household Devices</span>
+              <span class="pill-badge" style="background:var(--cyan-bg); color:var(--cyan);">3 Connected</span>
+            </div>
+
+            <div class="module-card">
+              <div style="display:flex; justify-content:space-between; align-items:center;">
+                <div>
+                  <strong>👵 Eleanor's iPad (Living Room)</strong>
+                  <div class="card-sub">Status: 🟢 Online • Last Ping: 2m ago</div>
+                </div>
+                <span class="pill-badge" style="background:var(--emerald-bg); color:var(--emerald);">78% Battery</span>
+              </div>
+            </div>
+
+            <div class="module-card">
+              <div style="display:flex; justify-content:space-between; align-items:center;">
+                <div>
+                  <strong>🛡️ John's iPhone (Caregiver)</strong>
+                  <div class="card-sub">Status: 🟢 Active on Shift</div>
+                </div>
+                <span class="pill-badge" style="background:var(--emerald-bg); color:var(--emerald);">92% Battery</span>
+              </div>
+            </div>
+
+            <div class="module-card">
+              <div style="display:flex; justify-content:space-between; align-items:center;">
+                <div>
+                  <strong>👤 Aswin's MacBook (Master)</strong>
+                  <div class="card-sub">Status: ⚡ Active Device</div>
+                </div>
+                <span class="pill-badge" style="background:var(--accent-light); color:var(--accent);">100% Battery</span>
+              </div>
+            </div>
+
           </div>
 
-          <button class="btn btn-secondary" onclick="completeWorkout()" id="btnWorkout">
-            💪 Log Workout Complete
-          </button>
         </div>
 
-        <!-- Emoji Habit Cluster -->
-        <div class="module-card">
-          <div class="card-top">
-            <div class="card-title">✨ Same-Day Habit Cluster</div>
-            <span class="pill-badge" style="background:var(--cyan-bg); color:var(--cyan);">🎸 ×3</span>
-          </div>
-          <div class="card-sub">
-            • 09:00 AM: Scale practice (15m)<br>
-            • 02:00 PM: Song study (20m)<br>
-            • 07:00 PM: Chord drills (15m)
-          </div>
-          <button class="btn btn-secondary" style="font-size:0.72rem; padding:0.3rem 0.6rem;" onclick="showToast('✅ Logged +1 Guitar Practice Session')">➕ Log Habit</button>
-        </div>
-      </section>
+      </div>
 
-    </div>
-  </main>
+    </main>
 
-  <!-- Edit & Rewrite Modal -->
-  <div class="modal-backdrop" id="editModal">
+  </div>
+
+  <!-- ==========================================================================
+       MODALS: INGESTION, FAMILY HUB, CASCADE EDIT, DOCTOR SUMMARY
+       ========================================================================== -->
+
+  <!-- Modal 1: Speed-Dial 2-Field Quick Add Modal -->
+  <div class="modal-backdrop" id="quickAddModal">
     <div class="modal-box">
       <div style="display:flex; justify-content:space-between; align-items:center;">
-        <h3 id="modalTitle" style="font-size:1rem; font-weight:800;">✏️ Edit Item & Cascade Sync</h3>
-        <button class="btn btn-secondary" style="padding:0.2rem 0.5rem;" onclick="closeEditModal()">✕</button>
+        <h3 style="font-size:1.05rem; font-weight:800;">➕ Speed-Dial Quick Ingestion</h3>
+        <button class="btn btn-secondary" style="padding:0.2rem 0.5rem;" onclick="closeQuickAddModal()">✕</button>
       </div>
 
       <div class="form-group">
-        <label id="editField1Label">Item Title / Name</label>
-        <input type="text" class="form-input" id="editField1">
+        <label>Select Life Domain Module</label>
+        <select class="form-input" id="addDomainSelect">
+          <option value="pill">💊 Prescription Pill Reminder</option>
+          <option value="bill">💳 Bill / Payment Reminder</option>
+          <option value="expense">📊 Quick Expense Ledger Entry</option>
+          <option value="fitness">🏋️ Workout Routine / Habit</option>
+        </select>
       </div>
 
       <div class="form-group">
-        <label id="editField2Label">Amount ($) or Dosage</label>
-        <input type="text" class="form-input" id="editField2">
+        <label>Title / Name (Mandatory Field 1)</label>
+        <input type="text" class="form-input" id="addTitleInput" placeholder="e.g. Lisinopril 10mg or Internet Bill">
       </div>
 
-      <!-- Cascade Sync Option -->
-      <div style="background:var(--surface-hover); border:1px solid var(--surface-border); padding:0.6rem; border-radius:8px; font-size:0.74rem;" id="cascadeBox">
-        <strong>🔄 Cascade Sync Rule:</strong>
-        <p style="color:var(--text-muted); margin-top:2px;">Editing this bill will automatically update the linked $120.00 entry in the Expense Ledger and recalculate daily calendar spend.</p>
+      <div class="form-group">
+        <label>Amount / Dosage / Schedule (Mandatory Field 2)</label>
+        <input type="text" class="form-input" id="addAmountInput" placeholder="e.g. 10mg Once Daily or $85.00">
       </div>
 
       <div style="display:flex; justify-content:flex-end; gap:0.5rem;">
-        <button class="btn btn-secondary" onclick="closeEditModal()">Cancel</button>
-        <button class="btn" onclick="saveEdit()">💾 Save Changes</button>
+        <button class="btn btn-secondary" onclick="closeQuickAddModal()">Cancel</button>
+        <button class="btn" onclick="saveQuickAddEntry()">💾 Save Entry</button>
       </div>
     </div>
   </div>
 
-  <!-- Master User Family & Security Hub Modal -->
+  <!-- Modal 2: Master User Family & Security Hub Modal -->
   <div class="modal-backdrop" id="familySettingsModal">
-    <div class="modal-box" style="max-width:560px; max-height:90vh; overflow-y:auto;">
+    <div class="modal-box" style="max-width:560px;">
       <div style="display:flex; justify-content:space-between; align-items:center;">
         <div style="display:flex; align-items:center; gap:0.5rem;">
           <div class="logo-icon" style="width:28px; height:28px; font-size:0.85rem; background:var(--purple);">👨‍👩‍👧</div>
@@ -801,16 +1184,13 @@
       </div>
 
       <p style="font-size:0.75rem; color:var(--text-muted); line-height:1.4;">
-        As the <strong>Master Account Owner (Aswin)</strong>, you provision PINs, credentials, and safety governance for all household members:
+        As the <strong>Master Account Owner (Aswin)</strong>, you manage credentials, PIN provisioning, and caregiver access rules.
       </p>
 
-      <!-- Section 1: Senior Profile PIN & Accessibility Provisioning -->
+      <!-- Senior Settings -->
       <div style="background:var(--bg); border:1.5px solid var(--emerald); border-radius:12px; padding:1rem; display:flex; flex-direction:column; gap:0.75rem;">
         <div style="display:flex; justify-content:space-between; align-items:center;">
-          <div style="display:flex; align-items:center; gap:0.4rem;">
-            <span style="font-size:1.2rem;">👵</span>
-            <strong style="font-size:0.88rem; color:var(--emerald);">Senior Profile (Eleanor Vance)</strong>
-          </div>
+          <strong style="font-size:0.88rem; color:var(--emerald);">👵 Senior Profile (Eleanor Vance)</strong>
           <span class="pill-badge" style="background:var(--emerald-bg); color:var(--emerald);">Senior Shield Active</span>
         </div>
 
@@ -823,26 +1203,12 @@
             </div>
           </div>
         </div>
-
-        <div style="display:grid; grid-template-columns:1fr 1fr; gap:0.5rem; font-size:0.74rem;">
-          <div style="background:var(--surface); padding:0.5rem; border-radius:6px; border:1px solid var(--surface-border);">
-            <strong>🔤 Typography Mode:</strong>
-            <div style="color:var(--text-muted);">24pt+ High-Contrast AAA</div>
-          </div>
-          <div style="background:var(--surface); padding:0.5rem; border-radius:6px; border:1px solid var(--surface-border);">
-            <strong>🗣️ Voice Readout TTS:</strong>
-            <div style="color:var(--emerald);">Enabled (Auto-speak)</div>
-          </div>
-        </div>
       </div>
 
-      <!-- Section 2: Caregiver Profile Credentials & Telemetry -->
+      <!-- Caregiver Settings -->
       <div style="background:var(--bg); border:1.5px solid var(--rose); border-radius:12px; padding:1rem; display:flex; flex-direction:column; gap:0.75rem;">
         <div style="display:flex; justify-content:space-between; align-items:center;">
-          <div style="display:flex; align-items:center; gap:0.4rem;">
-            <span style="font-size:1.2rem;">🛡️</span>
-            <strong style="font-size:0.88rem; color:var(--rose);">Caregiver Account (John Vance)</strong>
-          </div>
+          <strong style="font-size:0.88rem; color:var(--rose);">🛡️ Caregiver Account (John Vance)</strong>
           <span class="pill-badge" style="background:var(--rose-bg); color:var(--rose);">Telemetry Live</span>
         </div>
 
@@ -861,73 +1227,40 @@
         </div>
       </div>
 
-      <!-- Security Sync Buttons -->
-      <div style="display:flex; justify-content:flex-end; gap:0.5rem; margin-top:0.25rem;">
+      <div style="display:flex; justify-content:flex-end; gap:0.5rem;">
         <button class="btn btn-secondary" onclick="closeFamilySettingsModal()">Cancel</button>
         <button class="btn" style="background:var(--accent);" onclick="saveFamilySettings()">💾 Save & Sync Household Credentials</button>
       </div>
     </div>
   </div>
 
-  <!-- Login & Persona Gateway Modal -->
-  <div class="modal-backdrop" id="loginModal">
-    <div class="modal-box" style="max-width:520px;">
+  <!-- Modal 3: Universal Edit & Cascade Sync Modal -->
+  <div class="modal-backdrop" id="editModal">
+    <div class="modal-box">
       <div style="display:flex; justify-content:space-between; align-items:center;">
-        <div style="display:flex; align-items:center; gap:0.5rem;">
-          <div class="logo-icon" style="width:28px; height:28px; font-size:0.85rem;">OT</div>
-          <h3 style="font-size:1.05rem; font-weight:800;">OmniTask Login Portal</h3>
-        </div>
-        <button class="btn btn-secondary" style="padding:0.2rem 0.5rem;" onclick="closeLoginModal()">✕</button>
+        <h3 id="modalTitle" style="font-size:1rem; font-weight:800;">✏️ Edit Item & Cascade Sync</h3>
+        <button class="btn btn-secondary" style="padding:0.2rem 0.5rem;" onclick="closeEditModal()">✕</button>
       </div>
 
-      <p style="font-size:0.75rem; color:var(--text-muted);">Select your account persona to test the specialized view interfaces:</p>
-
-      <!-- Persona Cards Selector -->
-      <div style="display:flex; flex-direction:column; gap:0.5rem;">
-        <div class="module-card persona-select-card active-persona" id="personaPower" onclick="selectPersona('power')" style="cursor:pointer; border:1.5px solid var(--accent); background:var(--surface-hover);">
-          <div style="display:flex; justify-content:space-between; align-items:center;">
-            <strong>👤 Personal & Power User (Aswin)</strong>
-            <span class="pill-badge" id="badgePower" style="background:var(--accent-light); color:var(--accent);">Active</span>
-          </div>
-          <div class="card-sub">4-Pillar modular split, dense controls, smart streaks, and budget forecasting.</div>
-        </div>
-
-        <div class="module-card persona-select-card" id="personaSenior" onclick="selectPersona('senior')" style="cursor:pointer; border:1px solid var(--card-border);">
-          <div style="display:flex; justify-content:space-between; align-items:center;">
-            <strong>👵 Senior Mode (Eleanor Vance)</strong>
-            <span class="pill-badge" id="badgeSenior" style="background:var(--emerald-bg); color:var(--emerald); display:none;">Selected</span>
-          </div>
-          <div class="card-sub">Single-stream chronological feed, 24pt+ large bold typography, voice audio readouts.</div>
-        </div>
-
-        <div class="module-card persona-select-card" id="personaCaregiver" onclick="selectPersona('caregiver')" style="cursor:pointer; border:1px solid var(--card-border);">
-          <div style="display:flex; justify-content:space-between; align-items:center;">
-            <strong>🛡️ Caregiver Account (John Vance)</strong>
-            <span class="pill-badge" id="badgeCaregiver" style="background:var(--rose-bg); color:var(--rose); display:none;">Selected</span>
-          </div>
-          <div class="card-sub">Real-time adherence telemetry feed, privacy pause, and emergency alert escalation ladder.</div>
-        </div>
-      </div>
-
-      <!-- Auth Inputs -->
       <div class="form-group">
-        <label>Email Address / Username</label>
-        <input type="text" class="form-input" id="loginEmail" value="aswin@omnitask.app">
+        <label id="editField1Label">Item Title / Name</label>
+        <input type="text" class="form-input" id="editField1">
       </div>
 
-      <div class="form-group" id="pinGroup">
-        <label id="loginPassLabel">Password / Senior 4-Digit PIN</label>
-        <input type="password" class="form-input" id="loginPass" value="••••••••">
+      <div class="form-group">
+        <label id="editField2Label">Amount ($) or Dosage</label>
+        <input type="text" class="form-input" id="editField2">
       </div>
 
-      <!-- Action Buttons -->
-      <div style="display:flex; flex-direction:column; gap:0.5rem;">
-        <button class="btn" style="justify-content:center; padding:0.6rem;" onclick="loginWithPersona()">
-          🔑 Sign In with Selected Profile
-        </button>
-        <button class="btn btn-secondary" style="justify-content:center; padding:0.5rem;" onclick="guestLogin()">
-          🚀 Continue as Guest (Offline Demo Mode)
-        </button>
+      <!-- Cascade Sync Option Box -->
+      <div style="background:var(--surface-hover); border:1px solid var(--surface-border); padding:0.6rem; border-radius:8px; font-size:0.74rem;" id="cascadeBox">
+        <strong>🔄 Cascade Sync Rule:</strong>
+        <p style="color:var(--text-muted); margin-top:2px;">Editing this bill will automatically update the linked entry in the Expense Ledger and recalculate daily calendar spend.</p>
+      </div>
+
+      <div style="display:flex; justify-content:flex-end; gap:0.5rem;">
+        <button class="btn btn-secondary" onclick="closeEditModal()">Cancel</button>
+        <button class="btn" onclick="saveEdit()">💾 Save Changes</button>
       </div>
     </div>
   </div>
@@ -938,53 +1271,47 @@
     <button class="btn btn-secondary" style="padding:0.2rem 0.5rem; font-size:0.7rem;" onclick="undoLastAction()">↩️ Undo</button>
   </div>
 
+  <!-- ==========================================================================
+       9. MASTER JAVASCRIPT CONTROLLER & DATA MODEL
+       ========================================================================== -->
   <script>
     // State Model
     let currentRole = 'power';
-    let pillCourse = { day: 18, total: 30, pct: 60 };
-    let billState = { name: "Electric Utility Bill", amount: 120.00, isPaid: false };
-    let expenses = [
-      { name: "🛒 Whole Foods", amount: 45.20 },
-      { name: "☕ Blue Bottle Coffee", amount: 6.50 }
-    ];
-    let streakCount = 4;
-    let lastActionUndo = null;
-    let editingTarget = null;
+    let landingPersonaRole = 'power';
+    let activePrimaryTab = 'home';
+
     let securityConfig = {
       seniorPin: '1234',
       caregiverPass: 'caregiver2026',
       escalationDelay: '30'
     };
 
-    function openFamilySettingsModal() {
-      document.getElementById('cfgSeniorPin').value = securityConfig.seniorPin;
-      document.getElementById('cfgCaregiverPass').value = securityConfig.caregiverPass;
-      document.getElementById('cfgEscalationDelay').value = securityConfig.escalationDelay;
-      document.getElementById('familySettingsModal').style.display = 'flex';
-    }
+    let pillCourse = {
+      name: "Metformin",
+      dosage: "500mg",
+      day: 18,
+      total: 30,
+      pct: 60,
+      isCooldown: false
+    };
 
-    function closeFamilySettingsModal() {
-      document.getElementById('familySettingsModal').style.display = 'none';
-    }
+    let billState = {
+      name: "Electric Utility Bill",
+      amount: 120.00,
+      isPaid: false
+    };
 
-    function saveFamilySettings() {
-      const pinVal = document.getElementById('cfgSeniorPin').value.trim();
-      const passVal = document.getElementById('cfgCaregiverPass').value.trim();
-      const delayVal = document.getElementById('cfgEscalationDelay').value;
+    let expenses = [
+      { name: "🛒 Whole Foods", amount: 45.20 },
+      { name: "☕ Blue Bottle Coffee", amount: 6.50 }
+    ];
 
-      if (pinVal.length !== 4 || isNaN(pinVal)) {
-        alert("⚠️ Please enter a valid 4-digit numeric PIN for the Senior profile (e.g. 1234).");
-        return;
-      }
+    let streakCount = 4;
+    let habitClusterNum = 3;
+    let lastActionUndo = null;
+    let editingTarget = null;
 
-      securityConfig.seniorPin = pinVal;
-      securityConfig.caregiverPass = passVal || 'caregiver2026';
-      securityConfig.escalationDelay = delayVal;
-
-      closeFamilySettingsModal();
-      showToast(`👨‍👩‍👧 Master Governance: Senior 4-Digit PIN updated to [${pinVal}] & synced across household devices!`);
-    }
-
+    /* Landing Gateway Functions */
     function pickLandingPersona(role) {
       landingPersonaRole = role;
       document.querySelectorAll('.persona-landing-card').forEach(c => {
@@ -1019,15 +1346,18 @@
       setMode(landingPersonaRole);
       if (landingPersonaRole === 'senior') {
         document.getElementById('activeUserName').textContent = 'Eleanor Vance';
-        document.getElementById('userProfileBtn').innerHTML = '👵 <span>Eleanor Vance</span> <span style="font-size:0.7rem; opacity:0.7;">(Switch ▾)</span>';
+        document.getElementById('dropdownUserName').textContent = 'Eleanor Vance (Senior)';
+        document.getElementById('dropdownUserEmail').textContent = 'eleanor.vance@senior.care';
         showToast("🔑 Logged in as Eleanor Vance (Senior Mode Active)");
       } else if (landingPersonaRole === 'caregiver') {
         document.getElementById('activeUserName').textContent = 'John Vance';
-        document.getElementById('userProfileBtn').innerHTML = '🛡️ <span>John Vance</span> <span style="font-size:0.7rem; opacity:0.7;">(Switch ▾)</span>';
+        document.getElementById('dropdownUserName').textContent = 'John Vance (Caregiver)';
+        document.getElementById('dropdownUserEmail').textContent = 'john.vance@caregiver.guardian';
         showToast("🔑 Logged in as John Vance (Caregiver Telemetry Active)");
       } else {
         document.getElementById('activeUserName').textContent = 'Aswin';
-        document.getElementById('userProfileBtn').innerHTML = '👤 <span>Aswin</span> <span style="font-size:0.7rem; opacity:0.7;">(Switch ▾)</span>';
+        document.getElementById('dropdownUserName').textContent = 'Aswin';
+        document.getElementById('dropdownUserEmail').textContent = 'aswin@omnitask.app';
         showToast("🔑 Logged in as Aswin (Power User Profile)");
       }
     }
@@ -1035,7 +1365,7 @@
     function enterDashboardGuest() {
       toggleLoginScreen(false);
       setMode('power');
-      document.getElementById('userProfileBtn').innerHTML = '🚀 <span>Guest User</span> <span style="font-size:0.7rem; opacity:0.7;">(Switch ▾)</span>';
+      document.getElementById('activeUserName').textContent = 'Guest User';
       showToast("🚀 Logged in as Guest (Offline Demo Mode)");
     }
 
@@ -1047,105 +1377,85 @@
       window.scrollTo({ top: 0, behavior: 'smooth' });
     }
 
-    function openLoginModal() {
-      document.getElementById('loginModal').style.display = 'flex';
-    }
-
-    function closeLoginModal() {
-      document.getElementById('loginModal').style.display = 'none';
-    }
-
-    function selectPersona(role) {
-      selectedPersonaRole = role;
-      document.querySelectorAll('.persona-select-card').forEach(c => {
-        c.style.border = '1px solid var(--card-border)';
-        c.style.background = 'var(--card-bg)';
-      });
-      document.getElementById('badgePower').style.display = role === 'power' ? 'inline-block' : 'none';
-      document.getElementById('badgeSenior').style.display = role === 'senior' ? 'inline-block' : 'none';
-      document.getElementById('badgeCaregiver').style.display = role === 'caregiver' ? 'inline-block' : 'none';
-
-      if (role === 'power') {
-        document.getElementById('personaPower').style.border = '1.5px solid var(--accent)';
-        document.getElementById('personaPower').style.background = 'var(--surface-hover)';
-        document.getElementById('loginEmail').value = 'aswin@omnitask.app';
-        document.getElementById('loginPassLabel').textContent = 'Password';
-      } else if (role === 'senior') {
-        document.getElementById('personaSenior').style.border = '1.5px solid var(--emerald)';
-        document.getElementById('personaSenior').style.background = 'var(--surface-hover)';
-        document.getElementById('loginEmail').value = 'eleanor.vance@senior.care';
-        document.getElementById('loginPassLabel').textContent = `Senior 4-Digit PIN (Master Configured: ${securityConfig.seniorPin})`;
-        document.getElementById('loginPass').value = securityConfig.seniorPin;
-      } else {
-        document.getElementById('personaCaregiver').style.border = '1.5px solid var(--rose)';
-        document.getElementById('personaCaregiver').style.background = 'var(--surface-hover)';
-        document.getElementById('loginEmail').value = 'john.vance@caregiver.guardian';
-        document.getElementById('loginPassLabel').textContent = 'Caregiver Access Password';
-        document.getElementById('loginPass').value = securityConfig.caregiverPass;
-      }
-    }
-
-    function loginWithPersona() {
-      closeLoginModal();
-      setMode(selectedPersonaRole);
-      if (selectedPersonaRole === 'power') {
-        document.getElementById('activeUserName').textContent = 'Aswin';
-        document.getElementById('userProfileBtn').innerHTML = '👤 <span>Aswin</span> <span style="font-size:0.7rem; opacity:0.7;">(Power User) ▾</span>';
-        showToast("🔑 Logged in as Aswin (Power User Profile)");
-      } else if (selectedPersonaRole === 'senior') {
-        document.getElementById('activeUserName').textContent = 'Eleanor Vance';
-        document.getElementById('userProfileBtn').innerHTML = '👵 <span>Eleanor Vance</span> <span style="font-size:0.7rem; opacity:0.7;">(Senior Profile) ▾</span>';
-        showToast("🔑 Logged in as Eleanor Vance (Senior Mode Active)");
-      } else {
-        document.getElementById('activeUserName').textContent = 'John Vance (Caregiver)';
-        document.getElementById('userProfileBtn').innerHTML = '🛡️ <span>John Vance</span> <span style="font-size:0.7rem; opacity:0.7;">(Caregiver) ▾</span>';
-        showToast("🔑 Logged in as John Vance (Caregiver Telemetry Active)");
-      }
-    }
-
-    function guestLogin() {
-      closeLoginModal();
-      setMode('power');
-      document.getElementById('userProfileBtn').innerHTML = '🚀 <span>Guest User</span> <span style="font-size:0.7rem; opacity:0.7;">(Offline Demo) ▾</span>';
-      showToast("🚀 Logged in as Guest (Offline Local Demo)");
-    }
-
+    /* Role Modes (Power, Senior, Caregiver) */
     function setMode(mode) {
       currentRole = mode;
       document.body.classList.remove('senior-mode', 'caregiver-mode');
-      document.querySelectorAll('.mode-btn').forEach(b => b.classList.remove('active'));
+      document.querySelectorAll('.role-btn').forEach(b => b.classList.remove('active'));
 
-      const famBtn = document.getElementById('btnFamilySettings');
+      const famBtn = document.getElementById('btnHeaderFamily');
       const masterRibbon = document.getElementById('masterTelemetryRibbon');
       const seniorBar = document.getElementById('seniorDignityBar');
       const cgBar = document.getElementById('caregiverBar');
+      const oversightTab = document.getElementById('tabOversight');
 
       if (mode === 'senior') {
         document.body.classList.add('senior-mode');
-        document.getElementById('btnSenior').classList.add('active');
+        document.getElementById('btnRoleSenior').classList.add('active');
         if (famBtn) famBtn.style.display = 'none';
         if (masterRibbon) masterRibbon.style.display = 'none';
         if (seniorBar) seniorBar.style.display = 'flex';
         if (cgBar) cgBar.style.display = 'none';
-        showToast("👵 Switched to Senior Mode: High-contrast 24pt+ cards & 56dp touch targets");
+        if (oversightTab) oversightTab.style.display = 'none';
+        switchPrimaryTab('home');
+        showToast("👵 Switched to Senior Mode: 24pt+ typography & 56dp touch targets");
       } else if (mode === 'caregiver') {
         document.body.classList.add('caregiver-mode');
-        document.getElementById('btnCaregiver').classList.add('active');
+        document.getElementById('btnRoleCaregiver').classList.add('active');
         if (famBtn) famBtn.style.display = 'none';
         if (masterRibbon) masterRibbon.style.display = 'none';
         if (seniorBar) seniorBar.style.display = 'none';
         if (cgBar) cgBar.style.display = 'flex';
-        showToast("🛡️ Switched to Caregiver Mode: Live telemetry feed & Adherence score");
+        if (oversightTab) oversightTab.style.display = 'none';
+        switchPrimaryTab('home');
+        showToast("🛡️ Switched to Caregiver Mode: Real-time adherence stream active");
       } else {
-        document.getElementById('btnPower').classList.add('active');
+        document.getElementById('btnRolePower').classList.add('active');
         if (famBtn) famBtn.style.display = 'inline-flex';
         if (masterRibbon) masterRibbon.style.display = 'flex';
         if (seniorBar) seniorBar.style.display = 'none';
         if (cgBar) cgBar.style.display = 'none';
+        if (oversightTab) oversightTab.style.display = 'inline-flex';
         showToast("⚡ Switched to Power User Mode: 4-column modular split");
       }
     }
 
+    /* Primary Navigation Tab Switcher (Home vs Oversight) */
+    function switchPrimaryTab(tab) {
+      activePrimaryTab = tab;
+      document.querySelectorAll('.nav-tab-btn').forEach(b => b.classList.remove('active'));
+      
+      const homeView = document.getElementById('viewHomeDashboard');
+      const oversightView = document.getElementById('viewOversight');
+
+      if (tab === 'oversight') {
+        document.getElementById('tabOversight').classList.add('active');
+        if (homeView) homeView.style.display = 'none';
+        if (oversightView) oversightView.style.display = 'flex';
+        showToast("🛡️ Opened Household Oversight & Caregiver Command Center");
+      } else {
+        const activeTabBtn = document.getElementById(tab === 'reminders' ? 'tabReminders' : tab === 'expense' ? 'tabExpense' : tab === 'fitness' ? 'tabFitness' : 'tabHome');
+        if (activeTabBtn) activeTabBtn.classList.add('active');
+        if (homeView) homeView.style.display = 'block';
+        if (oversightView) oversightView.style.display = 'none';
+      }
+    }
+
+    /* Profile Dropdown Toggle */
+    function toggleProfileDropdown() {
+      const menu = document.getElementById('profileDropdown');
+      menu.style.display = menu.style.display === 'flex' ? 'none' : 'flex';
+    }
+
+    document.addEventListener('click', (e) => {
+      const btn = document.getElementById('userProfileBtn');
+      const menu = document.getElementById('profileDropdown');
+      if (menu && btn && !btn.contains(e.target) && !menu.contains(e.target)) {
+        menu.style.display = 'none';
+      }
+    });
+
+    /* Theme Toggle */
     function toggleTheme() {
       const html = document.documentElement;
       const cur = html.getAttribute('data-theme');
@@ -1154,10 +1464,14 @@
       document.getElementById('themeBtn').innerHTML = next === 'dark' ? '☀️ Light' : '🌙 Dark';
     }
 
-    /* 💊 Pill Dose Increment & Course Progress */
+    /* 💊 Pill Engine & Overdose Lockout Guard */
     function takePillDose() {
+      if (pillCourse.isCooldown) {
+        showToast("⚠️ Overdose Lockout: Eleanor already took her morning dose at 08:30 AM.");
+        return;
+      }
       if (pillCourse.day >= pillCourse.total) {
-        alert("🎉 Congratulations! You have completed the 30-day course of Metformin.");
+        alert("🎉 Congratulations! Eleanor has completed the 30-day course of Metformin.");
         return;
       }
       lastActionUndo = { type: 'pill', prevDay: pillCourse.day };
@@ -1199,6 +1513,7 @@
 
     function renderExpenses() {
       const container = document.getElementById('ledgerList');
+      if (!container) return;
       container.innerHTML = '';
       expenses.forEach(e => {
         const row = document.createElement('div');
@@ -1209,13 +1524,34 @@
       });
     }
 
+    /* Workout & Streaks */
     function completeWorkout() {
       streakCount += 1;
+      document.getElementById('streakBadgeText').textContent = `${streakCount}-Day Streak`;
       showToast(`💪 Workout Logged! Smart Streak increased to ${streakCount} days.`);
     }
 
+    function logHabitIncrement() {
+      habitClusterNum += 1;
+      document.getElementById('habitClusterCount').textContent = `🎸 ×${habitClusterNum}`;
+      showToast(`🎸 Habit logged: Guitar practice session #${habitClusterNum}`);
+    }
+
+    /* Senior TTS Audio Readout */
+    function speakSeniorSchedule() {
+      if ('speechSynthesis' in window) {
+        const text = "Good morning Eleanor. You have taken your morning Metformin dose. Your Electric bill is scheduled for payment. Have a wonderful and healthy day!";
+        const utterance = new SpeechSynthesisUtterance(text);
+        utterance.rate = 0.9;
+        window.speechSynthesis.speak(utterance);
+        showToast("🗣️ Reading daily schedule out loud via Web Speech API...");
+      } else {
+        alert("🗣️ Voice Readout:\nGood morning Eleanor. You have taken your morning Metformin dose. Have a wonderful day!");
+      }
+    }
+
     function triggerSeniorPrivacyPause() {
-      showToast("🔒 Senior Privacy Pause activated for 2 Hours (Telemetry masked; Emergency alarms remain active).");
+      showToast("🔒 Eleanor Vance activated Senior Privacy Pause for 2 Hours (Telemetry masked; Emergency alarms remain active).");
       const cgLive = document.getElementById('cgLiveStatus');
       if (cgLive) {
         cgLive.textContent = "🟡 Privacy Pause (2h)";
@@ -1224,20 +1560,120 @@
     }
 
     function callSeniorPatient() {
-      alert("📞 INITIATING SECURE CAREGIVER CALL:\n• Dialing Patient: Eleanor Vance (+1 555-0192)\n• Fallback Contact: Master Admin Aswin (+1 555-0188)\n• Medical Summary & Rx #89421 queued on screen.");
+      alert("📞 INITIATING SECURE CAREGIVER CALL:\n• Dialing Patient: Eleanor Vance (+1 555-0192)\n• Emergency Contact: Master Admin Aswin (+1 555-0188)\n• Medical Summary & Rx #89421 queued on screen.");
     }
 
     function showMedicalId() {
-      alert("📋 MEDICAL ID CARD:\n• Patient: Eleanor Vance\n• Active Rx: Metformin 500mg (2x Daily)\n• Prescribing Doctor: Dr. Sarah Lin (Phone: 555-0199)\n• Blood Type: O+\n• Emergency Contact: Caregiver John Vance (555-0144)");
+      alert("📋 EMERGENCY MEDICAL ID CARD:\n• Patient: Eleanor Vance\n• Date of Birth: 1948-03-12\n• Active Rx: Metformin 500mg (2x Daily)\n• Blood Type: O+\n• Prescribing Doctor: Dr. Sarah Lin (555-0199)\n• Caregiver: John Vance (555-0144)\n• Primary Admin: Aswin (555-0188)");
     }
 
-    function showToast(msg) {
-      const t = document.getElementById('toast');
-      document.getElementById('toastMsg').innerHTML = msg;
-      t.style.display = 'flex';
-      setTimeout(() => { t.style.display = 'none'; }, 4000);
+    /* 1-Tap Printable Doctor Visit Summary */
+    function printDoctorSummary() {
+      const summaryHTML = `
+        <html>
+        <head><title>OmniTask — Doctor Visit Health Summary (Eleanor Vance)</title></head>
+        <body style="font-family:sans-serif; padding:2rem; color:#111;">
+          <div style="border-bottom:2px solid #6366f1; padding-bottom:1rem; margin-bottom:1.5rem;">
+            <h2>📋 Clinical Health & Adherence Summary</h2>
+            <p><strong>Patient:</strong> Eleanor Vance • <strong>DOB:</strong> March 12, 1948 • <strong>Adherence Rate:</strong> 96%</p>
+            <p><strong>Master Household Admin:</strong> Aswin • <strong>Assigned Caregiver:</strong> John Vance</p>
+          </div>
+          <h3>Active Prescription Regimen</h3>
+          <ul>
+            <li><strong>Metformin 500mg (Oral Tablet)</strong> — 2x Daily with meals (Rx #89421)</li>
+            <li>Course Progression: Day 18 of 30 (60% Complete • 12 Days Remaining)</li>
+            <li>Prescribing Doctor: Dr. Sarah Lin (Phone: 555-0199)</li>
+          </ul>
+          <h3>30-Day Compliance Record</h3>
+          <p>• Morning Doses Taken On-Time: 18 / 18 (100%)</p>
+          <p>• Evening Doses Taken On-Time: 17 / 18 (94.4%)</p>
+          <p>• Adverse Drug Reactions Logged: 0 (None)</p>
+          <div style="margin-top:2rem; font-size:0.8rem; color:#666;">Generated securely from OmniTask Personal Life OS.</div>
+        </body>
+        </html>
+      `;
+      const printWindow = window.open('', '_blank');
+      printWindow.document.write(summaryHTML);
+      printWindow.document.close();
+      printWindow.focus();
+      setTimeout(() => { printWindow.print(); }, 500);
+      showToast("📋 Opened printable Doctor Visit Health Summary (PDF)!");
     }
 
+    function exportExpenseCSV() {
+      let csv = "Item Title,Amount ($),Category,Date\n";
+      expenses.forEach(e => {
+        csv += `"${e.name}",${e.amount.toFixed(2)},"Bills/Utilities","2026-10-06"\n`;
+      });
+      const blob = new Blob([csv], { type: 'text/csv' });
+      const url = window.URL.createObjectURL(blob);
+      const a = document.createElement('a');
+      a.href = url;
+      a.download = "omnitask_expense_statement_oct2026.csv";
+      a.click();
+      showToast("📊 Downloaded Monthly Expense Statement CSV!");
+    }
+
+    /* Master Family Hub Settings */
+    function openFamilySettingsModal() {
+      document.getElementById('cfgSeniorPin').value = securityConfig.seniorPin;
+      document.getElementById('cfgCaregiverPass').value = securityConfig.caregiverPass;
+      document.getElementById('cfgEscalationDelay').value = securityConfig.escalationDelay;
+      document.getElementById('familySettingsModal').style.display = 'flex';
+    }
+
+    function closeFamilySettingsModal() {
+      document.getElementById('familySettingsModal').style.display = 'none';
+    }
+
+    function saveFamilySettings() {
+      const pinVal = document.getElementById('cfgSeniorPin').value.trim();
+      const passVal = document.getElementById('cfgCaregiverPass').value.trim();
+      const delayVal = document.getElementById('cfgEscalationDelay').value;
+
+      if (pinVal.length !== 4 || isNaN(pinVal)) {
+        alert("⚠️ Please enter a valid 4-digit numeric PIN for the Senior profile (e.g. 1234).");
+        return;
+      }
+
+      securityConfig.seniorPin = pinVal;
+      securityConfig.caregiverPass = passVal || 'caregiver2026';
+      securityConfig.escalationDelay = delayVal;
+
+      closeFamilySettingsModal();
+      showToast(`👨‍👩‍👧 Master Governance: Senior 4-Digit PIN updated to [${pinVal}] & synced across household devices!`);
+    }
+
+    /* Speed-Dial Quick Add Modal */
+    function openQuickAddModal() {
+      document.getElementById('quickAddModal').style.display = 'flex';
+    }
+
+    function closeQuickAddModal() {
+      document.getElementById('quickAddModal').style.display = 'none';
+    }
+
+    function saveQuickAddEntry() {
+      const title = document.getElementById('addTitleInput').value.trim();
+      const amount = document.getElementById('addAmountInput').value.trim();
+      const domain = document.getElementById('addDomainSelect').value;
+
+      if (!title) {
+        alert("Please enter a title for the entry.");
+        return;
+      }
+
+      if (domain === 'expense') {
+        const num = parseFloat(amount.replace(/[^0-9.]/g, '')) || 15.00;
+        expenses.unshift({ name: `🛒 ${title}`, amount: num });
+        renderExpenses();
+      }
+
+      closeQuickAddModal();
+      showToast(`➕ Added "${title}" to ${domain.toUpperCase()} module!`);
+    }
+
+    /* Universal Edit & Cascade Sync */
     function openEditModal(target) {
       editingTarget = target;
       document.getElementById('editModal').style.display = 'flex';
@@ -1288,8 +1724,16 @@
       }
     }
 
-    function openAddModal() {
-      showToast("➕ Speed-Dial Ingestion: 2-Field Quick Add opened.");
+    function selectCalendarDay(day) {
+      document.getElementById('calSelectedDateText').textContent = `October ${day}, 2026`;
+      showToast(`📅 Calendar focused on October ${day}, 2026 (Aggregated events loaded).`);
+    }
+
+    function showToast(msg) {
+      const t = document.getElementById('toast');
+      document.getElementById('toastMsg').innerHTML = msg;
+      t.style.display = 'flex';
+      setTimeout(() => { t.style.display = 'none'; }, 4000);
     }
   </script>
 </body>
