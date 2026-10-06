@@ -439,43 +439,114 @@
   <div class="proto-banner">
     <div style="display:flex; align-items:center; gap:0.5rem;">
       <span class="proto-badge">Interactive Mini Prototype</span>
-      <span>Live Simulation of OmniTask v4.4 Core Mechanics</span>
+      <span>OmniTask v4.4 • Login Gateway & Core Simulation</span>
     </div>
     <div style="font-size:0.74rem;">
-      Try: Take Pill (+3%) • Pay Bill (Auto-Link) • Edit Past Record
+      <button class="btn btn-secondary" style="padding:0.2rem 0.5rem; font-size:0.72rem; color:white; border-color:rgba(255,255,255,0.4);" onclick="toggleLoginScreen(true)">🚪 Switch User / Login Screen</button>
     </div>
   </div>
 
-  <!-- Screen Header -->
-  <header>
-    <div class="brand-group">
-      <div class="logo-icon">OT</div>
-      <div>
-        <div class="brand-title">OmniTask</div>
+  <!-- FULL SCREEN LOGIN & ONBOARDING GATEWAY (Landing Page) -->
+  <div id="loginScreen" style="display: flex; min-height: calc(100vh - 40px); align-items: center; justify-content: center; padding: 1.5rem; background: radial-gradient(circle at top, rgba(99,102,241,0.18), transparent 70%), var(--bg);">
+    <div style="background: var(--surface); border: 1px solid var(--surface-border); border-radius: 20px; max-width: 540px; width: 100%; padding: 2rem; box-shadow: var(--shadow-md); display: flex; flex-direction: column; gap: 1.25rem;">
+      
+      <!-- Brand & Heading -->
+      <div style="text-align: center; display: flex; flex-direction: column; align-items: center; gap: 0.5rem;">
+        <div class="logo-icon" style="width: 48px; height: 48px; font-size: 1.35rem; border-radius: 12px; margin-bottom: 4px;">OT</div>
+        <h1 style="font-size: 1.5rem; font-weight: 800; letter-spacing: -0.02em;">Welcome to OmniTask</h1>
+        <p style="font-size: 0.82rem; color: var(--text-muted); line-height: 1.4;">Select your persona to test the specialized interface & safety engines:</p>
       </div>
+
+      <!-- 3 Persona Cards -->
+      <div style="display: flex; flex-direction: column; gap: 0.6rem;">
+        
+        <!-- Persona 1: Power User -->
+        <div class="module-card persona-landing-card" id="landPower" onclick="pickLandingPersona('power')" style="cursor: pointer; border: 2px solid var(--accent); background: var(--surface-hover); padding: 0.9rem;">
+          <div style="display: flex; justify-content: space-between; align-items: center;">
+            <div style="font-size: 0.92rem; font-weight: 800;">👤 Personal & Power User (Aswin)</div>
+            <span class="pill-badge" id="landBadgePower" style="background: var(--accent-light); color: var(--accent);">Active Selection</span>
+          </div>
+          <div class="card-sub" style="margin-top: 3px;">4-Pillar split dashboard, smart streaks, budget forecasts, and keyboard hotkeys.</div>
+        </div>
+
+        <!-- Persona 2: Senior User -->
+        <div class="module-card persona-landing-card" id="landSenior" onclick="pickLandingPersona('senior')" style="cursor: pointer; border: 1px solid var(--card-border); padding: 0.9rem;">
+          <div style="display: flex; justify-content: space-between; align-items: center;">
+            <div style="font-size: 0.92rem; font-weight: 800;">👵 Senior User (Eleanor Vance)</div>
+            <span class="pill-badge" id="landBadgeSenior" style="background: var(--emerald-bg); color: var(--emerald); display: none;">Accessible AAA</span>
+          </div>
+          <div class="card-sub" style="margin-top: 3px;">High-contrast 24pt+ bold text, 56dp oversized touch buttons, voice read-outs.</div>
+        </div>
+
+        <!-- Persona 3: Caregiver -->
+        <div class="module-card persona-landing-card" id="landCaregiver" onclick="pickLandingPersona('caregiver')" style="cursor: pointer; border: 1px solid var(--card-border); padding: 0.9rem;">
+          <div style="display: flex; justify-content: space-between; align-items: center;">
+            <div style="font-size: 0.92rem; font-weight: 800;">🛡️ Caregiver Account (John Vance)</div>
+            <span class="pill-badge" id="landBadgeCaregiver" style="background: var(--rose-bg); color: var(--rose); display: none;">Monitoring</span>
+          </div>
+          <div class="card-sub" style="margin-top: 3px;">Live adherence telemetry stream, privacy pauses, and emergency escalation alerts.</div>
+        </div>
+
+      </div>
+
+      <!-- Auth Inputs -->
+      <div style="display: flex; flex-direction: column; gap: 0.75rem; background: var(--bg); padding: 1rem; border-radius: 12px; border: 1px solid var(--surface-border);">
+        <div class="form-group">
+          <label style="font-size: 0.74rem; font-weight: 700; color: var(--text-muted);">Account Email / ID</label>
+          <input type="text" class="form-input" id="landEmail" value="aswin@omnitask.app">
+        </div>
+        <div class="form-group">
+          <label style="font-size: 0.74rem; font-weight: 700; color: var(--text-muted);" id="landPassLabel">Password</label>
+          <input type="password" class="form-input" id="landPass" value="••••••••">
+        </div>
+      </div>
+
+      <!-- Action CTAs -->
+      <div style="display: flex; flex-direction: column; gap: 0.6rem;">
+        <button class="btn" style="justify-content: center; padding: 0.75rem; font-size: 0.9rem; border-radius: 10px;" onclick="enterDashboard()">
+          🔑 Sign In & Launch Dashboard
+        </button>
+        <button class="btn btn-secondary" style="justify-content: center; padding: 0.65rem; font-size: 0.82rem; border-radius: 10px;" onclick="enterDashboardGuest()">
+          🚀 Continue as Guest (Instant Offline Demo)
+        </button>
+      </div>
+
     </div>
+  </div>
 
-    <!-- Mode Switcher -->
-    <div class="mode-switch-group">
-      <button class="mode-btn active" id="btnPower" onclick="setMode('power')">⚡ Power User</button>
-      <button class="mode-btn" id="btnSenior" onclick="setMode('senior')">👵 Senior Mode</button>
-      <button class="mode-btn" id="btnCaregiver" onclick="setMode('caregiver')">🛡️ Caregiver</button>
-    </div>
+  <!-- MAIN APP CONTAINER (Hidden on initial landing until sign-in) -->
+  <div id="appContainer" style="display: none; flex-direction: column; min-height: 100vh;">
 
-    <!-- Actions & Profile Portal -->
-    <div class="header-actions">
-      <!-- Profile / Login Portal Button -->
-      <button class="btn btn-secondary" style="border-radius:20px; padding:0.35rem 0.75rem;" onclick="openLoginModal()" id="userProfileBtn">
-        👤 <span id="activeUserName">Aswin</span> <span style="font-size:0.7rem; opacity:0.7;">(Power User) ▾</span>
-      </button>
+    <!-- Screen Header -->
+    <header>
+      <div class="brand-group">
+        <div class="logo-icon">OT</div>
+        <div>
+          <div class="brand-title">OmniTask</div>
+        </div>
+      </div>
 
-      <button class="btn btn-secondary" onclick="toggleTheme()" id="themeBtn">☀️ Light</button>
-      <button class="btn" onclick="openAddModal()">➕ Add Task</button>
-    </div>
-  </header>
+      <!-- Mode Switcher -->
+      <div class="mode-switch-group">
+        <button class="mode-btn active" id="btnPower" onclick="setMode('power')">⚡ Power User</button>
+        <button class="mode-btn" id="btnSenior" onclick="setMode('senior')">👵 Senior Mode</button>
+        <button class="mode-btn" id="btnCaregiver" onclick="setMode('caregiver')">🛡️ Caregiver</button>
+      </div>
 
-  <!-- Main Viewport Arena -->
-  <main class="app-viewport">
+      <!-- Actions & Profile Portal -->
+      <div class="header-actions">
+        <!-- Log Out / Switch Persona Button -->
+        <button class="btn btn-secondary" style="border-radius:20px; padding:0.35rem 0.75rem;" onclick="toggleLoginScreen(true)" id="userProfileBtn">
+          👤 <span id="activeUserName">Aswin</span> <span style="font-size:0.7rem; opacity:0.7;">(Switch ▾)</span>
+        </button>
+
+        <button class="btn btn-secondary" onclick="toggleTheme()" id="themeBtn">☀️ Light</button>
+        <button class="btn" onclick="openAddModal()">➕ Add Task</button>
+      </div>
+    </header>
+
+    <!-- Main Viewport Arena -->
+    <main class="app-viewport">
 
     <!-- Caregiver Alert Bar (Shown in Caregiver Mode) -->
     <div class="caregiver-bar" id="caregiverBar">
@@ -770,6 +841,69 @@
     let lastActionUndo = null;
     let editingTarget = null;
     let selectedPersonaRole = 'power';
+    let landingPersonaRole = 'power';
+
+    function pickLandingPersona(role) {
+      landingPersonaRole = role;
+      document.querySelectorAll('.persona-landing-card').forEach(c => {
+        c.style.border = '1px solid var(--card-border)';
+        c.style.background = 'var(--card-bg)';
+      });
+      document.getElementById('landBadgePower').style.display = role === 'power' ? 'inline-block' : 'none';
+      document.getElementById('landBadgeSenior').style.display = role === 'senior' ? 'inline-block' : 'none';
+      document.getElementById('landBadgeCaregiver').style.display = role === 'caregiver' ? 'inline-block' : 'none';
+      
+      const activeCard = document.getElementById(role === 'power' ? 'landPower' : role === 'senior' ? 'landSenior' : 'landCaregiver');
+      activeCard.style.border = `2px solid ${role === 'power' ? 'var(--accent)' : role === 'senior' ? 'var(--emerald)' : 'var(--rose)'}`;
+      activeCard.style.background = 'var(--surface-hover)';
+
+      if (role === 'senior') {
+        document.getElementById('landEmail').value = 'eleanor.vance@senior.care';
+        document.getElementById('landPassLabel').textContent = 'Senior 4-Digit PIN';
+        document.getElementById('landPass').value = '1234';
+      } else if (role === 'caregiver') {
+        document.getElementById('landEmail').value = 'john.vance@caregiver.guardian';
+        document.getElementById('landPassLabel').textContent = 'Caregiver Access Password';
+        document.getElementById('landPass').value = 'caregiver2026';
+      } else {
+        document.getElementById('landEmail').value = 'aswin@omnitask.app';
+        document.getElementById('landPassLabel').textContent = 'Password';
+        document.getElementById('landPass').value = '••••••••';
+      }
+    }
+
+    function enterDashboard() {
+      toggleLoginScreen(false);
+      setMode(landingPersonaRole);
+      if (landingPersonaRole === 'senior') {
+        document.getElementById('activeUserName').textContent = 'Eleanor Vance';
+        document.getElementById('userProfileBtn').innerHTML = '👵 <span>Eleanor Vance</span> <span style="font-size:0.7rem; opacity:0.7;">(Switch ▾)</span>';
+        showToast("🔑 Logged in as Eleanor Vance (Senior Mode Active)");
+      } else if (landingPersonaRole === 'caregiver') {
+        document.getElementById('activeUserName').textContent = 'John Vance';
+        document.getElementById('userProfileBtn').innerHTML = '🛡️ <span>John Vance</span> <span style="font-size:0.7rem; opacity:0.7;">(Switch ▾)</span>';
+        showToast("🔑 Logged in as John Vance (Caregiver Telemetry Active)");
+      } else {
+        document.getElementById('activeUserName').textContent = 'Aswin';
+        document.getElementById('userProfileBtn').innerHTML = '👤 <span>Aswin</span> <span style="font-size:0.7rem; opacity:0.7;">(Switch ▾)</span>';
+        showToast("🔑 Logged in as Aswin (Power User Profile)");
+      }
+    }
+
+    function enterDashboardGuest() {
+      toggleLoginScreen(false);
+      setMode('power');
+      document.getElementById('userProfileBtn').innerHTML = '🚀 <span>Guest User</span> <span style="font-size:0.7rem; opacity:0.7;">(Switch ▾)</span>';
+      showToast("🚀 Logged in as Guest (Offline Demo Mode)");
+    }
+
+    function toggleLoginScreen(show) {
+      const login = document.getElementById('loginScreen');
+      const app = document.getElementById('appContainer');
+      if (login) login.style.display = show ? 'flex' : 'none';
+      if (app) app.style.display = show ? 'none' : 'flex';
+      window.scrollTo({ top: 0, behavior: 'smooth' });
+    }
 
     function openLoginModal() {
       document.getElementById('loginModal').style.display = 'flex';
