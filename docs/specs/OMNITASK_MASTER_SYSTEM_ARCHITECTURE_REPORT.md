@@ -249,7 +249,29 @@ graph TD
 
 ---
 
-## 8. Offline Resilience & Timezone Governance
+## 8. Anti-Vulnerability & Usability Safeguards (v4.4 Master)
+
+```
+┌────────────────────────────────────────────────────────────────────────────────────────┐
+│                        4 CORE VULNERABILITIES & RECTIFIED PROTOCOLS                    │
+├───────────────────────────────┬────────────────────────────────────────────────────────┤
+│ ⚠️ POTENTIAL TRAP / VULNERABILITY│ 🛡️ RECTIFIED SYSTEM PROTOCOL (v4.4)                  │
+├───────────────────────────────┼────────────────────────────────────────────────────────┤
+│ 1. Ingestion Modal Bloat      │ ⚡ "Speed-Dial" 2-Field Quick Add + Progressive Drawer │
+│ 2. Senior Cognitive Overload  │ 👵 "Senior Shield" Sandbox (Feed-Only Isolation)       │
+│ 3. Cascade Sync Ambiguity     │ 🔄 Explicit Dual-Scope Toggle + Visual Impact Preview  │
+│ 4. Caregiver Surveillance Fric│ 🔒 Senior Autonomy Guard & Time-Limited Privacy Pause  │
+└───────────────────────────────┴────────────────────────────────────────────────────────┘
+```
+
+1. **Speed-Dial 2-Field Ingestion:** Mandatory inputs are strictly limited to `Name` & `Schedule/Amount`. Advanced parameters (Rx#, Pill Photo, Refill Days, Doctor Notes) reside inside a single collapsible drawer with intelligent smart defaults (e.g. 30-day course, 5-day refill alert).
+2. **Senior Shield Sandbox:** Senior mode completely hides dense spreadsheets, burn-rate charts, and 4-column splits, replacing them with a single-stream chronological feed with $24\text{pt}+$ high-contrast typography, $56\text{dp}$ touch targets, and text-to-speech audio readouts.
+3. **Visual Impact Preview & Cascade Scope Selector:** When editing an auto-linked record, users are presented with an explicit dual-scope choice (*"Update Both"* vs *"Update Bill Only"*) paired with a 5-second floating Undo safety toast.
+4. **Senior Privacy Pause:** Monitored users can activate a 1-hour or 4-hour telemetry pause for personal dignity while emergency distress alarms remain permanently active.
+
+---
+
+## 9. Offline Resilience & Timezone Governance
 
 1. **Local-First Storage:** All schedules, medical records, and financial ledgers reside locally on device storage via `IndexedDB` / `localStorage`. Reminders fire accurately without cellular connectivity.
 2. **Instant Offline Telemetry:** When a monitored senior's device drops off the network, the system immediately notifies the caregiver (`"Eleanor's phone is currently offline"`).
@@ -257,7 +279,7 @@ graph TD
 
 ---
 
-## 9. Comprehensive System Summary Matrix
+## 10. Comprehensive System Summary Matrix
 
 | Module | Core Purpose | Primary Data Fields | Key Automation / Engine |
 | :--- | :--- | :--- | :--- |
@@ -267,8 +289,8 @@ graph TD
 | **🏋️ Fitness** | Workout logs & physical health | Routine, Muscle Target, Sets, Reps, Weight | AI Routine Generator, Resilient Smart Streaks |
 | **✨ Habits & Tasks** | Daily recurring routines | Emoji Signifier, Tracking Mode, Cluster Time | Same-Day Emoji Clustering (`🎸 ×3`) |
 | **✏️ Edit & Rewrite** | Error recovery & historical audits | Target Object ID, Modified Fields, Sync Flags | Cascade Sync across linked entries with Undo/Redo |
-| **🛡️ Governance** | Safety & multi-user care | Role IDs, Adherence Score, Telemetry Token | Privacy Pause & Caregiver Emergency Escalation |
+| **🛡️ Governance & Safeguards** | Safety & multi-user care | Role IDs, Adherence Score, Telemetry Token | Privacy Pause & Senior Shield Sandbox Isolation |
 
 ---
 
-*This document represents the master product blueprint for OmniTask v4.3 and serves as the definitive reference specification for development, design, and usability evaluations.*
+*This document represents the master product blueprint for OmniTask v4.4 and serves as the definitive reference specification for development, design, and usability evaluations.*

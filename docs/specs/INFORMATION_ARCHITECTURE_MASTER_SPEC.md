@@ -1,9 +1,9 @@
-# OmniTask — Complete Information Architecture Specification (Master v4.2)
+# OmniTask — Complete Information Architecture Specification (Master v4.4)
 
 > **Document Type:** Master Information Architecture (IA) Specification & System Blueprint  
 > **Project:** OmniTask (Task Manager App) — Calendar-Centric Life Dashboard  
 > **Prepared for:** Aswin (`aswin_bd_24_602`)  
-> **Version:** 4.2 (Complete Unabridged Spec with Pill Course Progression & Refill Engine)  
+> **Version:** 4.4 (Master Edition with Pill Course Tracker, Auto-Link Budgeting, Smart Streaks & Anti-Vulnerability Safeguards)  
 > **Associated Visual PDFs:** [`pdfs/task-manager-app-ia-spec-v4.pdf`](pdfs/task-manager-app-ia-spec-v4.pdf) | [`pdfs/task-manager-app-ia-spec-v3.pdf`](pdfs/task-manager-app-ia-spec-v3.pdf)  
 
 ---
@@ -319,17 +319,30 @@ graph TD
 
 ---
 
-## 13. System Additions & Enhancements (v4.2)
+## 13. System Additions & Enhancements (v4.4)
 
 1. **Scoped Search Engine:** Search is implemented locally inside each respective module (*Search Pills, Search Expenses, Search Workouts*) in addition to global spotlight retrieval (`Ctrl + K`).
 2. **Smart Streaks:** Missing a routine reduces streak progress by **1 unit** rather than resetting to zero.
 3. **Typography & Appearance Settings:** Complete settings panel for custom text color, typeface selection, and font-size scaling.
 4. **Prescription Course & Refill Countdown Engine (v4.2):** Visual linear progress bar (`Day X of Y • Z%`), adherence rate telemetry for caregivers, smart $\le 5\text{-day}$ refill warnings, and celebratory completion protocols.
-5. **Multilingual AI Voice Assistant (v2):** Speech recognition and conversational interface planned for future release.
+5. **Universal Edit, Rewrite & Cascade Synchronization (v4.3):** Retroactive historical editing, cascade sync between linked bills and expense ledger, and `Ctrl+Z` / `Ctrl+Y` undo engine.
+6. **Anti-Vulnerability Safeguards & Guardrails (v4.4):** Speed-Dial 2-field ingestion, Senior Shield sandbox isolation, explicit dual-scope cascade edit selectors, and Senior Privacy Pause protocols.
+7. **Multilingual AI Voice Assistant (v2):** Speech recognition and conversational interface planned for future release.
 
 ---
 
-## 14. Consolidated Deferred Scope (v2 Roadmap)
+## 14. Anti-Vulnerability & Usability Safeguards (v4.4 Master)
+
+| Potential Trap / Vulnerability | Rectified System Protocol (v4.4) |
+| :--- | :--- |
+| **Ingestion Modal Bloat** | **Speed-Dial 2-Field Add:** Mandatory minimum is strictly Name & Schedule/Amount. Advanced fields (Rx#, doctor, pill photo, refill days) tuck into a single collapsible progressive drawer with intelligent smart defaults. |
+| **Senior Cognitive Overload** | **Senior Shield Sandbox:** Completely isolates seniors from dense spreadsheets, complex streak math, or 4-column splits. Replaces with a single-stream high-contrast feed ($24\text{pt}+$, $56\text{dp}$ touch buttons, TTS voice read-outs). |
+| **Cascade Sync Ambiguity** | **Visual Impact Preview:** When editing an auto-linked bill/expense, displays an explicit dual-scope choice (*"Update Both"* vs *"Update Bill Only"*) with a 5-second floating Undo safety toast. |
+| **Caregiver Surveillance Friction** | **Senior Privacy Pause:** Monitored users can activate a 1-hour or 4-hour telemetry pause for personal dignity, while emergency distress alarms remain permanently active. |
+
+---
+
+## 15. Consolidated Deferred Scope (v2 Roadmap)
 
 | Deferred Feature | Architectural Rationale |
 | :--- | :--- |
