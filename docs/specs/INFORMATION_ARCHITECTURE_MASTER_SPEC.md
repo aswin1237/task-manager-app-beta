@@ -242,16 +242,32 @@ graph TD
     SetPass --> InstantSync
 ```
 
+### 9.2 Master User Household Oversight & Telemetry Model
+When the Master User (Aswin) logs in, they oversee both the Elder User (Eleanor Vance) and Caregiver (John Vance) via two distinct IA levels:
+1. **Level 1 — Ambient Household Telemetry Ribbon (Home Dashboard):**
+   * A persistent, non-intrusive status banner atop the Home Calendar:
+     * **Elder Status:** `👵 Eleanor Vance • Adherence: 96% • Morning Doses Taken ✅ • 2 doses remaining today`
+     * **Caregiver Status:** `🛡️ John Vance (Caregiver) • Online • Last Telemetry Sync: 12m ago`
+     * **Escalation Ladder Health:** `🟢 Normal (Idle)` *(switches to 🟡 Yellow on 15m delay; 🚨 Red on 30m overdue threshold)*.
+2. **Level 2 — Family & Security Hub (`Profile > Family Hub`):**
+   * **Elder Governance:** Remotely add/edit prescription regimens, course durations (e.g., 30-day course), refill warnings, and update the Senior 4-digit PIN (`1234`).
+   * **Caregiver Audit Trail:** Real-time log of when the caregiver logged in, acknowledged alerts, or submitted care notes.
+   * **Non-Destructive 'View-As' Simulation:** 1-tap proxy preview to inspect Eleanor's or John's exact viewport layout.
+
 ---
 
-## 10. Caregiver Monitoring & Autonomy Safeguards
+## 10. Caregiver Monitoring & Senior Autonomy Safeguards
 
 ### 10.1 Consent & Transparency
 * **Mutual Consent:** Monitoring can never be started unilaterally. Both the User and the Caregiver must confirm the connection.
 * **Full Medical Visibility:** The Caregiver has full access to medication names, strengths, prescription numbers, and expiry dates (not just high-level status dots).
 * **No Silent Surveillance:** Monitored users always see a persistent visual indicator on their dashboard confirming active caregiver telemetry.
 
-### 10.2 Revocation, Teardown & Autonomy Engine (Fig 2)
+### 10.2 Senior Privacy Pause (Strictly Elder-Controlled)
+* **Elder Dignity Protocol:** The **Privacy Pause button exists exclusively on the Senior User's interface** (Eleanor's screen). The senior can tap `🔒 Privacy Pause` to mask adherence telemetry for 1 to 4 hours.
+* **Caregiver View Boundary:** The Caregiver **never possesses a privacy pause button**. On the Caregiver's dashboard, the status ribbon simply reflects: `🟡 Patient Activated Privacy Pause (Telemetry Masked for 1h 45m; Emergency Alarms Remain Active)`.
+
+### 10.3 Revocation, Teardown & Autonomy Engine (Fig 2)
 To protect elderly dignity and prevent entrapment:
 * **Caregiver Revocation:** Caregivers can detach at any time.
 * **Senior Unilateral Autonomy:** The senior can revoke access independently through two paths:

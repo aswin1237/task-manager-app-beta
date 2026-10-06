@@ -553,6 +553,30 @@
     <!-- Main Viewport Arena -->
     <main class="app-viewport">
 
+    <!-- Master User Ambient Family Telemetry Ribbon (Shown in Power User Mode) -->
+    <div id="masterTelemetryRibbon" style="background:var(--surface); border:1px solid var(--surface-border); border-left:4px solid var(--accent); padding:0.6rem 1rem; border-radius:10px; margin-bottom:1rem; display:flex; justify-content:space-between; align-items:center; flex-wrap:wrap; gap:0.5rem; font-size:0.78rem;">
+      <div style="display:flex; align-items:center; gap:0.75rem;">
+        <span><strong>👨‍👩‍👧 Family Circle:</strong> 👵 Eleanor Vance (96% Adherence • Day 18/30 ✅)</span>
+        <span style="color:var(--text-muted);">|</span>
+        <span>🛡️ Caregiver John Vance: <em>Active • Online</em></span>
+      </div>
+      <div style="display:flex; gap:0.4rem; align-items:center;">
+        <span class="pill-badge" style="background:var(--emerald-bg); color:var(--emerald);">Escalation: Normal</span>
+        <button class="btn btn-secondary" style="padding:0.2rem 0.5rem; font-size:0.72rem;" onclick="openFamilySettingsModal()">⚙️ Manage</button>
+      </div>
+    </div>
+
+    <!-- Senior Mode Dignity & Privacy Bar (Shown in Senior Mode only) -->
+    <div id="seniorDignityBar" style="background:var(--emerald-bg); border:1.5px solid var(--emerald); padding:0.75rem 1rem; border-radius:12px; margin-bottom:1rem; display:none; justify-content:space-between; align-items:center; flex-wrap:wrap; gap:0.75rem;">
+      <div style="display:flex; align-items:center; gap:0.5rem; color:var(--emerald); font-weight:800; font-size:0.95rem;">
+        <span>🛡️ Monitored by Caregiver John Vance</span>
+        <span class="pill-badge" style="background:var(--surface); color:var(--emerald); font-size:0.75rem;">Adherence 96%</span>
+      </div>
+      <button class="btn btn-secondary" style="background:var(--surface); border:1.5px solid var(--emerald); font-weight:800; padding:0.4rem 0.8rem;" onclick="triggerSeniorPrivacyPause()">
+        🔒 Pause Caregiver Telemetry (2 Hrs)
+      </button>
+    </div>
+
     <!-- Caregiver Alert Bar (Shown in Caregiver Mode) -->
     <div class="caregiver-bar" id="caregiverBar">
       <div>
@@ -560,7 +584,8 @@
       </div>
       <div style="display:flex; gap:0.5rem; align-items:center;">
         <span class="pill-badge" style="background:var(--emerald-bg); color:var(--emerald);">Adherence: 96%</span>
-        <button class="btn btn-secondary" style="padding:0.25rem 0.5rem; font-size:0.72rem;" onclick="triggerPrivacyPause()">🔒 Privacy Pause</button>
+        <span class="pill-badge" style="background:rgba(6,182,212,0.15); color:var(--cyan);" id="cgLiveStatus">🟢 Stream: Live</span>
+        <button class="btn btn-secondary" style="padding:0.25rem 0.5rem; font-size:0.72rem;" onclick="callSeniorPatient()">📞 Call Eleanor</button>
       </div>
     </div>
 
@@ -1091,20 +1116,32 @@
       document.querySelectorAll('.mode-btn').forEach(b => b.classList.remove('active'));
 
       const famBtn = document.getElementById('btnFamilySettings');
+      const masterRibbon = document.getElementById('masterTelemetryRibbon');
+      const seniorBar = document.getElementById('seniorDignityBar');
+      const cgBar = document.getElementById('caregiverBar');
 
       if (mode === 'senior') {
         document.body.classList.add('senior-mode');
         document.getElementById('btnSenior').classList.add('active');
         if (famBtn) famBtn.style.display = 'none';
+        if (masterRibbon) masterRibbon.style.display = 'none';
+        if (seniorBar) seniorBar.style.display = 'flex';
+        if (cgBar) cgBar.style.display = 'none';
         showToast("👵 Switched to Senior Mode: High-contrast 24pt+ cards & 56dp touch targets");
       } else if (mode === 'caregiver') {
         document.body.classList.add('caregiver-mode');
         document.getElementById('btnCaregiver').classList.add('active');
         if (famBtn) famBtn.style.display = 'none';
+        if (masterRibbon) masterRibbon.style.display = 'none';
+        if (seniorBar) seniorBar.style.display = 'none';
+        if (cgBar) cgBar.style.display = 'flex';
         showToast("🛡️ Switched to Caregiver Mode: Live telemetry feed & Adherence score");
       } else {
         document.getElementById('btnPower').classList.add('active');
         if (famBtn) famBtn.style.display = 'inline-flex';
+        if (masterRibbon) masterRibbon.style.display = 'flex';
+        if (seniorBar) seniorBar.style.display = 'none';
+        if (cgBar) cgBar.style.display = 'none';
         showToast("⚡ Switched to Power User Mode: 4-column modular split");
       }
     }
@@ -1177,8 +1214,17 @@
       showToast(`💪 Workout Logged! Smart Streak increased to ${streakCount} days.`);
     }
 
-    function triggerPrivacyPause() {
-      showToast("🔒 Senior Privacy Pause activated for 2 hours (Telemetry masked).");
+    function triggerSeniorPrivacyPause() {
+      showToast("🔒 Senior Privacy Pause activated for 2 Hours (Telemetry masked; Emergency alarms remain active).");
+      const cgLive = document.getElementById('cgLiveStatus');
+      if (cgLive) {
+        cgLive.textContent = "🟡 Privacy Pause (2h)";
+        cgLive.style.color = "var(--amber)";
+      }
+    }
+
+    function callSeniorPatient() {
+      alert("📞 INITIATING SECURE CAREGIVER CALL:\n• Dialing Patient: Eleanor Vance (+1 555-0192)\n• Fallback Contact: Master Admin Aswin (+1 555-0188)\n• Medical Summary & Rx #89421 queued on screen.");
     }
 
     function showMedicalId() {
