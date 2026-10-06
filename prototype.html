@@ -462,8 +462,13 @@
       <button class="mode-btn" id="btnCaregiver" onclick="setMode('caregiver')">🛡️ Caregiver</button>
     </div>
 
-    <!-- Actions -->
+    <!-- Actions & Profile Portal -->
     <div class="header-actions">
+      <!-- Profile / Login Portal Button -->
+      <button class="btn btn-secondary" style="border-radius:20px; padding:0.35rem 0.75rem;" onclick="openLoginModal()" id="userProfileBtn">
+        👤 <span id="activeUserName">Aswin</span> <span style="font-size:0.7rem; opacity:0.7;">(Power User) ▾</span>
+      </button>
+
       <button class="btn btn-secondary" onclick="toggleTheme()" id="themeBtn">☀️ Light</button>
       <button class="btn" onclick="openAddModal()">➕ Add Task</button>
     </div>
@@ -683,6 +688,69 @@
     </div>
   </div>
 
+  <!-- Login & Persona Gateway Modal -->
+  <div class="modal-backdrop" id="loginModal">
+    <div class="modal-box" style="max-width:520px;">
+      <div style="display:flex; justify-content:space-between; align-items:center;">
+        <div style="display:flex; align-items:center; gap:0.5rem;">
+          <div class="logo-icon" style="width:28px; height:28px; font-size:0.85rem;">OT</div>
+          <h3 style="font-size:1.05rem; font-weight:800;">OmniTask Login Portal</h3>
+        </div>
+        <button class="btn btn-secondary" style="padding:0.2rem 0.5rem;" onclick="closeLoginModal()">✕</button>
+      </div>
+
+      <p style="font-size:0.75rem; color:var(--text-muted);">Select your account persona to test the specialized view interfaces:</p>
+
+      <!-- Persona Cards Selector -->
+      <div style="display:flex; flex-direction:column; gap:0.5rem;">
+        <div class="module-card persona-select-card active-persona" id="personaPower" onclick="selectPersona('power')" style="cursor:pointer; border:1.5px solid var(--accent); background:var(--surface-hover);">
+          <div style="display:flex; justify-content:space-between; align-items:center;">
+            <strong>👤 Personal & Power User (Aswin)</strong>
+            <span class="pill-badge" id="badgePower" style="background:var(--accent-light); color:var(--accent);">Active</span>
+          </div>
+          <div class="card-sub">4-Pillar modular split, dense controls, smart streaks, and budget forecasting.</div>
+        </div>
+
+        <div class="module-card persona-select-card" id="personaSenior" onclick="selectPersona('senior')" style="cursor:pointer; border:1px solid var(--card-border);">
+          <div style="display:flex; justify-content:space-between; align-items:center;">
+            <strong>👵 Senior Mode (Eleanor Vance)</strong>
+            <span class="pill-badge" id="badgeSenior" style="background:var(--emerald-bg); color:var(--emerald); display:none;">Selected</span>
+          </div>
+          <div class="card-sub">Single-stream chronological feed, 24pt+ large bold typography, voice audio readouts.</div>
+        </div>
+
+        <div class="module-card persona-select-card" id="personaCaregiver" onclick="selectPersona('caregiver')" style="cursor:pointer; border:1px solid var(--card-border);">
+          <div style="display:flex; justify-content:space-between; align-items:center;">
+            <strong>🛡️ Caregiver Account (John Vance)</strong>
+            <span class="pill-badge" id="badgeCaregiver" style="background:var(--rose-bg); color:var(--rose); display:none;">Selected</span>
+          </div>
+          <div class="card-sub">Real-time adherence telemetry feed, privacy pause, and emergency alert escalation ladder.</div>
+        </div>
+      </div>
+
+      <!-- Auth Inputs -->
+      <div class="form-group">
+        <label>Email Address / Username</label>
+        <input type="text" class="form-input" id="loginEmail" value="aswin@omnitask.app">
+      </div>
+
+      <div class="form-group" id="pinGroup">
+        <label id="loginPassLabel">Password / Senior 4-Digit PIN</label>
+        <input type="password" class="form-input" id="loginPass" value="••••••••">
+      </div>
+
+      <!-- Action Buttons -->
+      <div style="display:flex; flex-direction:column; gap:0.5rem;">
+        <button class="btn" style="justify-content:center; padding:0.6rem;" onclick="loginWithPersona()">
+          🔑 Sign In with Selected Profile
+        </button>
+        <button class="btn btn-secondary" style="justify-content:center; padding:0.5rem;" onclick="guestLogin()">
+          🚀 Continue as Guest (Offline Demo Mode)
+        </button>
+      </div>
+    </div>
+  </div>
+
   <!-- Floating Feedback Toast -->
   <div class="toast-popup" id="toast">
     <span id="toastMsg">✅ Action Saved</span>
@@ -691,6 +759,7 @@
 
   <script>
     // State Model
+    let currentRole = 'power';
     let pillCourse = { day: 18, total: 30, pct: 60 };
     let billState = { name: "Electric Utility Bill", amount: 120.00, isPaid: false };
     let expenses = [
@@ -700,8 +769,73 @@
     let streakCount = 4;
     let lastActionUndo = null;
     let editingTarget = null;
+    let selectedPersonaRole = 'power';
+
+    function openLoginModal() {
+      document.getElementById('loginModal').style.display = 'flex';
+    }
+
+    function closeLoginModal() {
+      document.getElementById('loginModal').style.display = 'none';
+    }
+
+    function selectPersona(role) {
+      selectedPersonaRole = role;
+      document.querySelectorAll('.persona-select-card').forEach(c => {
+        c.style.border = '1px solid var(--card-border)';
+        c.style.background = 'var(--card-bg)';
+      });
+      document.getElementById('badgePower').style.display = role === 'power' ? 'inline-block' : 'none';
+      document.getElementById('badgeSenior').style.display = role === 'senior' ? 'inline-block' : 'none';
+      document.getElementById('badgeCaregiver').style.display = role === 'caregiver' ? 'inline-block' : 'none';
+
+      if (role === 'power') {
+        document.getElementById('personaPower').style.border = '1.5px solid var(--accent)';
+        document.getElementById('personaPower').style.background = 'var(--surface-hover)';
+        document.getElementById('loginEmail').value = 'aswin@omnitask.app';
+        document.getElementById('loginPassLabel').textContent = 'Password';
+      } else if (role === 'senior') {
+        document.getElementById('personaSenior').style.border = '1.5px solid var(--emerald)';
+        document.getElementById('personaSenior').style.background = 'var(--surface-hover)';
+        document.getElementById('loginEmail').value = 'eleanor.vance@senior.care';
+        document.getElementById('loginPassLabel').textContent = 'Senior 4-Digit PIN (e.g. 1 2 3 4)';
+        document.getElementById('loginPass').value = '1234';
+      } else {
+        document.getElementById('personaCaregiver').style.border = '1.5px solid var(--rose)';
+        document.getElementById('personaCaregiver').style.background = 'var(--surface-hover)';
+        document.getElementById('loginEmail').value = 'john.vance@caregiver.guardian';
+        document.getElementById('loginPassLabel').textContent = 'Caregiver Access Password';
+        document.getElementById('loginPass').value = 'caregiver2026';
+      }
+    }
+
+    function loginWithPersona() {
+      closeLoginModal();
+      setMode(selectedPersonaRole);
+      if (selectedPersonaRole === 'power') {
+        document.getElementById('activeUserName').textContent = 'Aswin';
+        document.getElementById('userProfileBtn').innerHTML = '👤 <span>Aswin</span> <span style="font-size:0.7rem; opacity:0.7;">(Power User) ▾</span>';
+        showToast("🔑 Logged in as Aswin (Power User Profile)");
+      } else if (selectedPersonaRole === 'senior') {
+        document.getElementById('activeUserName').textContent = 'Eleanor Vance';
+        document.getElementById('userProfileBtn').innerHTML = '👵 <span>Eleanor Vance</span> <span style="font-size:0.7rem; opacity:0.7;">(Senior Profile) ▾</span>';
+        showToast("🔑 Logged in as Eleanor Vance (Senior Mode Active)");
+      } else {
+        document.getElementById('activeUserName').textContent = 'John Vance (Caregiver)';
+        document.getElementById('userProfileBtn').innerHTML = '🛡️ <span>John Vance</span> <span style="font-size:0.7rem; opacity:0.7;">(Caregiver) ▾</span>';
+        showToast("🔑 Logged in as John Vance (Caregiver Telemetry Active)");
+      }
+    }
+
+    function guestLogin() {
+      closeLoginModal();
+      setMode('power');
+      document.getElementById('userProfileBtn').innerHTML = '🚀 <span>Guest User</span> <span style="font-size:0.7rem; opacity:0.7;">(Offline Demo) ▾</span>';
+      showToast("🚀 Logged in as Guest (Offline Local Demo)");
+    }
 
     function setMode(mode) {
+      currentRole = mode;
       document.body.classList.remove('senior-mode', 'caregiver-mode');
       document.querySelectorAll('.mode-btn').forEach(b => b.classList.remove('active'));
 
