@@ -280,6 +280,140 @@
     }
     .btn-emerald:hover { background: var(--emerald-hover); }
 
+    /* Calendar View Mode Buttons & Grid Styles */
+    .cal-view-btn {
+      background: transparent;
+      border: none;
+      color: var(--text-muted);
+      padding: 0.25rem 0.65rem;
+      font-size: 0.74rem;
+      font-weight: 700;
+      border-radius: 6px;
+      cursor: pointer;
+      font-family: inherit;
+      transition: all 0.15s ease;
+    }
+    .cal-view-btn.active {
+      background: var(--accent);
+      color: white;
+      box-shadow: 0 1px 4px rgba(99, 102, 241, 0.4);
+    }
+    .cal-month-grid {
+      display: grid;
+      grid-template-columns: repeat(7, 1fr);
+      gap: 5px;
+      text-align: center;
+      margin-top: 4px;
+    }
+    .cal-weekday-header {
+      font-size: 0.72rem;
+      font-weight: 800;
+      color: var(--text-muted);
+      padding: 4px 0;
+      text-transform: uppercase;
+      letter-spacing: 0.05em;
+    }
+    .cal-day-cell {
+      background: var(--card-bg);
+      border: 1px solid var(--card-border);
+      border-radius: 8px;
+      padding: 6px 2px;
+      min-height: 48px;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: space-between;
+      cursor: pointer;
+      font-family: inherit;
+      font-size: 0.8rem;
+      font-weight: 700;
+      transition: all 0.15s ease;
+      position: relative;
+    }
+    .cal-day-cell:hover:not(.other-month) {
+      border-color: var(--accent);
+      background: var(--surface-hover);
+      transform: translateY(-1px);
+    }
+    .cal-day-cell.selected-day {
+      background: var(--accent) !important;
+      color: white !important;
+      border-color: var(--accent) !important;
+      box-shadow: 0 2px 10px rgba(99, 102, 241, 0.45);
+    }
+    .cal-day-cell.today-cell:not(.selected-day) {
+      border: 2px solid var(--cyan);
+    }
+    .cal-day-cell.other-month {
+      opacity: 0.3;
+      cursor: pointer;
+    }
+    .cal-dots-container {
+      display: flex;
+      gap: 2px;
+      justify-content: center;
+      margin-top: 2px;
+      flex-wrap: wrap;
+    }
+    .cal-dot {
+      width: 5px;
+      height: 5px;
+      border-radius: 50%;
+    }
+    .cal-week-grid {
+      display: flex;
+      flex-direction: column;
+      gap: 0.5rem;
+      margin-top: 4px;
+    }
+    .cal-week-row {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding: 0.65rem 0.85rem;
+      background: var(--card-bg);
+      border: 1px solid var(--card-border);
+      border-radius: 10px;
+      cursor: pointer;
+      transition: all 0.15s ease;
+    }
+    .cal-week-row:hover {
+      border-color: var(--accent);
+      background: var(--surface-hover);
+    }
+    .cal-week-row.selected-week-row {
+      border-color: var(--accent);
+      background: rgba(99, 102, 241, 0.12);
+      box-shadow: 0 0 0 1px var(--accent);
+    }
+    .cal-day-schedule {
+      display: flex;
+      flex-direction: column;
+      gap: 0.4rem;
+      margin-top: 4px;
+      max-height: 420px;
+      overflow-y: auto;
+      padding-right: 4px;
+    }
+    .cal-time-slot {
+      display: flex;
+      align-items: flex-start;
+      gap: 0.75rem;
+      padding: 0.5rem 0.75rem;
+      background: var(--card-bg);
+      border: 1px solid var(--card-border);
+      border-radius: 8px;
+      font-size: 0.82rem;
+    }
+    .cal-time-label {
+      width: 68px;
+      font-weight: 800;
+      color: var(--text-muted);
+      font-family: 'JetBrains Mono', monospace;
+      font-size: 0.76rem;
+      flex-shrink: 0;
+    }
+
     /* Profile Dropdown */
     .profile-dropdown-menu {
       position: absolute;
@@ -828,44 +962,78 @@
           
           <!-- Left Column: Interactive Month Grid -->
           <div class="panel-box">
-            <div class="panel-header">
-              <span>📅 Interactive Calendar Aggregator</span>
-              <span class="pill-badge" style="background:var(--cyan-bg); color:var(--cyan);">October 2026</span>
+            <!-- Calendar Navigation Header -->
+            <div class="panel-header" style="flex-wrap:wrap; gap:0.5rem;">
+              <div style="display:flex; align-items:center; gap:0.4rem;">
+                <span style="font-weight:800; font-size:0.98rem;">📅 Calendar Aggregator</span>
+              </div>
+
+              <!-- Month & Year Controls -->
+              <div style="display:flex; align-items:center; gap:0.35rem; flex-wrap:wrap;">
+                <button class="btn btn-secondary" style="padding:0.25rem 0.55rem; font-size:0.75rem;" onclick="prevCalendarMonth()" title="Previous Month">◀</button>
+                
+                <select class="form-input" id="calMonthSelect" onchange="changeCalMonth(this.value)" style="padding:0.25rem 0.45rem; font-size:0.78rem; font-weight:700; width:auto;">
+                  <option value="0">January</option>
+                  <option value="1">February</option>
+                  <option value="2">March</option>
+                  <option value="3">April</option>
+                  <option value="4">May</option>
+                  <option value="5">June</option>
+                  <option value="6">July</option>
+                  <option value="7">August</option>
+                  <option value="8">September</option>
+                  <option value="9" selected>October</option>
+                  <option value="10">November</option>
+                  <option value="11">December</option>
+                </select>
+
+                <select class="form-input" id="calYearSelect" onchange="changeCalYear(this.value)" style="padding:0.25rem 0.45rem; font-size:0.78rem; font-weight:700; width:auto;">
+                  <option value="2024">2024</option>
+                  <option value="2025">2025</option>
+                  <option value="2026" selected>2026</option>
+                  <option value="2027">2027</option>
+                  <option value="2028">2028</option>
+                  <option value="2029">2029</option>
+                  <option value="2030">2030</option>
+                </select>
+
+                <button class="btn btn-secondary" style="padding:0.25rem 0.55rem; font-size:0.75rem;" onclick="nextCalendarMonth()" title="Next Month">▶</button>
+                
+                <button class="btn btn-secondary" style="padding:0.25rem 0.55rem; font-size:0.72rem; color:var(--accent); font-weight:800;" onclick="goToToday()">Today</button>
+              </div>
             </div>
 
-            <!-- Active Date Header -->
-            <div style="background:var(--bg); border:1px solid var(--surface-border); border-radius:10px; padding:1rem; text-align:center;">
-              <div style="font-size:0.78rem; color:var(--text-muted);">Active Calendar Date</div>
-              <div style="font-size:1.45rem; font-weight:800; margin:4px 0;" id="calSelectedDateText">Tuesday, October 6</div>
-              <div style="font-size:0.78rem; color:var(--emerald); font-weight:700;" id="calEventCountBadge">🟢 Dynamic Events Aggregated</div>
+            <!-- View Mode Switcher (Month / Week / Day) -->
+            <div style="display:flex; justify-content:space-between; align-items:center; background:var(--bg); padding:0.35rem 0.65rem; border-radius:10px; border:1px solid var(--surface-border); flex-wrap:wrap; gap:0.4rem;">
+              <div style="font-size:0.76rem; font-weight:700; color:var(--text-muted);" id="calHeaderLabel">
+                October 2026
+              </div>
+              <div style="display:flex; gap:0.2rem; background:var(--surface); padding:2px; border-radius:8px; border:1px solid var(--surface-border);">
+                <button class="cal-view-btn active" id="btnViewMonth" onclick="setCalendarViewMode('month')">Month</button>
+                <button class="cal-view-btn" id="btnViewWeek" onclick="setCalendarViewMode('week')">Week</button>
+                <button class="cal-view-btn" id="btnViewDay" onclick="setCalendarViewMode('day')">Day</button>
+              </div>
             </div>
 
-            <!-- Month Calendar Matrix Grid -->
-            <div style="display:grid; grid-template-columns:repeat(7, 1fr); gap:6px; text-align:center; font-size:0.75rem; font-weight:700;">
-              <span style="color:var(--text-muted); padding:4px;">Mon</span>
-              <span style="color:var(--text-muted); padding:4px;">Tue</span>
-              <span style="color:var(--text-muted); padding:4px;">Wed</span>
-              <span style="color:var(--text-muted); padding:4px;">Thu</span>
-              <span style="color:var(--text-muted); padding:4px;">Fri</span>
-              <span style="color:var(--text-muted); padding:4px;">Sat</span>
-              <span style="color:var(--text-muted); padding:4px;">Sun</span>
+            <!-- Focused Date Header Card -->
+            <div style="background:var(--bg); border:1px solid var(--surface-border); border-radius:10px; padding:0.85rem; text-align:center;">
+              <div style="font-size:0.74rem; color:var(--text-muted);">Active Focused Date</div>
+              <div style="font-size:1.35rem; font-weight:800; margin:3px 0;" id="calSelectedDateText">Tuesday, October 6, 2026</div>
+              <div style="font-size:0.76rem; color:var(--emerald); font-weight:700;" id="calEventCountBadge">🟢 Dynamic Events Aggregated</div>
+            </div>
 
-              <button class="btn-secondary" style="padding:8px; border-radius:8px;" onclick="selectCalendarDay(5)">5<br><span style="font-size:0.6rem; color:var(--emerald);">●●</span></button>
-              <button class="btn" style="padding:8px; border-radius:8px; background:var(--accent);" onclick="selectCalendarDay(6)">6<br><span style="font-size:0.6rem; color:white;">●●●●</span></button>
-              <button class="btn-secondary" style="padding:8px; border-radius:8px;" onclick="selectCalendarDay(7)">7<br><span style="font-size:0.6rem; color:var(--cyan);">●</span></button>
-              <button class="btn-secondary" style="padding:8px; border-radius:8px;" onclick="selectCalendarDay(8)">8<br><span style="font-size:0.6rem; color:var(--amber);">●●</span></button>
-              <button class="btn-secondary" style="padding:8px; border-radius:8px;" onclick="selectCalendarDay(9)">9<br><span style="font-size:0.6rem; color:var(--purple);">●</span></button>
-              <button class="btn-secondary" style="padding:8px; border-radius:8px;" onclick="selectCalendarDay(10)">10<br><span style="font-size:0.6rem; color:var(--emerald);">●</span></button>
-              <button class="btn-secondary" style="padding:8px; border-radius:8px;" onclick="selectCalendarDay(11)">11<br><span style="font-size:0.6rem; color:var(--text-muted);">○</span></button>
+            <!-- Dynamic Calendar View Container -->
+            <div id="calendarGridContainer">
+              <!-- Rendered dynamically by JS (Month Matrix, Week View, or Day Schedule) -->
             </div>
 
             <!-- Daily Spend Widget -->
             <div class="module-card">
               <div class="card-top">
-                <div class="card-title">💰 Today's Spend Total</div>
+                <div class="card-title">💰 Focused Date Spend Total</div>
                 <span class="pill-badge" style="background:var(--amber-bg); color:var(--amber);" id="calDailySpend">$120.00</span>
               </div>
-              <div class="card-sub" id="calSpendDesc">Auto-calculated from paid bills and grocery expenses.</div>
+              <div class="card-sub" id="calSpendDesc">Auto-calculated from scheduled bills and categorized expenses for this date.</div>
             </div>
           </div>
 
@@ -1606,6 +1774,7 @@
        ========================================================================== */
 
     function renderAllViews() {
+      renderCalendarEngine();
       renderPills();
       renderBills();
       renderExpenses();
@@ -2387,9 +2556,341 @@
       showToast("📊 Downloaded Monthly Expense Statement CSV!");
     }
 
-    function selectCalendarDay(day) {
-      document.getElementById('calSelectedDateText').textContent = `October ${day}, 2026`;
-      showToast(`📅 Calendar focused on October ${day}, 2026 (Aggregated events loaded).`);
+    /* ==========================================================================
+       DYNAMIC CALENDAR ENGINE (Month, Week, Day with Full Navigation)
+       ========================================================================== */
+    let calCurrentYear = 2026;
+    let calCurrentMonth = 9; // 0-indexed: 9 = October
+    let calSelectedDay = 6;
+    let calViewMode = 'month'; // 'month' | 'week' | 'day'
+
+    const calMonthNames = [
+      "January", "February", "March", "April", "May", "June",
+      "July", "August", "September", "October", "November", "December"
+    ];
+    const calWeekdayNames = ["Mon", "Tue", "Wed", "Thu", "Fri", "Sat", "Sun"];
+    const calWeekdayFullNames = ["Sunday", "Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday"];
+
+    function setCalendarViewMode(mode) {
+      calViewMode = mode;
+      document.querySelectorAll('.cal-view-btn').forEach(btn => btn.classList.remove('active'));
+      const activeBtn = document.getElementById(mode === 'month' ? 'btnViewMonth' : mode === 'week' ? 'btnViewWeek' : 'btnViewDay');
+      if (activeBtn) activeBtn.classList.add('active');
+      renderCalendarEngine();
+      showToast(`Switched to Calendar ${mode.toUpperCase()} View`);
+    }
+
+    function prevCalendarMonth() {
+      calCurrentMonth--;
+      if (calCurrentMonth < 0) {
+        calCurrentMonth = 11;
+        calCurrentYear--;
+      }
+      calSelectedDay = Math.min(calSelectedDay, new Date(calCurrentYear, calCurrentMonth + 1, 0).getDate());
+      syncCalendarControls();
+      renderCalendarEngine();
+      updateFocusedDateDisplay();
+    }
+
+    function nextCalendarMonth() {
+      calCurrentMonth++;
+      if (calCurrentMonth > 11) {
+        calCurrentMonth = 0;
+        calCurrentYear++;
+      }
+      calSelectedDay = Math.min(calSelectedDay, new Date(calCurrentYear, calCurrentMonth + 1, 0).getDate());
+      syncCalendarControls();
+      renderCalendarEngine();
+      updateFocusedDateDisplay();
+    }
+
+    function changeCalMonth(val) {
+      calCurrentMonth = parseInt(val, 10);
+      calSelectedDay = Math.min(calSelectedDay, new Date(calCurrentYear, calCurrentMonth + 1, 0).getDate());
+      syncCalendarControls();
+      renderCalendarEngine();
+      updateFocusedDateDisplay();
+    }
+
+    function changeCalYear(val) {
+      calCurrentYear = parseInt(val, 10);
+      calSelectedDay = Math.min(calSelectedDay, new Date(calCurrentYear, calCurrentMonth + 1, 0).getDate());
+      syncCalendarControls();
+      renderCalendarEngine();
+      updateFocusedDateDisplay();
+    }
+
+    function goToToday() {
+      calCurrentYear = 2026;
+      calCurrentMonth = 9;
+      calSelectedDay = 6;
+      syncCalendarControls();
+      selectCalendarDay(6, 9, 2026);
+    }
+
+    function syncCalendarControls() {
+      const monthSel = document.getElementById('calMonthSelect');
+      const yearSel = document.getElementById('calYearSelect');
+      const headerLabel = document.getElementById('calHeaderLabel');
+      if (monthSel) monthSel.value = calCurrentMonth.toString();
+      if (yearSel) yearSel.value = calCurrentYear.toString();
+      if (headerLabel) headerLabel.textContent = `${calMonthNames[calCurrentMonth]} ${calCurrentYear}`;
+    }
+
+    function updateFocusedDateDisplay() {
+      const dateObj = new Date(calCurrentYear, calCurrentMonth, calSelectedDay);
+      const dayName = calWeekdayFullNames[dateObj.getDay()];
+      const dateStr = `${dayName}, ${calMonthNames[calCurrentMonth]} ${calSelectedDay}, ${calCurrentYear}`;
+      
+      const txtElem = document.getElementById('calSelectedDateText');
+      if (txtElem) txtElem.textContent = dateStr;
+
+      // Update daily spend calculation
+      calculateAndDisplayDailySpend();
+    }
+
+    function selectCalendarDay(day, month, year) {
+      if (month !== undefined) calCurrentMonth = month;
+      if (year !== undefined) calCurrentYear = year;
+      calSelectedDay = day;
+      
+      syncCalendarControls();
+      updateFocusedDateDisplay();
+      renderCalendarEngine();
+      showToast(`📅 Focused on ${calMonthNames[calCurrentMonth]} ${day}, ${calCurrentYear}`);
+    }
+
+    function calculateAndDisplayDailySpend() {
+      let total = 0;
+      let spendItems = [];
+
+      // Check bills due around or on this date
+      billsData.forEach(b => {
+        if (b.dueDate && (b.dueDate.includes(calSelectedDay.toString()) || b.dueDate.toLowerCase().includes(calMonthNames[calCurrentMonth].slice(0, 3).toLowerCase()))) {
+          total += parseFloat(b.amount || 0);
+          spendItems.push(`${b.title} ($${b.amount})`);
+        }
+      });
+
+      // Check expenses on this date
+      expensesData.forEach(e => {
+        total += parseFloat(e.amount || 0);
+      });
+
+      const spendElem = document.getElementById('calDailySpend');
+      const descElem = document.getElementById('calSpendDesc');
+      if (spendElem) spendElem.textContent = `$${total.toFixed(2)}`;
+      if (descElem) {
+        if (spendItems.length > 0) {
+          descElem.innerHTML = `Includes: <strong>${spendItems.slice(0, 2).join(', ')}</strong>${spendItems.length > 2 ? ` +${spendItems.length - 2} more` : ''} + categorized daily spend.`;
+        } else {
+          descElem.textContent = `Auto-calculated from scheduled bills and categorized expenses for this date.`;
+        }
+      }
+    }
+
+    function getEventsForDay(day, month, year) {
+      const events = [];
+      
+      // Pills are daily active courses
+      if (pillsData.length > 0) {
+        pillsData.forEach(p => {
+          events.push({ type: 'pill', color: 'var(--emerald)', title: `${p.name} ${p.dosage}`, icon: '💊', time: '08:30 AM' });
+        });
+      }
+
+      // Bills due
+      billsData.forEach(b => {
+        events.push({ type: 'bill', color: 'var(--amber)', title: `${b.title} ($${parseFloat(b.amount||0).toFixed(2)})`, icon: '💳', time: '10:00 AM', isPaid: b.isPaid });
+      });
+
+      // Workouts
+      workoutsData.forEach(w => {
+        events.push({ type: 'fitness', color: 'var(--purple)', title: w.title, icon: '🏋️', time: '05:30 PM' });
+      });
+
+      // Habits
+      habitsData.forEach(h => {
+        events.push({ type: 'habit', color: 'var(--cyan)', title: `${h.emoji || '✨'} ${h.title}`, icon: h.emoji || '✨', time: '12:00 PM' });
+      });
+
+      // Appointments
+      appointmentsData.forEach(a => {
+        events.push({ type: 'appointment', color: '#6366f1', title: a.title, icon: '📅', time: '02:00 PM' });
+      });
+
+      return events;
+    }
+
+    function renderCalendarEngine() {
+      const container = document.getElementById('calendarGridContainer');
+      if (!container) return;
+      container.innerHTML = '';
+
+      if (calViewMode === 'month') {
+        renderCalendarMonthGrid(container);
+      } else if (calViewMode === 'week') {
+        renderCalendarWeekGrid(container);
+      } else if (calViewMode === 'day') {
+        renderCalendarDayView(container);
+      }
+    }
+
+    function renderCalendarMonthGrid(container) {
+      const grid = document.createElement('div');
+      grid.className = 'cal-month-grid';
+
+      // 1. Weekday Headers (Mon - Sun)
+      calWeekdayNames.forEach(name => {
+        const h = document.createElement('div');
+        h.className = 'cal-weekday-header';
+        h.textContent = name;
+        grid.appendChild(h);
+      });
+
+      // 2. Date Mathematics
+      const firstDayOfWeek = (new Date(calCurrentYear, calCurrentMonth, 1).getDay() + 6) % 7; // 0=Mon, 6=Sun
+      const daysInMonth = new Date(calCurrentYear, calCurrentMonth + 1, 0).getDate();
+      const prevMonthDays = new Date(calCurrentYear, calCurrentMonth, 0).getDate();
+
+      // 3. Trailing Days of Previous Month
+      for (let i = firstDayOfWeek - 1; i >= 0; i--) {
+        const dayNum = prevMonthDays - i;
+        const cell = document.createElement('div');
+        cell.className = 'cal-day-cell other-month';
+        cell.innerHTML = `<span>${dayNum}</span>`;
+        cell.onclick = () => {
+          prevCalendarMonth();
+          selectCalendarDay(dayNum, calCurrentMonth, calCurrentYear);
+        };
+        grid.appendChild(cell);
+      }
+
+      // 4. Current Month Days
+      const todayYear = 2026, todayMonth = 9, todayDay = 6;
+      for (let d = 1; d <= daysInMonth; d++) {
+        const cell = document.createElement('div');
+        cell.className = 'cal-day-cell';
+        
+        const isSelected = (d === calSelectedDay);
+        const isToday = (d === todayDay && calCurrentMonth === todayMonth && calCurrentYear === todayYear);
+
+        if (isSelected) cell.classList.add('selected-day');
+        if (isToday) cell.classList.add('today-cell');
+
+        const events = getEventsForDay(d, calCurrentMonth, calCurrentYear);
+        let dotsHTML = '';
+        if (events.length > 0) {
+          dotsHTML = '<div class="cal-dots-container">';
+          const hasPill = events.some(e => e.type === 'pill');
+          const hasBill = events.some(e => e.type === 'bill');
+          const hasWorkout = events.some(e => e.type === 'fitness');
+          const hasHabit = events.some(e => e.type === 'habit');
+          const hasAppt = events.some(e => e.type === 'appointment');
+
+          if (hasPill) dotsHTML += `<div class="cal-dot" style="background:var(--emerald);" title="Prescription Active"></div>`;
+          if (hasBill) dotsHTML += `<div class="cal-dot" style="background:var(--amber);" title="Bill Due"></div>`;
+          if (hasWorkout) dotsHTML += `<div class="cal-dot" style="background:var(--purple);" title="Workout Scheduled"></div>`;
+          if (hasHabit) dotsHTML += `<div class="cal-dot" style="background:var(--cyan);" title="Habit Tracked"></div>`;
+          if (hasAppt) dotsHTML += `<div class="cal-dot" style="background:#6366f1;" title="Appointment"></div>`;
+          dotsHTML += '</div>';
+        }
+
+        cell.innerHTML = `<span>${d}</span>${dotsHTML}`;
+        cell.onclick = () => selectCalendarDay(d, calCurrentMonth, calCurrentYear);
+        grid.appendChild(cell);
+      }
+
+      // 5. Leading Days of Next Month to fill grid (35 or 42 cells)
+      const totalCells = firstDayOfWeek + daysInMonth;
+      const targetTotal = (totalCells > 35 ? 42 : 35);
+      const remainingCells = targetTotal - totalCells;
+      for (let n = 1; n <= remainingCells; n++) {
+        const cell = document.createElement('div');
+        cell.className = 'cal-day-cell other-month';
+        cell.innerHTML = `<span>${n}</span>`;
+        cell.onclick = () => {
+          nextCalendarMonth();
+          selectCalendarDay(n, calCurrentMonth, calCurrentYear);
+        };
+        grid.appendChild(cell);
+      }
+
+      container.appendChild(grid);
+    }
+
+    function renderCalendarWeekGrid(container) {
+      const weekContainer = document.createElement('div');
+      weekContainer.className = 'cal-week-grid';
+
+      const selectedDate = new Date(calCurrentYear, calCurrentMonth, calSelectedDay);
+      const dayOfWeek = (selectedDate.getDay() + 6) % 7; // 0=Mon, 6=Sun
+      const mondayDate = new Date(calCurrentYear, calCurrentMonth, calSelectedDay - dayOfWeek);
+
+      for (let i = 0; i < 7; i++) {
+        const curDate = new Date(mondayDate.getFullYear(), mondayDate.getMonth(), mondayDate.getDate() + i);
+        const d = curDate.getDate();
+        const m = curDate.getMonth();
+        const y = curDate.getFullYear();
+        const isSelected = (d === calSelectedDay && m === calCurrentMonth && y === calCurrentYear);
+        const dayName = calWeekdayFullNames[curDate.getDay()];
+        const events = getEventsForDay(d, m, y);
+
+        const row = document.createElement('div');
+        row.className = `cal-week-row ${isSelected ? 'selected-week-row' : ''}`;
+        row.onclick = () => selectCalendarDay(d, m, y);
+
+        let eventBadges = events.slice(0, 4).map(e => 
+          `<span class="pill-badge" style="background:${e.color}22; color:${e.color}; font-size:0.72rem;">${e.icon} ${e.title}</span>`
+        ).join(' ');
+
+        row.innerHTML = `
+          <div style="display:flex; align-items:center; gap:0.75rem;">
+            <div style="font-size:1.2rem; font-weight:800; width:34px; text-align:center; color:${isSelected ? 'var(--accent)' : 'inherit'};">${d}</div>
+            <div>
+              <div style="font-weight:700; font-size:0.88rem;">${dayName}</div>
+              <div style="font-size:0.72rem; color:var(--text-muted);">${calMonthNames[m]} ${d}, ${y}</div>
+            </div>
+          </div>
+          <div style="display:flex; gap:0.35rem; flex-wrap:wrap; justify-content:flex-end;">
+            ${eventBadges}
+          </div>
+        `;
+        weekContainer.appendChild(row);
+      }
+
+      container.appendChild(weekContainer);
+    }
+
+    function renderCalendarDayView(container) {
+      const daySchedule = document.createElement('div');
+      daySchedule.className = 'cal-day-schedule';
+
+      const timeSlots = [
+        { time: "07:00 AM", label: "Morning Wakeup & Blood Pressure Check", icon: "☀️", color: "var(--amber)" },
+        { time: "08:30 AM", label: "Medication: Metformin 500mg (Dose Logged)", icon: "💊", color: "var(--emerald)" },
+        { time: "10:00 AM", label: "Household Admin & Utility Review", icon: "💳", color: "var(--accent)" },
+        { time: "12:00 PM", label: "Hydration & Habit Check-in (2.5L Water Goal)", icon: "💧", color: "var(--cyan)" },
+        { time: "02:00 PM", label: "Medical Clinic Appointment / Telehealth Check", icon: "📅", color: "#6366f1" },
+        { time: "05:30 PM", label: "Fitness: Hypertrophy Push Session (4 Sets)", icon: "🏋️", color: "var(--purple)" },
+        { time: "08:00 PM", label: "Evening Wind Down & Streak Synchronization", icon: "🌙", color: "var(--text-muted)" }
+      ];
+
+      timeSlots.forEach(slot => {
+        const row = document.createElement('div');
+        row.className = 'cal-time-slot';
+        row.innerHTML = `
+          <div class="cal-time-label">${slot.time}</div>
+          <div style="flex:1;">
+            <div style="font-weight:700; color:${slot.color};">${slot.icon} ${slot.label}</div>
+            <div style="font-size:0.72rem; color:var(--text-muted); margin-top:2px;">Scheduled for ${calMonthNames[calCurrentMonth]} ${calSelectedDay}, ${calCurrentYear}</div>
+          </div>
+          <button class="btn btn-secondary" style="padding:0.2rem 0.45rem; font-size:0.7rem;" onclick="showToast('⚡ Action acknowledged for ${slot.time}')">Done</button>
+        `;
+        daySchedule.appendChild(row);
+      });
+
+      container.appendChild(daySchedule);
     }
 
     function showToast(msg) {
