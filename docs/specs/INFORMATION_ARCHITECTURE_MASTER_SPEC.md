@@ -208,13 +208,39 @@ Registration captures: Name, Age, Location Permission, Phone Number, and Email.
 
 ---
 
-## 9. App Multi-Role Architecture (User / Admin / Caregiver)
+## 9. App Multi-Role Architecture (Master User / Senior / Caregiver)
 
-| Role | Definition & Authority Boundary |
-| :--- | :--- |
-| **User** | The primary account holder. Both an independent senior and a standard adult operate under the User role. |
-| **Admin** | The overarching authority managing another individual's account (e.g. adult child managing aging parents). Holds permission to invite, assign, and replace Caregivers. |
-| **Caregiver** | A role assigned by the Admin (to a hired visiting nurse, family member, or the Admin themselves) specifically for day-to-day adherence monitoring. |
+| Role | Definition & Authority Boundary | Credential & Governance Rules |
+| :--- | :--- | :--- |
+| **Master User (Power User / Admin)** | The primary account holder and household administrator (e.g., Aswin). Full administrative control over household profiles, modules, billing, and settings. | **Authority to provision & manage credentials for all sub-profiles.** Sets and resets the Senior's 4-digit PIN, configures Caregiver access codes, and sets escalation delays. |
+| **Senior User (Elderly Profile)** | Dependent or semi-independent aging adult (e.g., Eleanor Vance) operating in Senior Shield Mode (high-contrast AAA, 24pt+ bold text, 56dp oversized touch targets). | **Simplified 4-Digit PIN (e.g., `1234`).** Configured and managed by the Master User so the senior is never locked out by complex passwords or 2FA friction. |
+| **Caregiver** | An assigned monitor (e.g., adult child, visiting nurse John Vance) receiving real-time adherence telemetry and escalation ladder notifications. | **Caregiver Access Password / Invite Token.** Provisioned by Master User with configurable permission scopes (View-Only Telemetry vs Emergency Intervention). |
+
+### 9.1 Master User Family & Security Hub (PIN & Credential Provisioning)
+To prevent vulnerable seniors with cognitive decline or mild memory impairment from suffering password lockouts or onboarding friction:
+1. **Master PIN Provisioning:** The Master User sets and edits the Senior's 4-digit PIN directly from the **Profile > Family & Security Hub**.
+2. **Instant Household Sync:** Changing the PIN in the Master User's dashboard instantly updates authentication records across all shared household devices without requiring the senior to perform verification steps.
+3. **Emergency Override:** If the senior forgets their PIN, the Master User can unlock the device remotely or generate a single-use 4-digit temporary bypass.
+4. **Caregiver Token Rotation:** The Master User can rotate caregiver access passwords or revoke monitoring permissions in 1 click, immediately triggering a remote data scrub on the caregiver's device.
+
+```mermaid
+graph TD
+    Master[Master User / Admin Dashboard] --> FamHub[Profile: Family & Security Hub]
+    
+    FamHub --> SeniorConfig[👴 Senior Profile Governance]
+    FamHub --> CaregiverConfig[🛡️ Caregiver Access Governance]
+    
+    SeniorConfig --> SetPIN[Set / Update Senior 4-Digit PIN<br>e.g., '1234']
+    SeniorConfig --> SeniorUI[Configure 24pt+ Typography & Voice TTS]
+    SeniorConfig --> RegimenAssign[Assign Pill Regimens & Refill Limits]
+    
+    CaregiverConfig --> SetPass[Set / Rotate Caregiver Access Password]
+    CaregiverConfig --> TelemetryScope[Configure Adherence Stream & Delay Interval]
+    CaregiverConfig --> RevokeBtn[Instant Revoke & Remote Cache Wipe]
+    
+    SetPIN --> InstantSync[Instant Sync to Household Login Gateways]
+    SetPass --> InstantSync
+```
 
 ---
 

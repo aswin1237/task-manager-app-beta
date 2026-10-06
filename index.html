@@ -535,6 +535,11 @@
 
       <!-- Actions & Profile Portal -->
       <div class="header-actions">
+        <!-- Family & Security Master Hub Button -->
+        <button class="btn btn-secondary" onclick="openFamilySettingsModal()" id="btnFamilySettings" title="Master User: Manage Senior 4-Digit PIN & Caregiver Access">
+          👨‍👩‍👧 Family & PIN Hub
+        </button>
+
         <!-- Log Out / Switch Persona Button -->
         <button class="btn btn-secondary" style="border-radius:20px; padding:0.35rem 0.75rem;" onclick="toggleLoginScreen(true)" id="userProfileBtn">
           👤 <span id="activeUserName">Aswin</span> <span style="font-size:0.7rem; opacity:0.7;">(Switch ▾)</span>
@@ -759,6 +764,86 @@
     </div>
   </div>
 
+  <!-- Master User Family & Security Hub Modal -->
+  <div class="modal-backdrop" id="familySettingsModal">
+    <div class="modal-box" style="max-width:560px; max-height:90vh; overflow-y:auto;">
+      <div style="display:flex; justify-content:space-between; align-items:center;">
+        <div style="display:flex; align-items:center; gap:0.5rem;">
+          <div class="logo-icon" style="width:28px; height:28px; font-size:0.85rem; background:var(--purple);">👨‍👩‍👧</div>
+          <h3 style="font-size:1.05rem; font-weight:800;">Family & Household Security Hub</h3>
+        </div>
+        <button class="btn btn-secondary" style="padding:0.2rem 0.5rem;" onclick="closeFamilySettingsModal()">✕</button>
+      </div>
+
+      <p style="font-size:0.75rem; color:var(--text-muted); line-height:1.4;">
+        As the <strong>Master Account Owner (Aswin)</strong>, you provision PINs, credentials, and safety governance for all household members:
+      </p>
+
+      <!-- Section 1: Senior Profile PIN & Accessibility Provisioning -->
+      <div style="background:var(--bg); border:1.5px solid var(--emerald); border-radius:12px; padding:1rem; display:flex; flex-direction:column; gap:0.75rem;">
+        <div style="display:flex; justify-content:space-between; align-items:center;">
+          <div style="display:flex; align-items:center; gap:0.4rem;">
+            <span style="font-size:1.2rem;">👵</span>
+            <strong style="font-size:0.88rem; color:var(--emerald);">Senior Profile (Eleanor Vance)</strong>
+          </div>
+          <span class="pill-badge" style="background:var(--emerald-bg); color:var(--emerald);">Senior Shield Active</span>
+        </div>
+
+        <div class="form-group">
+          <label style="font-size:0.75rem; font-weight:700;">Elder 4-Digit Access PIN (Master Provisioned)</label>
+          <div style="display:flex; gap:0.6rem; align-items:center;">
+            <input type="text" maxlength="4" class="form-input" id="cfgSeniorPin" value="1234" style="font-family:'JetBrains Mono',monospace; font-size:1.2rem; font-weight:800; letter-spacing:0.25em; text-align:center; width:110px; border-color:var(--emerald);">
+            <div style="font-size:0.72rem; color:var(--text-muted); line-height:1.3;">
+              Master sets the simplified PIN. Updates immediately on Eleanor's tablet/phone with 0-friction login.
+            </div>
+          </div>
+        </div>
+
+        <div style="display:grid; grid-template-columns:1fr 1fr; gap:0.5rem; font-size:0.74rem;">
+          <div style="background:var(--surface); padding:0.5rem; border-radius:6px; border:1px solid var(--surface-border);">
+            <strong>🔤 Typography Mode:</strong>
+            <div style="color:var(--text-muted);">24pt+ High-Contrast AAA</div>
+          </div>
+          <div style="background:var(--surface); padding:0.5rem; border-radius:6px; border:1px solid var(--surface-border);">
+            <strong>🗣️ Voice Readout TTS:</strong>
+            <div style="color:var(--emerald);">Enabled (Auto-speak)</div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Section 2: Caregiver Profile Credentials & Telemetry -->
+      <div style="background:var(--bg); border:1.5px solid var(--rose); border-radius:12px; padding:1rem; display:flex; flex-direction:column; gap:0.75rem;">
+        <div style="display:flex; justify-content:space-between; align-items:center;">
+          <div style="display:flex; align-items:center; gap:0.4rem;">
+            <span style="font-size:1.2rem;">🛡️</span>
+            <strong style="font-size:0.88rem; color:var(--rose);">Caregiver Account (John Vance)</strong>
+          </div>
+          <span class="pill-badge" style="background:var(--rose-bg); color:var(--rose);">Telemetry Live</span>
+        </div>
+
+        <div class="form-group">
+          <label style="font-size:0.75rem; font-weight:700;">Caregiver Access Password / Invite Token</label>
+          <input type="text" class="form-input" id="cfgCaregiverPass" value="caregiver2026" style="font-family:'JetBrains Mono',monospace; font-size:0.85rem;">
+        </div>
+
+        <div class="form-group">
+          <label style="font-size:0.75rem; font-weight:700;">Missed Dose Escalation Trigger Delay</label>
+          <select class="form-input" id="cfgEscalationDelay" style="font-size:0.82rem;">
+            <option value="15">15 Minutes (Urgent Alert)</option>
+            <option value="30" selected>30 Minutes (Standard Escalation Ladder)</option>
+            <option value="60">60 Minutes (Gentle Follow-up)</option>
+          </select>
+        </div>
+      </div>
+
+      <!-- Security Sync Buttons -->
+      <div style="display:flex; justify-content:flex-end; gap:0.5rem; margin-top:0.25rem;">
+        <button class="btn btn-secondary" onclick="closeFamilySettingsModal()">Cancel</button>
+        <button class="btn" style="background:var(--accent);" onclick="saveFamilySettings()">💾 Save & Sync Household Credentials</button>
+      </div>
+    </div>
+  </div>
+
   <!-- Login & Persona Gateway Modal -->
   <div class="modal-backdrop" id="loginModal">
     <div class="modal-box" style="max-width:520px;">
@@ -840,8 +925,40 @@
     let streakCount = 4;
     let lastActionUndo = null;
     let editingTarget = null;
-    let selectedPersonaRole = 'power';
-    let landingPersonaRole = 'power';
+    let securityConfig = {
+      seniorPin: '1234',
+      caregiverPass: 'caregiver2026',
+      escalationDelay: '30'
+    };
+
+    function openFamilySettingsModal() {
+      document.getElementById('cfgSeniorPin').value = securityConfig.seniorPin;
+      document.getElementById('cfgCaregiverPass').value = securityConfig.caregiverPass;
+      document.getElementById('cfgEscalationDelay').value = securityConfig.escalationDelay;
+      document.getElementById('familySettingsModal').style.display = 'flex';
+    }
+
+    function closeFamilySettingsModal() {
+      document.getElementById('familySettingsModal').style.display = 'none';
+    }
+
+    function saveFamilySettings() {
+      const pinVal = document.getElementById('cfgSeniorPin').value.trim();
+      const passVal = document.getElementById('cfgCaregiverPass').value.trim();
+      const delayVal = document.getElementById('cfgEscalationDelay').value;
+
+      if (pinVal.length !== 4 || isNaN(pinVal)) {
+        alert("⚠️ Please enter a valid 4-digit numeric PIN for the Senior profile (e.g. 1234).");
+        return;
+      }
+
+      securityConfig.seniorPin = pinVal;
+      securityConfig.caregiverPass = passVal || 'caregiver2026';
+      securityConfig.escalationDelay = delayVal;
+
+      closeFamilySettingsModal();
+      showToast(`👨‍👩‍👧 Master Governance: Senior 4-Digit PIN updated to [${pinVal}] & synced across household devices!`);
+    }
 
     function pickLandingPersona(role) {
       landingPersonaRole = role;
@@ -859,12 +976,12 @@
 
       if (role === 'senior') {
         document.getElementById('landEmail').value = 'eleanor.vance@senior.care';
-        document.getElementById('landPassLabel').textContent = 'Senior 4-Digit PIN';
-        document.getElementById('landPass').value = '1234';
+        document.getElementById('landPassLabel').textContent = `Senior 4-Digit PIN (Master Configured: ${securityConfig.seniorPin})`;
+        document.getElementById('landPass').value = securityConfig.seniorPin;
       } else if (role === 'caregiver') {
         document.getElementById('landEmail').value = 'john.vance@caregiver.guardian';
         document.getElementById('landPassLabel').textContent = 'Caregiver Access Password';
-        document.getElementById('landPass').value = 'caregiver2026';
+        document.getElementById('landPass').value = securityConfig.caregiverPass;
       } else {
         document.getElementById('landEmail').value = 'aswin@omnitask.app';
         document.getElementById('landPassLabel').textContent = 'Password';
@@ -932,14 +1049,14 @@
         document.getElementById('personaSenior').style.border = '1.5px solid var(--emerald)';
         document.getElementById('personaSenior').style.background = 'var(--surface-hover)';
         document.getElementById('loginEmail').value = 'eleanor.vance@senior.care';
-        document.getElementById('loginPassLabel').textContent = 'Senior 4-Digit PIN (e.g. 1 2 3 4)';
-        document.getElementById('loginPass').value = '1234';
+        document.getElementById('loginPassLabel').textContent = `Senior 4-Digit PIN (Master Configured: ${securityConfig.seniorPin})`;
+        document.getElementById('loginPass').value = securityConfig.seniorPin;
       } else {
         document.getElementById('personaCaregiver').style.border = '1.5px solid var(--rose)';
         document.getElementById('personaCaregiver').style.background = 'var(--surface-hover)';
         document.getElementById('loginEmail').value = 'john.vance@caregiver.guardian';
         document.getElementById('loginPassLabel').textContent = 'Caregiver Access Password';
-        document.getElementById('loginPass').value = 'caregiver2026';
+        document.getElementById('loginPass').value = securityConfig.caregiverPass;
       }
     }
 
@@ -973,16 +1090,21 @@
       document.body.classList.remove('senior-mode', 'caregiver-mode');
       document.querySelectorAll('.mode-btn').forEach(b => b.classList.remove('active'));
 
+      const famBtn = document.getElementById('btnFamilySettings');
+
       if (mode === 'senior') {
         document.body.classList.add('senior-mode');
         document.getElementById('btnSenior').classList.add('active');
+        if (famBtn) famBtn.style.display = 'none';
         showToast("👵 Switched to Senior Mode: High-contrast 24pt+ cards & 56dp touch targets");
       } else if (mode === 'caregiver') {
         document.body.classList.add('caregiver-mode');
         document.getElementById('btnCaregiver').classList.add('active');
+        if (famBtn) famBtn.style.display = 'none';
         showToast("🛡️ Switched to Caregiver Mode: Live telemetry feed & Adherence score");
       } else {
         document.getElementById('btnPower').classList.add('active');
+        if (famBtn) famBtn.style.display = 'inline-flex';
         showToast("⚡ Switched to Power User Mode: 4-column modular split");
       }
     }
