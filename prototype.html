@@ -1721,6 +1721,10 @@
       if (!container) return;
       container.innerHTML = '';
 
+      if (expensesData.length === 0) {
+        container.innerHTML = '<div style="color:var(--text-muted); font-size:0.85rem; padding:0.5rem;">No expenses recorded yet. Click "➕ Add Manual Expense" to create one.</div>';
+      }
+
       let total = 0;
       expensesData.forEach(e => {
         total += parseFloat(e.amount || 0);
@@ -2020,10 +2024,15 @@
        SPEED-DIAL QUICK INGESTION (All 6 Domains)
        ========================================================================== */
     function openQuickAddModal(defaultDomain) {
-      if (defaultDomain) {
-        const sel = document.getElementById('addDomainSelect');
-        if (sel) sel.value = defaultDomain;
+      let domainToSet = defaultDomain;
+      if (!domainToSet) {
+        if (activePrimaryTab === 'expense') domainToSet = 'expense';
+        else if (activePrimaryTab === 'reminders') domainToSet = 'pill';
+        else if (activePrimaryTab === 'fitness') domainToSet = 'fitness';
+        else domainToSet = 'expense';
       }
+      const sel = document.getElementById('addDomainSelect');
+      if (sel) sel.value = domainToSet;
       updateQuickAddFields();
       document.getElementById('quickAddModal').style.display = 'flex';
       setTimeout(() => {
@@ -2088,6 +2097,8 @@
         return;
       }
 
+      let destinationName = "Expenses & Bills";
+
       if (domain === 'pill') {
         pillsData.push({
           id: "pill_" + Date.now(),
@@ -2099,6 +2110,7 @@
           totalDays: 30,
           refillWarningDays: 5
         });
+        destinationName = "Reminders & Pills";
         switchPrimaryTab('reminders');
       } else if (domain === 'bill') {
         const num = parseFloat(amount.replace(/[^0-9.]/g, '')) || 85.00;
@@ -2110,16 +2122,18 @@
           amount: num,
           isPaid: false
         });
+        destinationName = "Bills Hub";
         switchPrimaryTab('expense');
       } else if (domain === 'expense') {
         const num = parseFloat(amount.replace(/[^0-9.]/g, '')) || 25.00;
         expensesData.unshift({
           id: "exp_" + Date.now(),
-          name: `🛒 ${title}`,
+          name: title.startsWith('🛒') || title.startsWith('☕') || title.startsWith('⚡') ? title : `🛒 ${title}`,
           amount: num,
           category: "General",
           date: "Today"
         });
+        destinationName = "Expense Ledger";
         switchPrimaryTab('expense');
       } else if (domain === 'fitness') {
         workoutsData.push({
@@ -2131,6 +2145,7 @@
             { name: "Secondary Movement", sets: "3 Sets × 12 Reps", done: false }
           ]
         });
+        destinationName = "Fitness & Workouts";
         switchPrimaryTab('fitness');
       } else if (domain === 'habit') {
         const emojiMatch = amount.match(/(\p{Extended_Pictographic})/u);
@@ -2142,6 +2157,7 @@
           count: 1,
           details: amount || "1 Session Logged"
         });
+        destinationName = "Habit Tracker";
         switchPrimaryTab('fitness');
       } else if (domain === 'appointment') {
         appointmentsData.push({
@@ -2150,13 +2166,14 @@
           sub: "Medical Clinic Consultation",
           date: amount || "Oct 28 • 11:00 AM"
         });
+        destinationName = "Appointments Hub";
         switchPrimaryTab('reminders');
       }
 
       persistAllData();
       renderAllViews();
       closeQuickAddModal();
-      showToast(`➕ Successfully created "${title}" in ${domain.toUpperCase()} module!`);
+      showToast(`➕ Saved "<b>${title}</b>" to <b>${destinationName}</b>!`);
     }
 
     /* Universal Edit & Cascade Sync */
