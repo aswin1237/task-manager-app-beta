@@ -1,0 +1,860 @@
+<!DOCTYPE html>
+<html lang="en" data-theme="dark">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+  <title>OmniTask — Interactive Mini Prototype (v4.4 Preview)</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&family=JetBrains+Mono:wght@400;600;700&display=swap" rel="stylesheet">
+  <style>
+    :root[data-theme="dark"] {
+      --bg: #090d16;
+      --surface: #101624;
+      --surface-border: #1c2638;
+      --surface-hover: #162032;
+      --card-bg: #121929;
+      --card-border: #1e2b40;
+      --text: #f8fafc;
+      --text-muted: #94a3b8;
+      --accent: #6366f1;
+      --accent-hover: #4f46e5;
+      --accent-light: rgba(99, 102, 241, 0.15);
+      --emerald: #10b981;
+      --emerald-bg: rgba(16, 185, 129, 0.15);
+      --amber: #f59e0b;
+      --amber-bg: rgba(245, 158, 11, 0.15);
+      --rose: #f43f5e;
+      --rose-bg: rgba(244, 63, 94, 0.15);
+      --cyan: #06b6d4;
+      --cyan-bg: rgba(6, 182, 212, 0.15);
+      --purple: #a855f7;
+      --purple-bg: rgba(168, 85, 247, 0.15);
+      --shadow-sm: 0 2px 8px rgba(0,0,0,0.3);
+      --shadow-md: 0 8px 24px rgba(0,0,0,0.45);
+      --radius: 14px;
+    }
+
+    :root[data-theme="light"] {
+      --bg: #f8fafc;
+      --surface: #ffffff;
+      --surface-border: #e2e8f0;
+      --surface-hover: #f1f5f9;
+      --card-bg: #ffffff;
+      --card-border: #cbd5e1;
+      --text: #0f172a;
+      --text-muted: #64748b;
+      --accent: #4f46e5;
+      --accent-hover: #4338ca;
+      --accent-light: #e0e7ff;
+      --emerald: #16a34a;
+      --emerald-bg: #dcfce7;
+      --amber: #d97706;
+      --amber-bg: #fef3c7;
+      --rose: #e11d48;
+      --rose-bg: #ffe4e6;
+      --cyan: #0284c7;
+      --cyan-bg: #e0f2fe;
+      --purple: #9333ea;
+      --purple-bg: #f3e8ff;
+      --shadow-sm: 0 2px 8px rgba(0,0,0,0.06);
+      --shadow-md: 0 8px 24px rgba(15,23,42,0.08);
+      --radius: 14px;
+    }
+
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+    body {
+      font-family: 'Plus Jakarta Sans', -apple-system, sans-serif;
+      background: var(--bg);
+      color: var(--text);
+      min-height: 100vh;
+      display: flex;
+      flex-direction: column;
+      transition: all 0.2s ease;
+    }
+
+    /* Top Prototype Simulation Banner */
+    .proto-banner {
+      background: linear-gradient(90deg, #4f46e5, #06b6d4);
+      color: white;
+      padding: 0.5rem 1rem;
+      font-size: 0.78rem;
+      font-weight: 700;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      gap: 0.5rem;
+      flex-wrap: wrap;
+    }
+
+    .proto-badge {
+      background: rgba(255,255,255,0.25);
+      padding: 0.2rem 0.5rem;
+      border-radius: 6px;
+      text-transform: uppercase;
+      letter-spacing: 0.04em;
+    }
+
+    /* Main Navigation Header */
+    header {
+      background: var(--surface);
+      border-bottom: 1px solid var(--surface-border);
+      padding: 0.75rem 1.25rem;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      gap: 0.75rem;
+      flex-wrap: wrap;
+      position: sticky;
+      top: 0;
+      z-index: 100;
+    }
+
+    .brand-group {
+      display: flex;
+      align-items: center;
+      gap: 0.65rem;
+    }
+
+    .logo-icon {
+      width: 32px;
+      height: 32px;
+      border-radius: 8px;
+      background: var(--accent);
+      color: white;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-weight: 900;
+      font-size: 1rem;
+    }
+
+    .brand-title {
+      font-size: 1.1rem;
+      font-weight: 800;
+      letter-spacing: -0.02em;
+    }
+
+    /* Mode Switcher Pills (Power User, Senior Mode, Caregiver) */
+    .mode-switch-group {
+      display: flex;
+      background: var(--surface-hover);
+      border: 1px solid var(--surface-border);
+      padding: 3px;
+      border-radius: 24px;
+      gap: 2px;
+    }
+
+    .mode-btn {
+      background: transparent;
+      border: none;
+      color: var(--text-muted);
+      padding: 0.35rem 0.75rem;
+      border-radius: 20px;
+      font-size: 0.76rem;
+      font-weight: 700;
+      cursor: pointer;
+      display: flex;
+      align-items: center;
+      gap: 0.3rem;
+      transition: all 0.15s;
+    }
+
+    .mode-btn.active {
+      background: var(--accent);
+      color: white;
+      box-shadow: var(--shadow-sm);
+    }
+
+    .header-actions {
+      display: flex;
+      align-items: center;
+      gap: 0.5rem;
+    }
+
+    .btn {
+      background: var(--accent);
+      color: white;
+      border: none;
+      padding: 0.45rem 0.85rem;
+      border-radius: 8px;
+      font-size: 0.8rem;
+      font-weight: 700;
+      cursor: pointer;
+      display: inline-flex;
+      align-items: center;
+      gap: 0.35rem;
+      transition: all 0.15s;
+    }
+
+    .btn:hover { background: var(--accent-hover); transform: translateY(-1px); }
+    .btn-secondary { background: var(--surface-hover); color: var(--text); border: 1px solid var(--surface-border); }
+    .btn-emerald { background: var(--emerald); }
+    .btn-emerald:hover { filter: brightness(1.1); }
+
+    /* Interactive Simulation Arena */
+    .app-viewport {
+      flex: 1;
+      max-width: 1300px;
+      width: 100%;
+      margin: 0 auto;
+      padding: 1.25rem;
+      display: flex;
+      flex-direction: column;
+      gap: 1.25rem;
+    }
+
+    /* 4-Pillar Grid (Power User View) */
+    .power-grid {
+      display: grid;
+      grid-template-columns: 280px 1fr 1fr 1fr;
+      gap: 1rem;
+      align-items: start;
+    }
+
+    .column-panel {
+      background: var(--surface);
+      border: 1px solid var(--surface-border);
+      border-radius: var(--radius);
+      padding: 1rem;
+      display: flex;
+      flex-direction: column;
+      gap: 0.85rem;
+      box-shadow: var(--shadow-sm);
+    }
+
+    .panel-title {
+      font-size: 0.85rem;
+      font-weight: 800;
+      color: var(--text);
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      text-transform: uppercase;
+      letter-spacing: 0.03em;
+    }
+
+    .pill-badge {
+      font-size: 0.7rem;
+      padding: 0.15rem 0.45rem;
+      border-radius: 12px;
+      font-weight: 700;
+    }
+
+    /* Cards */
+    .module-card {
+      background: var(--card-bg);
+      border: 1px solid var(--card-border);
+      border-radius: 10px;
+      padding: 0.85rem;
+      display: flex;
+      flex-direction: column;
+      gap: 0.5rem;
+      transition: all 0.15s;
+      position: relative;
+    }
+
+    .module-card:hover {
+      border-color: var(--accent);
+      box-shadow: var(--shadow-sm);
+    }
+
+    .card-top {
+      display: flex;
+      justify-content: space-between;
+      align-items: flex-start;
+      gap: 0.5rem;
+    }
+
+    .card-title {
+      font-size: 0.88rem;
+      font-weight: 700;
+      color: var(--text);
+    }
+
+    .card-sub {
+      font-size: 0.74rem;
+      color: var(--text-muted);
+      line-height: 1.35;
+    }
+
+    /* Progress Bar */
+    .progress-track {
+      width: 100%;
+      height: 8px;
+      background: var(--surface-hover);
+      border-radius: 4px;
+      overflow: hidden;
+      margin-top: 4px;
+    }
+
+    .progress-fill {
+      height: 100%;
+      background: var(--emerald);
+      width: 60%;
+      transition: width 0.35s cubic-bezier(0.16, 1, 0.3, 1);
+    }
+
+    /* Senior View Overrides */
+    body.senior-mode .power-grid {
+      grid-template-columns: 1fr;
+      max-width: 720px;
+      margin: 0 auto;
+    }
+
+    body.senior-mode .module-card {
+      padding: 1.5rem;
+      border-radius: 16px;
+      border-width: 2px;
+      gap: 1rem;
+    }
+
+    body.senior-mode .card-title {
+      font-size: 1.35rem;
+      font-weight: 800;
+    }
+
+    body.senior-mode .card-sub {
+      font-size: 1rem;
+      line-height: 1.4;
+    }
+
+    body.senior-mode .btn {
+      font-size: 1.1rem;
+      padding: 0.85rem 1.25rem;
+      min-height: 56px;
+      border-radius: 12px;
+      justify-content: center;
+      width: 100%;
+    }
+
+    /* Caregiver View Overrides */
+    body.caregiver-mode .caregiver-bar {
+      display: flex !important;
+    }
+
+    .caregiver-bar {
+      display: none;
+      background: var(--rose-bg);
+      border: 1px solid var(--rose);
+      color: var(--text);
+      padding: 0.75rem 1rem;
+      border-radius: 10px;
+      font-size: 0.82rem;
+      align-items: center;
+      justify-content: space-between;
+      gap: 0.75rem;
+    }
+
+    /* Floating Toast */
+    .toast-popup {
+      position: fixed;
+      bottom: 24px;
+      left: 50%;
+      transform: translateX(-50%);
+      background: var(--surface);
+      color: var(--text);
+      border: 1.5px solid var(--accent);
+      box-shadow: var(--shadow-md);
+      padding: 0.65rem 1.2rem;
+      border-radius: 24px;
+      font-size: 0.82rem;
+      font-weight: 700;
+      z-index: 300;
+      display: none;
+      align-items: center;
+      gap: 0.6rem;
+      animation: slideUp 0.2s ease forwards;
+    }
+
+    @keyframes slideUp {
+      from { opacity: 0; transform: translate(-50%, 15px); }
+      to { opacity: 1; transform: translate(-50%, 0); }
+    }
+
+    /* Edit Modal Drawer */
+    .modal-backdrop {
+      position: fixed;
+      inset: 0;
+      background: rgba(0,0,0,0.65);
+      backdrop-filter: blur(4px);
+      display: none;
+      align-items: center;
+      justify-content: center;
+      z-index: 200;
+      padding: 1rem;
+    }
+
+    .modal-box {
+      background: var(--surface);
+      border: 1px solid var(--surface-border);
+      border-radius: var(--radius);
+      max-width: 480px;
+      width: 100%;
+      padding: 1.25rem;
+      display: flex;
+      flex-direction: column;
+      gap: 1rem;
+      box-shadow: var(--shadow-md);
+    }
+
+    .form-group {
+      display: flex;
+      flex-direction: column;
+      gap: 0.35rem;
+    }
+
+    .form-group label {
+      font-size: 0.75rem;
+      font-weight: 700;
+      color: var(--text-muted);
+    }
+
+    .form-input {
+      background: var(--bg);
+      border: 1px solid var(--surface-border);
+      color: var(--text);
+      padding: 0.5rem 0.75rem;
+      border-radius: 8px;
+      font-size: 0.85rem;
+      outline: none;
+      font-family: inherit;
+    }
+
+    .form-input:focus {
+      border-color: var(--accent);
+    }
+
+    /* Mobile Responsive */
+    @media (max-width: 900px) {
+      .power-grid {
+        grid-template-columns: 1fr;
+      }
+    }
+  </style>
+</head>
+<body>
+
+  <!-- Simulation Header Banner -->
+  <div class="proto-banner">
+    <div style="display:flex; align-items:center; gap:0.5rem;">
+      <span class="proto-badge">Interactive Mini Prototype</span>
+      <span>Live Simulation of OmniTask v4.4 Core Mechanics</span>
+    </div>
+    <div style="font-size:0.74rem;">
+      Try: Take Pill (+3%) • Pay Bill (Auto-Link) • Edit Past Record
+    </div>
+  </div>
+
+  <!-- Screen Header -->
+  <header>
+    <div class="brand-group">
+      <div class="logo-icon">OT</div>
+      <div>
+        <div class="brand-title">OmniTask</div>
+      </div>
+    </div>
+
+    <!-- Mode Switcher -->
+    <div class="mode-switch-group">
+      <button class="mode-btn active" id="btnPower" onclick="setMode('power')">⚡ Power User</button>
+      <button class="mode-btn" id="btnSenior" onclick="setMode('senior')">👵 Senior Mode</button>
+      <button class="mode-btn" id="btnCaregiver" onclick="setMode('caregiver')">🛡️ Caregiver</button>
+    </div>
+
+    <!-- Actions -->
+    <div class="header-actions">
+      <button class="btn btn-secondary" onclick="toggleTheme()" id="themeBtn">☀️ Light</button>
+      <button class="btn" onclick="openAddModal()">➕ Add Task</button>
+    </div>
+  </header>
+
+  <!-- Main Viewport Arena -->
+  <main class="app-viewport">
+
+    <!-- Caregiver Alert Bar (Shown in Caregiver Mode) -->
+    <div class="caregiver-bar" id="caregiverBar">
+      <div>
+        <strong>🛡️ Caregiver Telemetry Active:</strong> Monitored Patient: <em>Eleanor Vance (Senior Profile)</em>
+      </div>
+      <div style="display:flex; gap:0.5rem; align-items:center;">
+        <span class="pill-badge" style="background:var(--emerald-bg); color:var(--emerald);">Adherence: 96%</span>
+        <button class="btn btn-secondary" style="padding:0.25rem 0.5rem; font-size:0.72rem;" onclick="triggerPrivacyPause()">🔒 Privacy Pause</button>
+      </div>
+    </div>
+
+    <!-- 4-Pillar Grid -->
+    <div class="power-grid">
+
+      <!-- Column 1: Calendar Aggregator -->
+      <section class="column-panel" id="colCalendar">
+        <div class="panel-title">
+          <span>📅 Calendar Aggregator</span>
+          <span class="pill-badge" style="background:var(--cyan-bg); color:var(--cyan);">Oct 2026</span>
+        </div>
+
+        <div style="background:var(--bg); border:1px solid var(--surface-border); border-radius:8px; padding:0.75rem; text-align:center;">
+          <div style="font-size:0.75rem; color:var(--text-muted);">Today's Date</div>
+          <div style="font-size:1.25rem; font-weight:800; margin:4px 0;">Tuesday, Oct 6</div>
+          <div style="font-size:0.74rem; color:var(--emerald); font-weight:700;">🟢 4 Events Aggregated</div>
+        </div>
+
+        <div class="module-card">
+          <div class="card-top">
+            <div class="card-title">💰 Today's Spend Total</div>
+            <span class="pill-badge" style="background:var(--amber-bg); color:var(--amber);" id="calDailySpend">$120.00</span>
+          </div>
+          <div class="card-sub" id="calSpendDesc">Auto-calculated from paid utility bills and groceries.</div>
+        </div>
+
+        <div class="module-card">
+          <div class="card-top">
+            <div class="card-title">🚨 Escalation Ladder</div>
+            <span class="pill-badge" style="background:var(--emerald-bg); color:var(--emerald);">Normal</span>
+          </div>
+          <div class="card-sub">All morning doses logged on time. Escalation timer is idle.</div>
+        </div>
+      </section>
+
+      <!-- Column 2: Pill Reminders & Course Progress -->
+      <section class="column-panel" id="colPills">
+        <div class="panel-title">
+          <span>💊 Health & Medicine</span>
+          <span class="pill-badge" style="background:var(--emerald-bg); color:var(--emerald);" id="pillCourseStatus">Day 18 / 30</span>
+        </div>
+
+        <!-- Pill Card with Live Progress Bar -->
+        <div class="module-card" id="cardPill">
+          <div class="card-top">
+            <div>
+              <div class="card-title">Metformin 500mg</div>
+              <div class="card-sub">Dr. Sarah Lin • Rx #89421 • 2x Daily</div>
+            </div>
+            <button class="btn btn-secondary" style="padding:0.2rem 0.45rem; font-size:0.7rem;" onclick="openEditModal('pill')">✏️</button>
+          </div>
+
+          <!-- Progress Bar -->
+          <div style="margin-top:0.4rem;">
+            <div style="display:flex; justify-content:space-between; font-size:0.72rem; font-weight:700;">
+              <span>Course Progress: <span id="pillPctText">60%</span></span>
+              <span id="pillRemainingText">12 Days Left</span>
+            </div>
+            <div class="progress-track">
+              <div class="progress-fill" id="pillProgressBar" style="width: 60%;"></div>
+            </div>
+          </div>
+
+          <!-- Refill Alert Banner -->
+          <div style="background:var(--amber-bg); border:1px solid var(--amber); color:var(--text); border-radius:6px; padding:0.4rem 0.6rem; font-size:0.72rem; display:flex; align-items:center; gap:0.3rem;" id="pillRefillAlert">
+            <span>⚠️ <strong>Refill Alert:</strong> Pharmacy renewal in 5 days.</span>
+          </div>
+
+          <button class="btn btn-emerald" onclick="takePillDose()" id="btnTakePill">
+            ✅ Take Dose (Day <span id="btnPillDay">18</span>/30)
+          </button>
+        </div>
+
+        <!-- Medical ID Quick Button -->
+        <div class="module-card" style="background:var(--surface-hover);">
+          <div class="card-title" style="font-size:0.8rem;">📋 Emergency Medical ID</div>
+          <div class="card-sub">Exportable offline ID card for doctors and EMTs.</div>
+          <button class="btn btn-secondary" style="font-size:0.74rem; padding:0.35rem 0.6rem;" onclick="showMedicalId()">Show Medical ID</button>
+        </div>
+      </section>
+
+      <!-- Column 3: Bills & Budget Ledger -->
+      <section class="column-panel" id="colBills">
+        <div class="panel-title">
+          <span>💳 Bills & Budget</span>
+          <span class="pill-badge" style="background:var(--amber-bg); color:var(--amber);" id="budgetLeftBadge">$680 Left</span>
+        </div>
+
+        <!-- Bill Reminder with Auto-Link -->
+        <div class="module-card" id="cardBill">
+          <div class="card-top">
+            <div>
+              <div class="card-title">Electric Utility Bill</div>
+              <div class="card-sub">ConEd • Due Oct 8 (2 Days Left)</div>
+            </div>
+            <button class="btn btn-secondary" style="padding:0.2rem 0.45rem; font-size:0.7rem;" onclick="openEditModal('bill')">✏️</button>
+          </div>
+
+          <div style="font-size:1.15rem; font-weight:800; color:var(--text);" id="billAmountText">$120.00</div>
+
+          <div style="font-size:0.7rem; color:var(--text-muted);" id="billStatusText">
+            ⚡ Status: <strong style="color:var(--amber);">Pending Payment</strong>
+          </div>
+
+          <button class="btn" onclick="payBillAutoLink()" id="btnPayBill">
+            💳 Pay Bill & Auto-Link to Expense
+          </button>
+        </div>
+
+        <!-- Expense Ledger Preview -->
+        <div class="module-card">
+          <div class="card-title" style="font-size:0.8rem;">📊 Expense Ledger (Oct)</div>
+          <div style="display:flex; flex-direction:column; gap:0.35rem; font-size:0.74rem;" id="ledgerList">
+            <div style="display:flex; justify-content:space-between;">
+              <span>🛒 Whole Foods</span>
+              <strong>$45.20</strong>
+            </div>
+            <div style="display:flex; justify-content:space-between;">
+              <span>☕ Blue Bottle Coffee</span>
+              <strong>$6.50</strong>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- Column 4: Fitness & Habits -->
+      <section class="column-panel" id="colFit">
+        <div class="panel-title">
+          <span>🏋️ Fitness & Habits</span>
+          <span class="pill-badge" style="background:var(--purple-bg); color:var(--purple);">4-Day Streak</span>
+        </div>
+
+        <!-- Workout Routine -->
+        <div class="module-card">
+          <div class="card-top">
+            <div>
+              <div class="card-title">Upper Body & Core</div>
+              <div class="card-sub">AI Routine • Chest, Triceps & Abs</div>
+            </div>
+            <span class="pill-badge" style="background:var(--purple-bg); color:var(--purple);">3 Sets</span>
+          </div>
+
+          <div style="font-size:0.74rem; color:var(--text-muted);">
+            • Bench Press: 3 × 10 (135 lbs)<br>
+            • Incline Dumbbell: 3 × 12 (45 lbs)<br>
+            • Plank: 3 × 60s
+          </div>
+
+          <button class="btn btn-secondary" onclick="completeWorkout()" id="btnWorkout">
+            💪 Log Workout Complete
+          </button>
+        </div>
+
+        <!-- Emoji Habit Cluster -->
+        <div class="module-card">
+          <div class="card-top">
+            <div class="card-title">✨ Same-Day Habit Cluster</div>
+            <span class="pill-badge" style="background:var(--cyan-bg); color:var(--cyan);">🎸 ×3</span>
+          </div>
+          <div class="card-sub">
+            • 09:00 AM: Scale practice (15m)<br>
+            • 02:00 PM: Song study (20m)<br>
+            • 07:00 PM: Chord drills (15m)
+          </div>
+          <button class="btn btn-secondary" style="font-size:0.72rem; padding:0.3rem 0.6rem;" onclick="showToast('✅ Logged +1 Guitar Practice Session')">➕ Log Habit</button>
+        </div>
+      </section>
+
+    </div>
+  </main>
+
+  <!-- Edit & Rewrite Modal -->
+  <div class="modal-backdrop" id="editModal">
+    <div class="modal-box">
+      <div style="display:flex; justify-content:space-between; align-items:center;">
+        <h3 id="modalTitle" style="font-size:1rem; font-weight:800;">✏️ Edit Item & Cascade Sync</h3>
+        <button class="btn btn-secondary" style="padding:0.2rem 0.5rem;" onclick="closeEditModal()">✕</button>
+      </div>
+
+      <div class="form-group">
+        <label id="editField1Label">Item Title / Name</label>
+        <input type="text" class="form-input" id="editField1">
+      </div>
+
+      <div class="form-group">
+        <label id="editField2Label">Amount ($) or Dosage</label>
+        <input type="text" class="form-input" id="editField2">
+      </div>
+
+      <!-- Cascade Sync Option -->
+      <div style="background:var(--surface-hover); border:1px solid var(--surface-border); padding:0.6rem; border-radius:8px; font-size:0.74rem;" id="cascadeBox">
+        <strong>🔄 Cascade Sync Rule:</strong>
+        <p style="color:var(--text-muted); margin-top:2px;">Editing this bill will automatically update the linked $120.00 entry in the Expense Ledger and recalculate daily calendar spend.</p>
+      </div>
+
+      <div style="display:flex; justify-content:flex-end; gap:0.5rem;">
+        <button class="btn btn-secondary" onclick="closeEditModal()">Cancel</button>
+        <button class="btn" onclick="saveEdit()">💾 Save Changes</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- Floating Feedback Toast -->
+  <div class="toast-popup" id="toast">
+    <span id="toastMsg">✅ Action Saved</span>
+    <button class="btn btn-secondary" style="padding:0.2rem 0.5rem; font-size:0.7rem;" onclick="undoLastAction()">↩️ Undo</button>
+  </div>
+
+  <script>
+    // State Model
+    let pillCourse = { day: 18, total: 30, pct: 60 };
+    let billState = { name: "Electric Utility Bill", amount: 120.00, isPaid: false };
+    let expenses = [
+      { name: "🛒 Whole Foods", amount: 45.20 },
+      { name: "☕ Blue Bottle Coffee", amount: 6.50 }
+    ];
+    let streakCount = 4;
+    let lastActionUndo = null;
+    let editingTarget = null;
+
+    function setMode(mode) {
+      document.body.classList.remove('senior-mode', 'caregiver-mode');
+      document.querySelectorAll('.mode-btn').forEach(b => b.classList.remove('active'));
+
+      if (mode === 'senior') {
+        document.body.classList.add('senior-mode');
+        document.getElementById('btnSenior').classList.add('active');
+        showToast("👵 Switched to Senior Mode: High-contrast 24pt+ cards & 56dp touch targets");
+      } else if (mode === 'caregiver') {
+        document.body.classList.add('caregiver-mode');
+        document.getElementById('btnCaregiver').classList.add('active');
+        showToast("🛡️ Switched to Caregiver Mode: Live telemetry feed & Adherence score");
+      } else {
+        document.getElementById('btnPower').classList.add('active');
+        showToast("⚡ Switched to Power User Mode: 4-column modular split");
+      }
+    }
+
+    function toggleTheme() {
+      const html = document.documentElement;
+      const cur = html.getAttribute('data-theme');
+      const next = cur === 'dark' ? 'light' : 'dark';
+      html.setAttribute('data-theme', next);
+      document.getElementById('themeBtn').innerHTML = next === 'dark' ? '☀️ Light' : '🌙 Dark';
+    }
+
+    /* 💊 Pill Dose Increment & Course Progress */
+    function takePillDose() {
+      if (pillCourse.day >= pillCourse.total) {
+        alert("🎉 Congratulations! You have completed the 30-day course of Metformin.");
+        return;
+      }
+      lastActionUndo = { type: 'pill', prevDay: pillCourse.day };
+      pillCourse.day += 1;
+      pillCourse.pct = Math.round((pillCourse.day / pillCourse.total) * 100);
+
+      document.getElementById('pillProgressBar').style.width = pillCourse.pct + '%';
+      document.getElementById('pillPctText').textContent = pillCourse.pct + '%';
+      document.getElementById('pillRemainingText').textContent = (pillCourse.total - pillCourse.day) + ' Days Left';
+      document.getElementById('pillCourseStatus').textContent = `Day ${pillCourse.day} / ${pillCourse.total}`;
+      document.getElementById('btnPillDay').textContent = pillCourse.day;
+
+      showToast(`💊 Logged Dose: Metformin 500mg • Day ${pillCourse.day}/${pillCourse.total} (${pillCourse.pct}%)`);
+    }
+
+    /* 💳 Bill-to-Expense Auto-Linker */
+    function payBillAutoLink() {
+      if (billState.isPaid) {
+        showToast("Bill is already marked as paid.");
+        return;
+      }
+      lastActionUndo = { type: 'bill', wasPaid: false };
+      billState.isPaid = true;
+
+      // Auto-create Expense entry
+      expenses.unshift({ name: `⚡ ${billState.name} (Auto-Linked)`, amount: billState.amount });
+      renderExpenses();
+
+      document.getElementById('billStatusText').innerHTML = '⚡ Status: <strong style="color:var(--emerald);">✅ Paid & Logged to Expense</strong>';
+      document.getElementById('btnPayBill').innerHTML = '✅ Paid ($120.00)';
+      document.getElementById('btnPayBill').classList.add('btn-emerald');
+
+      // Recalculate daily calendar spend
+      document.getElementById('calDailySpend').textContent = '$171.70';
+      document.getElementById('calSpendDesc').textContent = 'Includes Auto-Linked $120.00 Electric Bill payment.';
+
+      showToast(`💳 Paid Electric Bill ($${billState.amount}) • Auto-linked to Expense Ledger!`);
+    }
+
+    function renderExpenses() {
+      const container = document.getElementById('ledgerList');
+      container.innerHTML = '';
+      expenses.forEach(e => {
+        const row = document.createElement('div');
+        row.style.display = 'flex';
+        row.style.justifyContent = 'space-between';
+        row.innerHTML = `<span>${e.name}</span><strong>$${e.amount.toFixed(2)}</strong>`;
+        container.appendChild(row);
+      });
+    }
+
+    function completeWorkout() {
+      streakCount += 1;
+      showToast(`💪 Workout Logged! Smart Streak increased to ${streakCount} days.`);
+    }
+
+    function triggerPrivacyPause() {
+      showToast("🔒 Senior Privacy Pause activated for 2 hours (Telemetry masked).");
+    }
+
+    function showMedicalId() {
+      alert("📋 MEDICAL ID CARD:\n• Patient: Eleanor Vance\n• Active Rx: Metformin 500mg (2x Daily)\n• Prescribing Doctor: Dr. Sarah Lin (Phone: 555-0199)\n• Blood Type: O+\n• Emergency Contact: Caregiver John Vance (555-0144)");
+    }
+
+    function showToast(msg) {
+      const t = document.getElementById('toast');
+      document.getElementById('toastMsg').innerHTML = msg;
+      t.style.display = 'flex';
+      setTimeout(() => { t.style.display = 'none'; }, 4000);
+    }
+
+    function openEditModal(target) {
+      editingTarget = target;
+      document.getElementById('editModal').style.display = 'flex';
+      if (target === 'bill') {
+        document.getElementById('modalTitle').textContent = '✏️ Edit Electric Bill & Cascade Sync';
+        document.getElementById('editField1Label').textContent = 'Bill Title';
+        document.getElementById('editField1').value = billState.name;
+        document.getElementById('editField2Label').textContent = 'Amount ($)';
+        document.getElementById('editField2').value = billState.amount;
+        document.getElementById('cascadeBox').style.display = 'block';
+      } else {
+        document.getElementById('modalTitle').textContent = '✏️ Edit Prescription Regimen';
+        document.getElementById('editField1Label').textContent = 'Medication Name';
+        document.getElementById('editField1').value = 'Metformin';
+        document.getElementById('editField2Label').textContent = 'Dosage';
+        document.getElementById('editField2').value = '500mg';
+        document.getElementById('cascadeBox').style.display = 'none';
+      }
+    }
+
+    function closeEditModal() {
+      document.getElementById('editModal').style.display = 'none';
+    }
+
+    function saveEdit() {
+      if (editingTarget === 'bill') {
+        const newAmt = parseFloat(document.getElementById('editField2').value) || 120.00;
+        billState.amount = newAmt;
+        document.getElementById('billAmountText').textContent = `$${newAmt.toFixed(2)}`;
+        showToast(`✏️ Updated Electric Bill to $${newAmt.toFixed(2)} (Cascade synced to Expense Ledger)`);
+      } else {
+        showToast("✏️ Updated Medication Dosage to 500mg.");
+      }
+      closeEditModal();
+    }
+
+    function undoLastAction() {
+      if (lastActionUndo && lastActionUndo.type === 'pill') {
+        pillCourse.day = lastActionUndo.prevDay;
+        pillCourse.pct = Math.round((pillCourse.day / pillCourse.total) * 100);
+        document.getElementById('pillProgressBar').style.width = pillCourse.pct + '%';
+        document.getElementById('pillPctText').textContent = pillCourse.pct + '%';
+        document.getElementById('pillRemainingText').textContent = (pillCourse.total - pillCourse.day) + ' Days Left';
+        document.getElementById('btnPillDay').textContent = pillCourse.day;
+        showToast("↩️ Undone: Reverted pill dose log.");
+      } else {
+        showToast("↩️ Action reverted.");
+      }
+    }
+
+    function openAddModal() {
+      showToast("➕ Speed-Dial Ingestion: 2-Field Quick Add opened.");
+    }
+  </script>
+</body>
+</html>
