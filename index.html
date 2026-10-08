@@ -356,6 +356,17 @@
       opacity: 0.3;
       cursor: pointer;
     }
+    .cal-day-cell.holding-press, .cal-week-row.holding-press {
+      border-color: var(--accent) !important;
+      background: rgba(99, 102, 241, 0.28) !important;
+      box-shadow: 0 0 18px rgba(99, 102, 241, 0.8) !important;
+      transform: scale(0.95);
+      animation: pulseHold 0.8s infinite alternate;
+    }
+    @keyframes pulseHold {
+      0% { box-shadow: 0 0 8px rgba(99, 102, 241, 0.4); transform: scale(0.96); }
+      100% { box-shadow: 0 0 24px rgba(99, 102, 241, 0.95); transform: scale(0.93); }
+    }
     .cal-dots-container {
       display: flex;
       gap: 2px;
@@ -1221,6 +1232,9 @@
               <div style="font-size:0.74rem; color:var(--text-muted);">Active Focused Date</div>
               <div style="font-size:1.35rem; font-weight:800; margin:3px 0;" id="calSelectedDateText">Tuesday, October 6, 2026</div>
               <div style="font-size:0.76rem; color:var(--emerald); font-weight:700;" id="calEventCountBadge">🟢 Dynamic Events Aggregated</div>
+              <div style="font-size:0.72rem; color:var(--text-muted); margin-top:5px; font-weight:600; display:flex; align-items:center; justify-content:center; gap:0.4rem; background:rgba(99,102,241,0.08); padding:0.25rem 0.5rem; border-radius:6px; border:1px solid rgba(99,102,241,0.18);">
+                <span>🖱️ <strong>Double-click</strong> (Laptop)</span> • <span>📱 <strong>Long-press 5s</strong> (Tablet/Phone) to Add Entry</span>
+              </div>
             </div>
 
             <!-- Dynamic Calendar View Container -->
@@ -1511,7 +1525,7 @@
   <div class="modal-backdrop" id="quickAddModal">
     <div class="modal-box">
       <div style="display:flex; justify-content:space-between; align-items:center;">
-        <h3 style="font-size:1.05rem; font-weight:800;">➕ Speed-Dial Quick Ingestion</h3>
+        <h3 style="font-size:1.05rem; font-weight:800;" id="quickAddModalHeader">➕ Speed-Dial Quick Ingestion</h3>
         <button class="btn btn-secondary" style="padding:0.2rem 0.5rem;" onclick="closeQuickAddModal()">✕</button>
       </div>
 
@@ -2935,6 +2949,78 @@
       return events;
     }
 
+    /* Calendar Cell Gesture Interactions (Double-Click on Laptop, 5s Long-Press on Tablet/Phone) */
+    function attachCellInteractions(element, day, month, year) {
+      let pressTimer = null;
+      let isLongPress = false;
+      let startX = 0, startY = 0;
+
+      // 1. Single Click: Focus date
+      element.addEventListener('click', (e) => {
+        if (isLongPress) {
+          isLongPress = false;
+          return;
+        }
+        selectCalendarDay(day, month, year);
+      });
+
+      // 2. Laptop/Desktop Double Click: Open Add Entry modal immediately
+      element.addEventListener('dblclick', (e) => {
+        e.preventDefault();
+        e.stopPropagation();
+        selectCalendarDay(day, month, year);
+        openQuickAddModal();
+        showToast(`➕ Add Entry for ${calMonthNames[month]} ${day}, ${year}`);
+      });
+
+      // 3. Tablet/Phone Long Press (5-second hold)
+      const startPress = (e) => {
+        isLongPress = false;
+        if (e.touches && e.touches.length > 0) {
+          startX = e.touches[0].clientX;
+          startY = e.touches[0].clientY;
+        }
+        element.classList.add('holding-press');
+
+        // 5000ms (5 seconds) hold threshold as requested
+        pressTimer = setTimeout(() => {
+          isLongPress = true;
+          element.classList.remove('holding-press');
+          if (navigator.vibrate) navigator.vibrate(80);
+          selectCalendarDay(day, month, year);
+          openQuickAddModal();
+          showToast(`⏱️ Long-Press 5s Triggered: Add Entry for ${calMonthNames[month]} ${day}, ${year}!`);
+        }, 5000);
+      };
+
+      const cancelPress = () => {
+        if (pressTimer) {
+          clearTimeout(pressTimer);
+          pressTimer = null;
+        }
+        element.classList.remove('holding-press');
+      };
+
+      const movePress = (e) => {
+        if (e.touches && e.touches.length > 0) {
+          const moveX = Math.abs(e.touches[0].clientX - startX);
+          const moveY = Math.abs(e.touches[0].clientY - startY);
+          if (moveX > 10 || moveY > 10) {
+            cancelPress();
+          }
+        }
+      };
+
+      element.addEventListener('touchstart', startPress, { passive: true });
+      element.addEventListener('touchend', cancelPress);
+      element.addEventListener('touchcancel', cancelPress);
+      element.addEventListener('touchmove', movePress, { passive: true });
+
+      element.addEventListener('mousedown', startPress);
+      element.addEventListener('mouseup', cancelPress);
+      element.addEventListener('mouseleave', cancelPress);
+    }
+
     function renderCalendarEngine() {
       const container = document.getElementById('calendarGridContainer');
       if (!container) return;
@@ -2965,17 +3051,19 @@
       const firstDayOfWeek = (new Date(calCurrentYear, calCurrentMonth, 1).getDay() + 6) % 7; // 0=Mon, 6=Sun
       const daysInMonth = new Date(calCurrentYear, calCurrentMonth + 1, 0).getDate();
       const prevMonthDays = new Date(calCurrentYear, calCurrentMonth, 0).getDate();
+      const prevMonth = (calCurrentMonth === 0) ? 11 : calCurrentMonth - 1;
+      const prevYear = (calCurrentMonth === 0) ? calCurrentYear - 1 : calCurrentYear;
+      const nextMonth = (calCurrentMonth === 11) ? 0 : calCurrentMonth + 1;
+      const nextYear = (calCurrentMonth === 11) ? calCurrentYear + 1 : calCurrentYear;
 
       // 3. Trailing Days of Previous Month
       for (let i = firstDayOfWeek - 1; i >= 0; i--) {
         const dayNum = prevMonthDays - i;
         const cell = document.createElement('div');
         cell.className = 'cal-day-cell other-month';
+        cell.title = `Double-click or hold 5s: Add Entry for ${calMonthNames[prevMonth]} ${dayNum}, ${prevYear}`;
         cell.innerHTML = `<span>${dayNum}</span>`;
-        cell.onclick = () => {
-          prevCalendarMonth();
-          selectCalendarDay(dayNum, calCurrentMonth, calCurrentYear);
-        };
+        attachCellInteractions(cell, dayNum, prevMonth, prevYear);
         grid.appendChild(cell);
       }
 
@@ -2984,6 +3072,7 @@
       for (let d = 1; d <= daysInMonth; d++) {
         const cell = document.createElement('div');
         cell.className = 'cal-day-cell';
+        cell.title = `Double-click or hold 5s: Add Entry for ${calMonthNames[calCurrentMonth]} ${d}, ${calCurrentYear}`;
         
         const isSelected = (d === calSelectedDay);
         const isToday = (d === todayDay && calCurrentMonth === todayMonth && calCurrentYear === todayYear);
@@ -3010,7 +3099,7 @@
         }
 
         cell.innerHTML = `<span>${d}</span>${dotsHTML}`;
-        cell.onclick = () => selectCalendarDay(d, calCurrentMonth, calCurrentYear);
+        attachCellInteractions(cell, d, calCurrentMonth, calCurrentYear);
         grid.appendChild(cell);
       }
 
@@ -3021,11 +3110,9 @@
       for (let n = 1; n <= remainingCells; n++) {
         const cell = document.createElement('div');
         cell.className = 'cal-day-cell other-month';
+        cell.title = `Double-click or hold 5s: Add Entry for ${calMonthNames[nextMonth]} ${n}, ${nextYear}`;
         cell.innerHTML = `<span>${n}</span>`;
-        cell.onclick = () => {
-          nextCalendarMonth();
-          selectCalendarDay(n, calCurrentMonth, calCurrentYear);
-        };
+        attachCellInteractions(cell, n, nextMonth, nextYear);
         grid.appendChild(cell);
       }
 
@@ -3051,7 +3138,7 @@
 
         const row = document.createElement('div');
         row.className = `cal-week-row ${isSelected ? 'selected-week-row' : ''}`;
-        row.onclick = () => selectCalendarDay(d, m, y);
+        row.title = `Double-click or hold 5s: Add Entry for ${calMonthNames[m]} ${d}, ${y}`;
 
         let eventBadges = events.slice(0, 4).map(e => 
           `<span class="pill-badge" style="background:${e.color}22; color:${e.color}; font-size:0.72rem;">${e.icon} ${e.title}</span>`
@@ -3069,6 +3156,7 @@
             ${eventBadges}
           </div>
         `;
+        attachCellInteractions(row, d, m, y);
         weekContainer.appendChild(row);
       }
 
@@ -3092,6 +3180,7 @@
       timeSlots.forEach(slot => {
         const row = document.createElement('div');
         row.className = 'cal-time-slot';
+        row.title = "Double-click or hold 5s to add entry at this time";
         row.innerHTML = `
           <div class="cal-time-label">${slot.time}</div>
           <div style="flex:1;">
@@ -3100,6 +3189,7 @@
           </div>
           <button class="btn btn-secondary" style="padding:0.2rem 0.45rem; font-size:0.7rem;" onclick="showToast('⚡ Action acknowledged for ${slot.time}')">Done</button>
         `;
+        attachCellInteractions(row, calSelectedDay, calCurrentMonth, calCurrentYear);
         daySchedule.appendChild(row);
       });
 
