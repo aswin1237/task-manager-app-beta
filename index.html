@@ -2949,31 +2949,53 @@
       return events;
     }
 
-    /* Calendar Cell Gesture Interactions (Double-Click on Laptop, 5s Long-Press on Tablet/Phone) */
+    /* Calendar Cell Gesture Interactions (Double-Click on Laptop, Long-Press on Tablet/Phone) */
+    let lastDayClickTime = 0;
+    let lastDayClickedKey = null;
+
+    function handleCellClick(day, month, year) {
+      const now = Date.now();
+      const key = `${year}-${month}-${day}`;
+      
+      if (lastDayClickedKey === key && (now - lastDayClickTime) < 550) {
+        // Double Click Detected!
+        lastDayClickTime = 0;
+        lastDayClickedKey = null;
+        selectCalendarDay(day, month, year);
+        openQuickAddModal();
+        showToast(`➕ Add Entry for ${calMonthNames[month]} ${day}, ${year}`);
+        return;
+      }
+      
+      lastDayClickTime = now;
+      lastDayClickedKey = key;
+      selectCalendarDay(day, month, year);
+    }
+
     function attachCellInteractions(element, day, month, year) {
       let pressTimer = null;
       let isLongPress = false;
       let startX = 0, startY = 0;
 
-      // 1. Single Click: Focus date
-      element.addEventListener('click', (e) => {
+      // 1. Click & Double-Click via global tracker
+      element.onclick = (e) => {
         if (isLongPress) {
           isLongPress = false;
           return;
         }
-        selectCalendarDay(day, month, year);
-      });
+        handleCellClick(day, month, year);
+      };
 
-      // 2. Laptop/Desktop Double Click: Open Add Entry modal immediately
-      element.addEventListener('dblclick', (e) => {
+      // 2. Native dblclick event fallback
+      element.ondblclick = (e) => {
         e.preventDefault();
         e.stopPropagation();
         selectCalendarDay(day, month, year);
         openQuickAddModal();
         showToast(`➕ Add Entry for ${calMonthNames[month]} ${day}, ${year}`);
-      });
+      };
 
-      // 3. Tablet/Phone Long Press (5-second hold)
+      // 3. Tablet & Phone Long-Press
       const startPress = (e) => {
         isLongPress = false;
         if (e.touches && e.touches.length > 0) {
@@ -2982,15 +3004,15 @@
         }
         element.classList.add('holding-press');
 
-        // 5000ms (5 seconds) hold threshold as requested
+        // Long-press hold threshold
         pressTimer = setTimeout(() => {
           isLongPress = true;
           element.classList.remove('holding-press');
           if (navigator.vibrate) navigator.vibrate(80);
           selectCalendarDay(day, month, year);
           openQuickAddModal();
-          showToast(`⏱️ Long-Press 5s Triggered: Add Entry for ${calMonthNames[month]} ${day}, ${year}!`);
-        }, 5000);
+          showToast(`⏱️ Long-Press Triggered: Add Entry for ${calMonthNames[month]} ${day}, ${year}!`);
+        }, 3000);
       };
 
       const cancelPress = () => {
