@@ -1233,7 +1233,7 @@
               <div style="font-size:1.35rem; font-weight:800; margin:3px 0;" id="calSelectedDateText">Tuesday, October 6, 2026</div>
               <div style="font-size:0.76rem; color:var(--emerald); font-weight:700;" id="calEventCountBadge">🟢 Dynamic Events Aggregated</div>
               <div style="font-size:0.72rem; color:var(--text-muted); margin-top:5px; font-weight:600; display:flex; align-items:center; justify-content:center; gap:0.4rem; background:rgba(99,102,241,0.08); padding:0.25rem 0.5rem; border-radius:6px; border:1px solid rgba(99,102,241,0.18);">
-                <span>🖱️ <strong>Double-click</strong> (Laptop)</span> • <span>📱 <strong>Long-press 5s</strong> (Tablet/Phone) to Add Entry</span>
+                <span>✨ <strong>Click or Tap any date</strong> to immediately open the Add Entry modal for that date.</span>
               </div>
             </div>
 
@@ -2460,6 +2460,12 @@
       const sel = document.getElementById('addDomainSelect');
       if (sel) sel.value = domainToSet;
       updateQuickAddFields();
+      
+      const header = document.getElementById('quickAddModalHeader');
+      if (header) {
+        header.textContent = `➕ Add Entry — ${calMonthNames[calCurrentMonth]} ${calSelectedDay}, ${calCurrentYear}`;
+      }
+
       document.getElementById('quickAddModal').style.display = 'flex';
       setTimeout(() => {
         const inp = document.getElementById('addTitleInput');
@@ -2949,27 +2955,10 @@
       return events;
     }
 
-    /* Calendar Cell Gesture Interactions (Double-Click on Laptop, Long-Press on Tablet/Phone) */
-    let lastDayClickTime = 0;
-    let lastDayClickedKey = null;
-
     function handleCellClick(day, month, year) {
-      const now = Date.now();
-      const key = `${year}-${month}-${day}`;
-      
-      if (lastDayClickedKey === key && (now - lastDayClickTime) < 550) {
-        // Double Click Detected!
-        lastDayClickTime = 0;
-        lastDayClickedKey = null;
-        selectCalendarDay(day, month, year);
-        openQuickAddModal();
-        showToast(`➕ Add Entry for ${calMonthNames[month]} ${day}, ${year}`);
-        return;
-      }
-      
-      lastDayClickTime = now;
-      lastDayClickedKey = key;
       selectCalendarDay(day, month, year);
+      openQuickAddModal();
+      showToast(`➕ Add Entry for ${calMonthNames[calCurrentMonth]} ${day}, ${calCurrentYear}`);
     }
 
     function attachCellInteractions(element, day, month, year) {
