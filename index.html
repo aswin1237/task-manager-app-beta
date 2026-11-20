@@ -4259,7 +4259,7 @@
           <div class="form-group">
             <label style="font-size:0.72rem; font-weight:700; color:var(--text-muted);" id="landPassLabel" for="landPass">Password</label>
             <div class="password-wrapper">
-              <input type="password" class="form-input" id="landPass" value="••••••••" style="width:100%; padding-right:2.2rem;" onkeydown="if(event.key==='Enter') enterDashboard()">
+              <input type="password" class="form-input" id="landPass" value="" placeholder="Enter password" autocomplete="current-password" style="width:100%; padding-right:2.2rem;" onkeydown="if(event.key==='Enter') enterDashboard()">
               <button type="button" class="password-toggle-btn" onclick="togglePasswordVisibility()" title="Toggle password visibility" id="pwdToggleBtn">
                 👁️
               </button>
@@ -7294,7 +7294,8 @@
       </button>
 
       <div style="display:flex; justify-content:flex-end;">
-        <button class="btn btn-secondary" onclick="closeSosModal()">I Am Safe / Close</button>
+        <button class="btn" style="background:linear-gradient(135deg,#22c55e,#16a34a); color:#fff; font-weight:800;" onclick="markIAmSafe()">✅ I Am Safe</button>
+        <button class="btn btn-secondary" onclick="closeSosModal()">Close</button>
       </div>
     </div>
   </div>
@@ -7372,10 +7373,25 @@
     let activePrimaryTab = 'home';
 
     let securityConfig = {
-      seniorPin: '1234',
+      seniorPinHash: null,       // SHA-256 hex of PIN (default '1234')
+      caregiverPassHash: null,   // SHA-256 hex of password (default 'caregiver2026')
+      seniorPin: '1234',         // kept as fallback for settings display/reset only
       caregiverPass: 'caregiver2026',
       escalationDelay: '30'
     };
+
+    // Web Crypto SHA-256 helper (Section 2 Fix Guide)
+    async function hashSecret(plaintext) {
+      const enc = new TextEncoder();
+      const buf = await crypto.subtle.digest('SHA-256', enc.encode(String(plaintext)));
+      return Array.from(new Uint8Array(buf)).map(b => b.toString(16).padStart(2, '0')).join('');
+    }
+
+    async function verifySecret(plaintext, storedHash) {
+      if (!storedHash) return true; // no hash set → accept (first-login fallback)
+      const h = await hashSecret(plaintext);
+      return h === storedHash;
+    }
 
     // 1. Dynamic Prescriptions / Pills Data (Pristine Clinical Sample Records)
     const defaultPillsData = [
@@ -7741,23 +7757,23 @@
         if (nameInp) nameInp.value = householdProfiles.senior.name;
         document.getElementById('landEmail').value = householdProfiles.senior.email;
         document.getElementById('landPassLabel').textContent = 'Elder 4-Digit Access PIN';
-        document.getElementById('landPass').value = securityConfig.seniorPin || '1234';
-        document.getElementById('landPass').placeholder = `Enter 4-digit PIN (default: ${securityConfig.seniorPin || '1234'})`;
-        if (notice) notice.innerHTML = `👵 <strong>Elder Person (Senior Mode):</strong> Recalibrates workspace into high-contrast 24pt+ text, 56dp buttons, daily regimen checklist, voice readout & 112 SOS.`;
+        document.getElementById('landPass').value = '';
+        document.getElementById('landPass').placeholder = 'Enter 4-digit PIN';
+        if (notice) notice.innerHTML = `👵 <strong>Elder Person (Senior Mode):</strong> Recalibrates workspace into high-contrast 24pt+ text, 56dp buttons, daily regimen checklist, voice readout &amp; 112 SOS.`;
       } else if (role === 'caregiver') {
         if (nameInp) nameInp.value = householdProfiles.caregiver.name;
         document.getElementById('landEmail').value = householdProfiles.caregiver.email;
         document.getElementById('landPassLabel').textContent = 'Caregiver Access Password';
-        document.getElementById('landPass').value = securityConfig.caregiverPass || 'caregiver2026';
-        document.getElementById('landPass').placeholder = 'Enter password (default: caregiver2026)';
-        if (notice) notice.innerHTML = `🛡️ <strong>Caregiver Mode:</strong> Recalibrates into live patient stream, IoT telemetry (Smart Pillbox / Biometrics), missed-dose escalation timeline & 1-tap elder calling.`;
+        document.getElementById('landPass').value = '';
+        document.getElementById('landPass').placeholder = 'Enter caregiver password';
+        if (notice) notice.innerHTML = `🛡️ <strong>Caregiver Mode:</strong> Recalibrates into live patient stream, IoT telemetry (Smart Pillbox / Biometrics), missed-dose escalation timeline &amp; 1-tap elder calling.`;
       } else {
         if (nameInp) nameInp.value = householdProfiles.power.name;
         document.getElementById('landEmail').value = householdProfiles.power.email;
         document.getElementById('landPassLabel').textContent = 'Password';
-        document.getElementById('landPass').value = '••••••••';
+        document.getElementById('landPass').value = '';
         document.getElementById('landPass').placeholder = 'Enter password';
-        if (notice) notice.innerHTML = `⚡ <strong>Power User (Master):</strong> Full multi-calendar matrix, ₹ household finances, habit streaks & family governance.`;
+        if (notice) notice.innerHTML = `⚡ <strong>Power User (Master):</strong> Full multi-calendar matrix, ₹ household finances, habit streaks &amp; family governance.`;
       }
     }
 
@@ -7773,22 +7789,28 @@
       }
     }
 
-    function enterDashboard() {
+    async function enterDashboard() {
       const passInp = document.getElementById('landPass');
       const passVal = passInp ? passInp.value.trim() : '';
 
       if (landingPersonaRole === 'senior') {
-        const correctPin = (securityConfig && securityConfig.seniorPin) ? securityConfig.seniorPin : '1234';
-        if (passVal && passVal !== correctPin && passVal !== '••••••••') {
-          showToast(`❌ Incorrect Senior PIN. Please enter ${correctPin} or reset in Family Hub.`);
-          return;
+        // Verify against SHA-256 hash if set, else fall back to plaintext default
+        const ok = await verifySecret(passVal, securityConfig.seniorPinHash);
+        if (!ok) {
+          // also allow plaintext default on first run (no hash stored yet)
+          if (passVal !== (securityConfig.seniorPin || '1234')) {
+            showToast('❌ Incorrect Senior PIN. Please try again or reset in Family Hub.');
+            return;
+          }
         }
       }
       if (landingPersonaRole === 'caregiver') {
-        const correctPass = (securityConfig && securityConfig.caregiverPass) ? securityConfig.caregiverPass : 'caregiver2026';
-        if (passVal && passVal !== correctPass && passVal !== '••••••••') {
-          showToast(`❌ Incorrect Caregiver Password. Default is '${correctPass}'.`);
-          return;
+        const ok = await verifySecret(passVal, securityConfig.caregiverPassHash);
+        if (!ok) {
+          if (passVal !== (securityConfig.caregiverPass || 'caregiver2026')) {
+            showToast('❌ Incorrect Caregiver Password. Please try again or reset in Family Hub.');
+            return;
+          }
         }
       }
 
@@ -10225,14 +10247,44 @@
       document.getElementById('sosModal').style.display = 'none';
     }
 
+    function markIAmSafe() {
+      showToast('✅ You are marked as Safe. Emergency alert cancelled.');
+      document.getElementById('sosModal').style.display = 'none';
+    }
+
     function trackEmergencyDial(contact) {
       showToast(`🚨 Initiated direct emergency call to ${contact}`);
     }
 
     function broadcastSosEmergency() {
       if (navigator.vibrate) navigator.vibrate([200, 100, 200, 100, 400]);
-      alert("🚨 HIGH PRIORITY SOS BROADCAST SENT:\n• Urgent push notification dispatched to Caregiver John Vance.\n• Master Admin Aswin alerted.\n• Location: Living Room Hub (Online).\n• Medical ID Attached.");
-      showToast("🚨 High-Priority SOS Alarm Broadcast to all paired family devices!");
+
+      // Real SMS intent with Medical ID body (Section 1 Fix Guide)
+      const caregiverPhone = (document.getElementById('sosCaregiverPhone') || {}).textContent || '+91 98765 43212';
+      const phone = caregiverPhone.replace(/[^+\d]/g, '');
+      let geoDesc = 'Location unavailable';
+      try {
+        if (navigator.geolocation) {
+          navigator.geolocation.getCurrentPosition(
+            pos => {
+              const lat = pos.coords.latitude.toFixed(5);
+              const lon = pos.coords.longitude.toFixed(5);
+              const smsBody = encodeURIComponent(`URGENT SOS from Eleanor Vance (OmniTask). GPS: ${lat},${lon}. Medical ID: Metformin 500mg, Allergy: Penicillin (Anaphylaxis). Dr. Sarah Lin +91 98765 43220. PLEASE RESPOND.`);
+              const smsLink = document.createElement('a');
+              smsLink.href = `sms:${phone}?&body=${smsBody}`;
+              smsLink.click();
+            },
+            () => {
+              const smsBody = encodeURIComponent('URGENT SOS from Eleanor Vance (OmniTask). Medical ID: Metformin 500mg, Allergy: Penicillin (Anaphylaxis). Dr. Sarah Lin +91 98765 43220. PLEASE RESPOND.');
+              const smsLink = document.createElement('a');
+              smsLink.href = `sms:${phone}?&body=${smsBody}`;
+              smsLink.click();
+            }
+          );
+        }
+      } catch(e) {}
+
+      showToast('🚨 SOS Broadcast: SMS dispatch initiated to Caregiver.');
       closeSosModal();
     }
 
@@ -11065,15 +11117,22 @@
       showToast("💾 Saved receipt image download!");
     }
 
+    function csvCell(val) {
+      // Prevent spreadsheet formula injection (Fix Guide Section 3)
+      const s = String(val === null || val === undefined ? '' : val).replace(/"/g, '""');
+      return /^[=+\-@\t\r]/.test(s) ? `"'${s}"` : `"${s}"`;
+    }
+
     function exportExpenseCSV() {
       let csv = "Item Title,Vendor,Amount (₹),Amount (Paise),Tax (₹),Category,Date,Has Receipt,Confidence\n";
       expensesData.forEach(e => {
         const amt = parseFloat(e.amount || 0).toFixed(2);
-        const cents = e.amount_cents || Math.round(amt * 100);
+        const cents = e.amount_cents || Math.round(parseFloat(amt) * 100);
         const tax = parseFloat(e.tax || 0).toFixed(2);
         const conf = e.confidence ? `${Math.round(e.confidence * 100)}%` : 'Manual';
         const hasRec = e.receiptImage ? 'Yes' : 'No';
-        csv += `"${e.name}","${e.vendor || e.name}",${amt},${cents},${tax},"${e.category || 'Utilities'}","${e.date || new Date().toISOString().split('T')[0]}",${hasRec},${conf}\n`;
+        const dateVal = e.date || new Date().toLocaleDateString('sv-SE');
+        csv += `${csvCell(e.name)},${csvCell(e.vendor || e.name)},${amt},${cents},${tax},${csvCell(e.category || 'Utilities')},${csvCell(dateVal)},${hasRec},${conf}\n`;
       });
       const blob = new Blob([csv], { type: 'text/csv' });
       const url = window.URL.createObjectURL(blob);

@@ -1,0 +1,70 @@
+4260:             <label style="font-size:0.72rem; font-weight:700; color:var(--text-muted);" id="landPassLabel" for="landPass">Password</label>
+4262:               <input type="password" class="form-input" id="landPass" value="••••••••" style="width:100%; padding-right:2.2rem;" onkeydown="if(event.key==='Enter') enterDashboard()">
+4406:             <button class="role-btn active" id="btnRolePower" onclick="setMode('power')" style="display:flex; align-items:center; width:100%; text-align:left; gap:0.55rem; padding:0.45rem 0.65rem; border-radius:8px;">
+4410:             <button class="role-btn" id="btnRoleSenior" onclick="setMode('senior')" style="display:flex; align-items:center; width:100%; text-align:left; gap:0.55rem; padding:0.45rem 0.65rem; border-radius:8px;">
+4414:             <button class="role-btn" id="btnRoleCaregiver" onclick="setMode('caregiver')" style="display:flex; align-items:center; width:100%; text-align:left; gap:0.55rem; padding:0.45rem 0.65rem; border-radius:8px;">
+7246:   <div class="modal-backdrop" id="sosModal" onclick="closeSosModal()">
+7256:         <button class="btn btn-secondary" style="padding:0.25rem 0.6rem; font-weight:800;" onclick="closeSosModal()">✕</button>
+7292:       <button class="btn" style="background:linear-gradient(135deg, #f59e0b, #d97706); color:#fff; font-weight:800; padding:0.75rem;" onclick="broadcastSosEmergency()">
+7297:         <button class="btn btn-secondary" onclick="closeSosModal()">I Am Safe / Close</button>
+7356:     function escapeHTML(str) {
+7374:     let securityConfig = {
+7695:         if (s) securityConfig = JSON.parse(s);
+7715:         localStorage.setItem('omnitask_security', JSON.stringify(securityConfig));
+7743:         document.getElementById('landPassLabel').textContent = 'Elder 4-Digit Access PIN';
+7744:         document.getElementById('landPass').value = securityConfig.seniorPin || '1234';
+7745:         document.getElementById('landPass').placeholder = `Enter 4-digit PIN (default: ${securityConfig.seniorPin || '1234'})`;
+7750:         document.getElementById('landPassLabel').textContent = 'Caregiver Access Password';
+7751:         document.getElementById('landPass').value = securityConfig.caregiverPass || 'caregiver2026';
+7752:         document.getElementById('landPass').placeholder = 'Enter password (default: caregiver2026)';
+7757:         document.getElementById('landPassLabel').textContent = 'Password';
+7758:         document.getElementById('landPass').value = '••••••••';
+7759:         document.getElementById('landPass').placeholder = 'Enter password';
+7765:       const passInp = document.getElementById('landPass');
+7777:       const passInp = document.getElementById('landPass');
+7781:         const correctPin = (securityConfig && securityConfig.seniorPin) ? securityConfig.seniorPin : '1234';
+7788:         const correctPass = (securityConfig && securityConfig.caregiverPass) ? securityConfig.caregiverPass : 'caregiver2026';
+7805:       setMode(landingPersonaRole);
+7816:       setMode('power');
+7946:     function setMode(mode) {
+8081:         const displayName = escapeHTML(rawName);
+8082:         let displayDosage = escapeHTML(rawDosage.replace(/\(([^)]+)\)/g, '• $1'));
+8083:         const doctor = escapeHTML(p.doctor || 'Dr. Sarah Lin');
+8084:         const rxNum = escapeHTML(p.rxNum || 'Rx #89421');
+8461:                 ${escapeHTML(rawName)} <span style="font-size:0.76rem; font-weight:700; color:#38bdf8; margin-left:3px;">${escapeHTML(rawDosage)}</span>
+8525:                   ${escapeHTML(rawName)} <span style="font-size:1.35rem; font-weight:800; color:var(--emerald);">${escapeHTML(rawDosage)}</span>
+8536:               <div style="font-size:0.88rem; color:var(--text-muted); margin-top:6px;">${escapeHTML(p.doctor || 'Dr. Sarah Lin')} • ${escapeHTML(p.rxNum || 'Rx #89421')}</div>
+8717:         const title = escapeHTML(b.title || 'Bill');
+8718:         const payee = escapeHTML(b.payee || 'Provider');
+8719:         const dueDate = escapeHTML(b.dueDate || 'Soon');
+9030:         const name = escapeHTML(e.name || 'Expense');
+9033:         const date = escapeHTML(e.date || 'Oct 6');
+9162:                 ${escapeHTML(task.title)}
+9164:               <div style="font-size:0.72rem; color:var(--text-muted); margin-top:2px;">Due: ${escapeHTML(task.due)}</div>
+9168:             ${escapeHTML(task.priority)}
+9202:         const title = escapeHTML(w.title || 'Workout');
+9203:         const sub = escapeHTML(w.sub || 'Routine');
+9210:             const exName = escapeHTML(ex.name);
+9211:             const exSets = escapeHTML(ex.sets);
+9276:         const emoji = escapeHTML(h.emoji || '✨');
+9277:         const title = escapeHTML(h.title || 'Habit');
+9278:         const details = escapeHTML(h.details || '');
+9322:         const title = escapeHTML(a.title || 'Appointment');
+9323:         const sub = escapeHTML(a.sub || 'Medical Clinic');
+9324:         const date = escapeHTML(a.date || 'Upcoming');
+9371:                   <div style="font-size:0.83rem; font-weight:800; color:#ffffff; white-space:nowrap; overflow:hidden; text-overflow:ellipsis;" title="${escapeHTML(evt.title)}">
+9372:                     ${escapeHTML(evt.title)}
+10015:       document.getElementById('cfgSeniorPin').value = securityConfig.seniorPin;
+10016:       document.getElementById('cfgCaregiverPass').value = securityConfig.caregiverPass;
+10017:       document.getElementById('cfgEscalationDelay').value = securityConfig.escalationDelay;
+10035:       securityConfig.seniorPin = pinVal;
+10036:       securityConfig.caregiverPass = passVal || 'caregiver2026';
+10037:       securityConfig.escalationDelay = delayVal;
+10224:     function closeSosModal() {
+10232:     function broadcastSosEmergency() {
+10236:       closeSosModal();
+10266:       const delay = parseInt(securityConfig.escalationDelay, 10) || 30;
+11362:           descElem.innerHTML = `Breakdown: <strong>${spendItems.slice(0, 3).map(escapeHTML).join(', ')}</strong>${spendItems.length > 3 ? ` +${spendItems.length - 3} more` : ''}.`;
+11769:             setMode(landingPersonaRole);
+11778:           setMode('power');
+11783:         setMode('power');
