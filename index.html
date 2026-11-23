@@ -3647,14 +3647,14 @@
        MODERN PILL REGIMEN CARD (SLOT PILLBOX & COURSE ENGINE)
        ========================================================================== */
     .pill-regimen-card {
-      background: #0b1325 !important;
-      border: 1.5px solid rgba(255, 255, 255, 0.08) !important;
+      background: linear-gradient(145deg, #0d1a2d 0%, #0a1220 100%) !important;
+      border: 1.5px solid rgba(255, 255, 255, 0.09) !important;
       border-radius: 22px !important;
       padding: 1.5rem !important;
       display: flex !important;
       flex-direction: column !important;
       gap: 1.25rem !important;
-      box-shadow: 0 16px 36px -8px rgba(0, 0, 0, 0.5) !important;
+      box-shadow: 0 20px 50px -10px rgba(0, 0, 0, 0.6), inset 0 1px 0 rgba(255,255,255,0.05) !important;
       position: relative !important;
       transition: all 0.25s ease !important;
     }
@@ -3910,10 +3910,25 @@
       display: flex;
       align-items: center;
       justify-content: center;
-      width: 36px;
-      height: 36px;
-      border-radius: 10px;
+      width: 40px;
+      height: 40px;
+      border-radius: 11px;
       flex-shrink: 0;
+      background: rgba(255,255,255,0.05);
+    }
+    /* Morning slot: green glow icon bg */
+    .regimen-slot-card.morning-active .slot-icon-wrap {
+      background: rgba(16, 185, 129, 0.15);
+    }
+    html[data-theme="light"] .regimen-slot-card.morning-active .slot-icon-wrap {
+      background: rgba(16, 185, 129, 0.12);
+    }
+    /* Evening slot: blue glow icon bg */
+    .regimen-slot-card.evening-due .slot-icon-wrap {
+      background: rgba(56, 189, 248, 0.14);
+    }
+    html[data-theme="light"] .regimen-slot-card.evening-due .slot-icon-wrap {
+      background: rgba(2, 132, 199, 0.1);
     }
     .slot-title {
       font-size: 1.05rem;
@@ -4028,10 +4043,24 @@
     }
     .regimen-progress-fill {
       height: 100%;
-      background: linear-gradient(90deg, #10b981 0%, #34d399 100%);
+      background: linear-gradient(90deg, #059669 0%, #10b981 50%, #34d399 100%);
       border-radius: 9999px;
-      box-shadow: 0 0 14px rgba(16, 185, 129, 0.55);
-      transition: width 0.3s ease;
+      box-shadow: 0 0 16px rgba(16, 185, 129, 0.6);
+      transition: width 0.5s cubic-bezier(0.4,0,0.2,1);
+      position: relative;
+      overflow: hidden;
+    }
+    .regimen-progress-fill::after {
+      content: '';
+      position: absolute;
+      top: 0; left: -100%; right: 0; bottom: 0;
+      background: linear-gradient(90deg, transparent 0%, rgba(255,255,255,0.3) 50%, transparent 100%);
+      animation: shimmerBar 2.5s infinite ease-in-out;
+      border-radius: 9999px;
+    }
+    @keyframes shimmerBar {
+      0% { left: -100%; }
+      100% { left: 100%; }
     }
 
     /* Bottom Action CTA Bar */
@@ -4051,25 +4080,26 @@
     }
     .regimen-btn-primary {
       flex: 1;
-      background: linear-gradient(90deg, #10b981 0%, #059669 100%);
+      background: linear-gradient(90deg, #10b981 0%, #059669 60%, #047857 100%);
       color: #ffffff;
-      border-radius: 12px;
-      padding: 0.85rem 1.5rem;
-      font-size: 1rem;
+      border-radius: 14px;
+      padding: 0.95rem 1.5rem;
+      font-size: 1.02rem;
       font-weight: 800;
       border: none;
       cursor: pointer;
       display: flex;
       align-items: center;
       justify-content: center;
-      gap: 8px;
-      box-shadow: 0 4px 16px rgba(16, 185, 129, 0.35);
+      gap: 10px;
+      box-shadow: 0 4px 20px rgba(16, 185, 129, 0.45), 0 0 0 1px rgba(16,185,129,0.2);
       transition: transform 0.15s ease, box-shadow 0.15s ease;
       font-family: inherit;
+      letter-spacing: 0.01em;
     }
     .regimen-btn-primary:hover {
-      transform: translateY(-1px);
-      box-shadow: 0 6px 20px rgba(16, 185, 129, 0.45);
+      transform: translateY(-2px);
+      box-shadow: 0 8px 28px rgba(16, 185, 129, 0.55), 0 0 0 1px rgba(16,185,129,0.3);
     }
     .regimen-btn-primary:active {
       transform: translateY(1px);
@@ -4994,151 +5024,208 @@
           <!-- ==================== RIGHT COLUMN ==================== -->
           <div class="dashboard-right-col">
 
-            <!-- 1. Botanical Aesthetic Quote Card -->
-            <div class="botanical-quote-card" style="background: linear-gradient(180deg, rgba(15, 23, 42, 0.35) 0%, rgba(15, 23, 42, 0.90) 100%), url('https://images.unsplash.com/photo-1512917774080-9991f1c4c750?auto=format&fit=crop&w=800&q=80') center/cover no-repeat; border:1px solid rgba(255,255,255,0.12); border-radius:18px; padding:1.25rem 1.4rem; min-height:140px; display:flex; flex-direction:column; justify-content:space-between; box-shadow:0 12px 30px -8px rgba(0,0,0,0.5);">
-              <div style="display:flex; justify-content:space-between; align-items:flex-start;">
-                <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="#4ade80" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" style="display:block;"><path d="M7 20h10"/><path d="M10 20c5.5-2.5.8-6.4 3-10"/><path d="M9.5 9.4c1.1.8 1.8 2.2 2.3 3.7-2 .4-3.5.4-4.8-.3-1.2-.6-2.3-1.9-3-4.2 2.8-.5 4.4.1 5.5.8z"/><path d="M14.1 6a7 7 0 0 0-1.1 4c1.9-.1 3.3-.6 4.3-1.4 1-1 1.6-2.3 1.7-4.6-2.7.1-4 1-4.9 2z"/></svg>
-                <span class="pill-badge" style="background:rgba(255,255,255,0.12); backdrop-filter:blur(10px); color:#e2e8f0; font-size:0.62rem; font-weight:800;">OmniTask Philosophy</span>
+            <!-- 1. OmniTask Philosophy Card — purple/blue gradient, light-mode friendly -->
+            <div class="botanical-quote-card" style="
+              background: linear-gradient(135deg, #6d28d9 0%, #4f46e5 45%, #7c3aed 100%);
+              border:none;
+              border-radius:18px;
+              padding:1.25rem 1.4rem;
+              min-height:130px;
+              display:flex;
+              flex-direction:column;
+              justify-content:space-between;
+              box-shadow:0 8px 24px -6px rgba(109,40,217,0.4);
+              position:relative;
+              overflow:hidden;">
+              <!-- Soft decorative orb -->
+              <div style="position:absolute;top:-20px;right:-20px;width:100px;height:100px;background:rgba(255,255,255,0.08);border-radius:50%;pointer-events:none;"></div>
+              <div style="position:absolute;bottom:-30px;left:10px;width:80px;height:80px;background:rgba(255,255,255,0.05);border-radius:50%;pointer-events:none;"></div>
+              <div style="display:flex; justify-content:space-between; align-items:flex-start; position:relative; z-index:1;">
+                <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="rgba(167,243,208,0.9)" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M7 20h10"/><path d="M10 20c5.5-2.5.8-6.4 3-10"/><path d="M9.5 9.4c1.1.8 1.8 2.2 2.3 3.7-2 .4-3.5.4-4.8-.3-1.2-.6-2.3-1.9-3-4.2 2.8-.5 4.4.1 5.5.8z"/><path d="M14.1 6a7 7 0 0 0-1.1 4c1.9-.1 3.3-.6 4.3-1.4 1-1 1.6-2.3 1.7-4.6-2.7.1-4 1-4.9 2z"/></svg>
+                <span style="background:rgba(255,255,255,0.18);backdrop-filter:blur(8px);color:#e9d5ff;font-size:0.62rem;font-weight:800;padding:0.2rem 0.5rem;border-radius:20px;letter-spacing:0.03em;">OmniTask Philosophy</span>
               </div>
-              <div>
-                <p style="font-size:0.92rem; font-weight:800; color:#ffffff; font-style:italic; line-height:1.4; margin:0; text-shadow:0 2px 10px rgba(0,0,0,0.8);">
+              <div style="position:relative;z-index:1;">
+                <p style="font-size:0.95rem;font-weight:800;color:#ffffff;font-style:italic;line-height:1.45;margin:0 0 6px;">
                   &ldquo;A calmer, more intentional life for every generation.&rdquo;
                 </p>
-                <div style="font-size:0.68rem; color:#94a3b8; margin-top:4px;">Power &bull; Dignity &bull; Peace of Mind</div>
+                <div style="font-size:0.68rem;color:rgba(233,213,255,0.75);letter-spacing:0.04em;">Power &nbsp;&bull;&nbsp; Dignity &nbsp;&bull;&nbsp; Peace of Mind</div>
               </div>
             </div>
 
-            <!-- 2. Quick Actions (2x2 Gradient Tiles) -->
-            <div class="panel-box">
-              <div style="font-size:0.8rem; font-weight:800; color:var(--text); margin-bottom:0.65rem;">Quick Actions</div>
-              <div style="display:grid; grid-template-columns:1fr 1fr; gap:0.55rem;">
-                <div class="quick-action-tile" onclick="openQuickAddModal('task')" style="background:linear-gradient(135deg, rgba(37,99,235,0.35), rgba(29,78,216,0.18)); border:1px solid rgba(59,130,246,0.35); border-radius:12px; padding:0.75rem; cursor:pointer; transition:all 0.15s ease;">
-                  <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="#60a5fa" stroke-width="2.3" stroke-linecap="round" stroke-linejoin="round" style="display:block; margin-bottom:0.25rem;"><line x1="12" y1="5" x2="12" y2="19"></line><line x1="5" y1="12" x2="19" y2="12"></line></svg>
-                  <div style="font-size:0.78rem; font-weight:800; color:#ffffff; margin-top:0.35rem;">+ Add Task</div>
-                  <div style="font-size:0.62rem; color:var(--text-muted);">Calendar &amp; Todo</div>
-                </div>
-                <div class="quick-action-tile" onclick="openQuickAddModal('expense')" style="background:linear-gradient(135deg, rgba(245,158,11,0.35), rgba(217,119,6,0.18)); border:1px solid rgba(245,158,11,0.35); border-radius:12px; padding:0.75rem; cursor:pointer; transition:all 0.15s ease;">
-                  <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="#fbbf24" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" style="display:block; margin-bottom:0.25rem;"><rect width="20" height="14" x="2" y="5" rx="2"></rect><line x1="2" y1="10" x2="22" y2="10"></line></svg>
-                  <div style="font-size:0.78rem; font-weight:800; color:#ffffff; margin-top:0.35rem;">Log Expense</div>
-                  <div style="font-size:0.62rem; color:var(--text-muted);">Receipts &amp; Bills</div>
-                </div>
-                <div class="quick-action-tile" onclick="openQuickAddModal('pill')" style="background:linear-gradient(135deg, rgba(16,185,129,0.35), rgba(5,150,105,0.18)); border:1px solid rgba(16,185,129,0.35); border-radius:12px; padding:0.75rem; cursor:pointer; transition:all 0.15s ease;">
-                  <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="#34d399" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" style="display:block; margin-bottom:0.25rem;"><path d="m10.5 20.5 10-10a4.95 4.95 0 1 0-7-7l-10 10a4.95 4.95 0 1 0 7 7Z"></path><path d="m8.5 8.5 7 7"></path></svg>
-                  <div style="font-size:0.78rem; font-weight:800; color:#ffffff; margin-top:0.35rem;">Take Pill</div>
-                  <div style="font-size:0.62rem; color:var(--text-muted);">Rx Adherence</div>
-                </div>
-                <div class="quick-action-tile" onclick="openQuickAddModal('fitness')" style="background:linear-gradient(135deg, rgba(139,92,246,0.35), rgba(99,102,241,0.18)); border:1px solid rgba(139,92,246,0.35); border-radius:12px; padding:0.75rem; cursor:pointer; transition:all 0.15s ease;">
-                  <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="#c084fc" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" style="display:block; margin-bottom:0.25rem;"><path d="M6 5v14M18 5v14M2 9v6M22 9v6M6 12h12"></path></svg>
-                  <div style="font-size:0.78rem; font-weight:800; color:#ffffff; margin-top:0.35rem;">Start Workout</div>
-                  <div style="font-size:0.62rem; color:var(--text-muted);">Daily Fitness</div>
-                </div>
-              </div>
-            </div>
-
-            <!-- 3. Habit Clusters (3/5 today) -->
-            <div class="panel-box">
-              <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:0.75rem;">
-                <span style="font-size:0.8rem; font-weight:800; color:var(--text);">Habit Clusters</span>
-                <span class="pill-badge" style="background:rgba(99,102,241,0.2); color:#a5b4fc; font-size:0.65rem; font-weight:800;">3/5 today</span>
-              </div>
-              <div style="display:flex; align-items:center; justify-content:space-between; gap:0.25rem;">
-                <!-- Water 3/4 (75%) -->
-                <div onclick="incrementHabit(0)" style="display:flex; flex-direction:column; align-items:center; cursor:pointer;" title="Water: 3/4 (Click to log)">
-                  <div style="position:relative; width:44px; height:44px; display:flex; align-items:center; justify-content:center;">
-                    <svg width="44" height="44" viewBox="0 0 36 36">
-                      <path d="M18 2.0845 a 15.9155 15.9155 0 0 1 0 31.831 a 15.9155 15.9155 0 0 1 0 -31.831" fill="none" stroke="rgba(255,255,255,0.08)" stroke-width="3"/>
-                      <path d="M18 2.0845 a 15.9155 15.9155 0 0 1 0 31.831 a 15.9155 15.9155 0 0 1 0 -31.831" fill="none" stroke="#06b6d4" stroke-width="3" stroke-dasharray="75, 100" stroke-linecap="round"/>
-                    </svg>
-                    <svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="#06b6d4" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" style="position:absolute;"><path d="M12 2.69l5.66 5.66a8 8 0 1 1-11.31 0z"/></svg>
+            <!-- 2. Quick Actions — clean tinted tiles that work in both themes -->
+            <div class="panel-box" style="padding:0.85rem 0.9rem;">
+              <div style="font-size:0.78rem;font-weight:800;color:var(--text);margin-bottom:0.6rem;letter-spacing:0.01em;">Quick Actions</div>
+              <div style="display:grid;grid-template-columns:1fr 1fr;gap:0.5rem;">
+                <!-- Add Task -->
+                <div class="quick-action-tile" onclick="openQuickAddModal('task')" style="
+                  background:var(--qa-blue-bg, rgba(37,99,235,0.08));
+                  border:1.5px solid var(--qa-blue-border, rgba(59,130,246,0.22));
+                  border-radius:14px;padding:0.8rem 0.75rem;cursor:pointer;transition:transform 0.15s,box-shadow 0.15s;
+                  display:flex;flex-direction:column;gap:0.3rem;">
+                  <div style="width:34px;height:34px;border-radius:10px;background:rgba(59,130,246,0.14);display:flex;align-items:center;justify-content:center;margin-bottom:0.1rem;">
+                    <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="#3b82f6" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><line x1="12" y1="5" x2="12" y2="19"/><line x1="5" y1="12" x2="19" y2="12"/></svg>
                   </div>
-                  <span style="font-size:0.62rem; font-weight:800; color:#06b6d4; margin-top:3px;">3/4</span>
+                  <div style="font-size:0.8rem;font-weight:800;color:var(--text);">Add Task</div>
+                  <div style="font-size:0.65rem;color:var(--text-muted);">Calendar &amp; Todo</div>
+                </div>
+                <!-- Log Expense -->
+                <div class="quick-action-tile" onclick="openQuickAddModal('expense')" style="
+                  background:var(--qa-amber-bg, rgba(245,158,11,0.08));
+                  border:1.5px solid var(--qa-amber-border, rgba(245,158,11,0.22));
+                  border-radius:14px;padding:0.8rem 0.75rem;cursor:pointer;transition:transform 0.15s,box-shadow 0.15s;
+                  display:flex;flex-direction:column;gap:0.3rem;">
+                  <div style="width:34px;height:34px;border-radius:10px;background:rgba(245,158,11,0.13);display:flex;align-items:center;justify-content:center;margin-bottom:0.1rem;">
+                    <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="#f59e0b" stroke-width="2.3" stroke-linecap="round" stroke-linejoin="round"><rect width="20" height="14" x="2" y="5" rx="2"/><line x1="2" y1="10" x2="22" y2="10"/></svg>
+                  </div>
+                  <div style="font-size:0.8rem;font-weight:800;color:var(--text);">Log Expense</div>
+                  <div style="font-size:0.65rem;color:var(--text-muted);">Receipts &amp; Bills</div>
+                </div>
+                <!-- Take Pill -->
+                <div class="quick-action-tile" onclick="openQuickAddModal('pill')" style="
+                  background:var(--qa-green-bg, rgba(16,185,129,0.08));
+                  border:1.5px solid var(--qa-green-border, rgba(16,185,129,0.22));
+                  border-radius:14px;padding:0.8rem 0.75rem;cursor:pointer;transition:transform 0.15s,box-shadow 0.15s;
+                  display:flex;flex-direction:column;gap:0.3rem;">
+                  <div style="width:34px;height:34px;border-radius:10px;background:rgba(16,185,129,0.12);display:flex;align-items:center;justify-content:center;margin-bottom:0.1rem;">
+                    <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="#10b981" stroke-width="2.3" stroke-linecap="round" stroke-linejoin="round"><path d="m10.5 20.5 10-10a4.95 4.95 0 1 0-7-7l-10 10a4.95 4.95 0 1 0 7 7Z"/><path d="m8.5 8.5 7 7"/></svg>
+                  </div>
+                  <div style="font-size:0.8rem;font-weight:800;color:var(--text);">Take Pill</div>
+                  <div style="font-size:0.65rem;color:var(--text-muted);">Rx Adherence</div>
+                </div>
+                <!-- Start Workout -->
+                <div class="quick-action-tile" onclick="openQuickAddModal('fitness')" style="
+                  background:var(--qa-purple-bg, rgba(139,92,246,0.08));
+                  border:1.5px solid var(--qa-purple-border, rgba(139,92,246,0.22));
+                  border-radius:14px;padding:0.8rem 0.75rem;cursor:pointer;transition:transform 0.15s,box-shadow 0.15s;
+                  display:flex;flex-direction:column;gap:0.3rem;">
+                  <div style="width:34px;height:34px;border-radius:10px;background:rgba(139,92,246,0.12);display:flex;align-items:center;justify-content:center;margin-bottom:0.1rem;">
+                    <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="#8b5cf6" stroke-width="2.3" stroke-linecap="round" stroke-linejoin="round"><path d="M6 5v14M18 5v14M2 9v6M22 9v6M6 12h12"/></svg>
+                  </div>
+                  <div style="font-size:0.8rem;font-weight:800;color:var(--text);">Start Workout</div>
+                  <div style="font-size:0.65rem;color:var(--text-muted);">Daily Fitness</div>
+                </div>
+              </div>
+            </div>
+
+            <!-- 3. Habit Clusters -->
+            <div class="panel-box" style="padding:0.85rem 0.9rem;">
+              <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:0.75rem;">
+                <span style="font-size:0.78rem;font-weight:800;color:var(--text);">Habit Clusters</span>
+                <span style="background:rgba(99,102,241,0.12);color:#6366f1;font-size:0.65rem;font-weight:800;padding:0.18rem 0.55rem;border-radius:20px;border:1px solid rgba(99,102,241,0.2);">3/5 today</span>
+              </div>
+              <div style="display:flex;align-items:center;justify-content:space-between;gap:0.2rem;">
+                <!-- Water 3/4 (75%) -->
+                <div onclick="incrementHabit(0)" style="display:flex;flex-direction:column;align-items:center;cursor:pointer;gap:4px;" title="Water: 3/4">
+                  <div style="position:relative;width:46px;height:46px;display:flex;align-items:center;justify-content:center;">
+                    <svg width="46" height="46" viewBox="0 0 36 36" style="transform:rotate(-90deg);">
+                      <circle cx="18" cy="18" r="15.9155" fill="none" stroke="var(--habit-track,rgba(0,0,0,0.07))" stroke-width="2.8"/>
+                      <circle cx="18" cy="18" r="15.9155" fill="none" stroke="#06b6d4" stroke-width="2.8" stroke-dasharray="75 100" stroke-linecap="round"/>
+                    </svg>
+                    <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#06b6d4" stroke-width="2.3" stroke-linecap="round" stroke-linejoin="round" style="position:absolute;"><path d="M12 2.69l5.66 5.66a8 8 0 1 1-11.31 0z"/></svg>
+                  </div>
+                  <span style="font-size:0.65rem;font-weight:800;color:#06b6d4;">3/4</span>
                 </div>
                 <!-- Exercise 1/1 (100%) -->
-                <div onclick="incrementHabit(1)" style="display:flex; flex-direction:column; align-items:center; cursor:pointer;" title="Exercise: 1/1 (Completed)">
-                  <div style="position:relative; width:44px; height:44px; display:flex; align-items:center; justify-content:center;">
-                    <svg width="44" height="44" viewBox="0 0 36 36">
-                      <path d="M18 2.0845 a 15.9155 15.9155 0 0 1 0 31.831 a 15.9155 15.9155 0 0 1 0 -31.831" fill="none" stroke="rgba(255,255,255,0.08)" stroke-width="3"/>
-                      <path d="M18 2.0845 a 15.9155 15.9155 0 0 1 0 31.831 a 15.9155 15.9155 0 0 1 0 -31.831" fill="none" stroke="#10b981" stroke-width="3" stroke-dasharray="100, 100" stroke-linecap="round"/>
+                <div onclick="incrementHabit(1)" style="display:flex;flex-direction:column;align-items:center;cursor:pointer;gap:4px;" title="Exercise: 1/1">
+                  <div style="position:relative;width:46px;height:46px;display:flex;align-items:center;justify-content:center;">
+                    <svg width="46" height="46" viewBox="0 0 36 36" style="transform:rotate(-90deg);">
+                      <circle cx="18" cy="18" r="15.9155" fill="none" stroke="var(--habit-track,rgba(0,0,0,0.07))" stroke-width="2.8"/>
+                      <circle cx="18" cy="18" r="15.9155" fill="none" stroke="#10b981" stroke-width="2.8" stroke-dasharray="100 100" stroke-linecap="round"/>
                     </svg>
-                    <svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="#10b981" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" style="position:absolute;"><path d="M22 12h-4l-3 9L9 3l-3 9H2"/></svg>
+                    <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#10b981" stroke-width="2.3" stroke-linecap="round" stroke-linejoin="round" style="position:absolute;"><path d="M22 12h-4l-3 9L9 3l-3 9H2"/></svg>
                   </div>
-                  <span style="font-size:0.62rem; font-weight:800; color:#10b981; margin-top:3px;">1/1</span>
+                  <span style="font-size:0.65rem;font-weight:800;color:#10b981;">1/1</span>
                 </div>
                 <!-- Reading 0/1 (0%) -->
-                <div onclick="incrementHabit(2)" style="display:flex; flex-direction:column; align-items:center; cursor:pointer;" title="Reading: 0/1 (Click to log)">
-                  <div style="position:relative; width:44px; height:44px; display:flex; align-items:center; justify-content:center;">
-                    <svg width="44" height="44" viewBox="0 0 36 36">
-                      <path d="M18 2.0845 a 15.9155 15.9155 0 0 1 0 31.831 a 15.9155 15.9155 0 0 1 0 -31.831" fill="none" stroke="rgba(255,255,255,0.08)" stroke-width="3"/>
-                      <path d="M18 2.0845 a 15.9155 15.9155 0 0 1 0 31.831 a 15.9155 15.9155 0 0 1 0 -31.831" fill="none" stroke="#8b5cf6" stroke-width="3" stroke-dasharray="0, 100" stroke-linecap="round"/>
+                <div onclick="incrementHabit(2)" style="display:flex;flex-direction:column;align-items:center;cursor:pointer;gap:4px;" title="Reading: 0/1">
+                  <div style="position:relative;width:46px;height:46px;display:flex;align-items:center;justify-content:center;">
+                    <svg width="46" height="46" viewBox="0 0 36 36" style="transform:rotate(-90deg);">
+                      <circle cx="18" cy="18" r="15.9155" fill="none" stroke="var(--habit-track,rgba(0,0,0,0.07))" stroke-width="2.8"/>
+                      <circle cx="18" cy="18" r="15.9155" fill="none" stroke="#8b5cf6" stroke-width="2.8" stroke-dasharray="0 100" stroke-linecap="round"/>
                     </svg>
-                    <svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="#8b5cf6" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" style="position:absolute;"><path d="M4 19.5A2.5 2.5 0 0 1 6.5 17H20"/><path d="M6.5 2H20v20H6.5A2.5 2.5 0 0 1 4 19.5v-15A2.5 2.5 0 0 1 6.5 2z"/></svg>
+                    <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#8b5cf6" stroke-width="2.3" stroke-linecap="round" stroke-linejoin="round" style="position:absolute;"><path d="M4 19.5A2.5 2.5 0 0 1 6.5 17H20"/><path d="M6.5 2H20v20H6.5A2.5 2.5 0 0 1 4 19.5v-15A2.5 2.5 0 0 1 6.5 2z"/></svg>
                   </div>
-                  <span style="font-size:0.62rem; font-weight:800; color:var(--text-muted); margin-top:3px;">0/1</span>
+                  <span style="font-size:0.65rem;font-weight:800;color:var(--text-muted);">0/1</span>
                 </div>
                 <!-- No Smoke 1/1 (100%) -->
-                <div onclick="incrementHabit(3)" style="display:flex; flex-direction:column; align-items:center; cursor:pointer;" title="No Smoke: 1/1 (Completed)">
-                  <div style="position:relative; width:44px; height:44px; display:flex; align-items:center; justify-content:center;">
-                    <svg width="44" height="44" viewBox="0 0 36 36">
-                      <path d="M18 2.0845 a 15.9155 15.9155 0 0 1 0 31.831 a 15.9155 15.9155 0 0 1 0 -31.831" fill="none" stroke="rgba(255,255,255,0.08)" stroke-width="3"/>
-                      <path d="M18 2.0845 a 15.9155 15.9155 0 0 1 0 31.831 a 15.9155 15.9155 0 0 1 0 -31.831" fill="none" stroke="#f59e0b" stroke-width="3" stroke-dasharray="100, 100" stroke-linecap="round"/>
+                <div onclick="incrementHabit(3)" style="display:flex;flex-direction:column;align-items:center;cursor:pointer;gap:4px;" title="No Smoke: 1/1">
+                  <div style="position:relative;width:46px;height:46px;display:flex;align-items:center;justify-content:center;">
+                    <svg width="46" height="46" viewBox="0 0 36 36" style="transform:rotate(-90deg);">
+                      <circle cx="18" cy="18" r="15.9155" fill="none" stroke="var(--habit-track,rgba(0,0,0,0.07))" stroke-width="2.8"/>
+                      <circle cx="18" cy="18" r="15.9155" fill="none" stroke="#f59e0b" stroke-width="2.8" stroke-dasharray="100 100" stroke-linecap="round"/>
                     </svg>
-                    <svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="#f59e0b" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" style="position:absolute;"><path d="M8.5 14.5A2.5 2.5 0 0 0 11 12c0-1.38-.5-2-1-3-1.072-2.143-.224-4.054 2-6 .5 2.5 2 4.9 4 6.5 2 1.6 3 3.5 3 5.5a7 7 0 1 1-14 0c0-1.153.433-2.294 1-3a2.5 2.5 0 0 0 2.5 2.5z"/></svg>
+                    <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#f59e0b" stroke-width="2.3" stroke-linecap="round" stroke-linejoin="round" style="position:absolute;"><path d="M8.5 14.5A2.5 2.5 0 0 0 11 12c0-1.38-.5-2-1-3-1.072-2.143-.224-4.054 2-6 .5 2.5 2 4.9 4 6.5 2 1.6 3 3.5 3 5.5a7 7 0 1 1-14 0c0-1.153.433-2.294 1-3a2.5 2.5 0 0 0 2.5 2.5z"/></svg>
                   </div>
-                  <span style="font-size:0.62rem; font-weight:800; color:#f59e0b; margin-top:3px;">1/1</span>
+                  <span style="font-size:0.65rem;font-weight:800;color:#f59e0b;">1/1</span>
                 </div>
                 <!-- Sleep 7h (87%) -->
-                <div onclick="showToast('Sleep logged: 7.5 hours uninterrupted.')" style="display:flex; flex-direction:column; align-items:center; cursor:pointer;" title="Sleep: 7h logged">
-                  <div style="position:relative; width:44px; height:44px; display:flex; align-items:center; justify-content:center;">
-                    <svg width="44" height="44" viewBox="0 0 36 36">
-                      <path d="M18 2.0845 a 15.9155 15.9155 0 0 1 0 31.831 a 15.9155 15.9155 0 0 1 0 -31.831" fill="none" stroke="rgba(255,255,255,0.08)" stroke-width="3"/>
-                      <path d="M18 2.0845 a 15.9155 15.9155 0 0 1 0 31.831 a 15.9155 15.9155 0 0 1 0 -31.831" fill="none" stroke="#3b82f6" stroke-width="3" stroke-dasharray="87, 100" stroke-linecap="round"/>
+                <div onclick="showToast('Sleep logged: 7h tonight.')" style="display:flex;flex-direction:column;align-items:center;cursor:pointer;gap:4px;" title="Sleep: 7h">
+                  <div style="position:relative;width:46px;height:46px;display:flex;align-items:center;justify-content:center;">
+                    <svg width="46" height="46" viewBox="0 0 36 36" style="transform:rotate(-90deg);">
+                      <circle cx="18" cy="18" r="15.9155" fill="none" stroke="var(--habit-track,rgba(0,0,0,0.07))" stroke-width="2.8"/>
+                      <circle cx="18" cy="18" r="15.9155" fill="none" stroke="#3b82f6" stroke-width="2.8" stroke-dasharray="87 100" stroke-linecap="round"/>
                     </svg>
-                    <svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="#3b82f6" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" style="position:absolute;"><path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"/></svg>
+                    <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#3b82f6" stroke-width="2.3" stroke-linecap="round" stroke-linejoin="round" style="position:absolute;"><path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"/></svg>
                   </div>
-                  <span style="font-size:0.62rem; font-weight:800; color:#3b82f6; margin-top:3px;">7h</span>
+                  <span style="font-size:0.65rem;font-weight:800;color:#3b82f6;">7h</span>
                 </div>
               </div>
             </div>
 
-            <!-- 4. Family Oversight Circle -->
-            <div class="panel-box">
-              <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:0.65rem;">
-                <span style="font-size:0.8rem; font-weight:800; color:var(--text);">Family Circle</span>
-                <span class="pill-badge" style="background:rgba(16,185,129,0.18); color:#34d399; font-size:0.65rem; font-weight:800;">Active</span>
+            <!-- 4. Family Circle -->
+            <div class="panel-box" style="padding:0.85rem 0.9rem;">
+              <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:0.7rem;">
+                <span style="font-size:0.78rem;font-weight:800;color:var(--text);">Family Circle</span>
+                <span style="background:rgba(16,185,129,0.1);color:#059669;font-size:0.65rem;font-weight:800;padding:0.18rem 0.55rem;border-radius:20px;border:1px solid rgba(16,185,129,0.2);">Active</span>
               </div>
-              <div style="display:flex; flex-direction:column; gap:0.55rem;">
+              <div style="display:flex;flex-direction:column;gap:0.45rem;">
                 <!-- Eleanor Vance -->
-                <div onclick="switchPrimaryTab('oversight')" style="display:flex; align-items:center; justify-content:space-between; padding:0.45rem 0.6rem; background:rgba(255,255,255,0.02); border-radius:10px; border:1px solid rgba(255,255,255,0.05); cursor:pointer;">
-                  <div style="display:flex; align-items:center; gap:0.55rem;">
-                    <div style="width:30px; height:30px; border-radius:50%; background:linear-gradient(135deg, #ec4899, #f43f5e); color:#fff; display:flex; align-items:center; justify-content:center; font-weight:900; font-size:0.72rem; border:2px solid #22c55e;" id="scenicChipSeniorAvatar">EV</div>
+                <div onclick="switchPrimaryTab('oversight')" style="
+                  display:flex;align-items:center;justify-content:space-between;
+                  padding:0.5rem 0.65rem;
+                  background:var(--family-row-bg, rgba(0,0,0,0.025));
+                  border:1px solid var(--family-row-border, rgba(0,0,0,0.06));
+                  border-radius:11px;cursor:pointer;transition:background 0.15s;">
+                  <div style="display:flex;align-items:center;gap:0.6rem;">
+                    <div style="width:32px;height:32px;border-radius:50%;background:linear-gradient(135deg,#ec4899,#f43f5e);color:#fff;display:flex;align-items:center;justify-content:center;font-weight:900;font-size:0.7rem;flex-shrink:0;box-shadow:0 0 0 2px #22c55e,0 0 0 4px rgba(34,197,94,0.15);" id="scenicChipSeniorAvatar">EV</div>
                     <div>
-                      <div style="font-size:0.78rem; font-weight:800; color:#ffffff;" id="scenicChipSeniorName">Eleanor Vance</div>
-                      <div style="font-size:0.65rem; color:#86efac;">Resting at home</div>
+                      <div style="font-size:0.78rem;font-weight:700;color:var(--text);line-height:1.2;" id="scenicChipSeniorName">Eleanor Vance</div>
+                      <div style="font-size:0.64rem;color:#16a34a;font-weight:600;">Resting at home</div>
                     </div>
                   </div>
-                  <span class="pill-badge" style="background:rgba(16,185,129,0.18); color:#34d399; font-size:0.65rem; font-weight:800;">96% Adherence</span>
+                  <span style="background:rgba(16,185,129,0.1);color:#059669;font-size:0.64rem;font-weight:800;padding:0.15rem 0.5rem;border-radius:20px;border:1px solid rgba(16,185,129,0.18);white-space:nowrap;">96% Adherence</span>
                 </div>
-                <!-- John Carter -->
-                <div onclick="switchPrimaryTab('oversight')" style="display:flex; align-items:center; justify-content:space-between; padding:0.45rem 0.6rem; background:rgba(255,255,255,0.02); border-radius:10px; border:1px solid rgba(255,255,255,0.05); cursor:pointer;">
-                  <div style="display:flex; align-items:center; gap:0.55rem;">
-                    <div style="width:30px; height:30px; border-radius:50%; background:linear-gradient(135deg, #0ea5e9, #6366f1); color:#fff; display:flex; align-items:center; justify-content:center; font-weight:900; font-size:0.72rem; border:2px solid #38bdf8;">JC</div>
+                <!-- John Vance -->
+                <div onclick="switchPrimaryTab('oversight')" style="
+                  display:flex;align-items:center;justify-content:space-between;
+                  padding:0.5rem 0.65rem;
+                  background:var(--family-row-bg, rgba(0,0,0,0.025));
+                  border:1px solid var(--family-row-border, rgba(0,0,0,0.06));
+                  border-radius:11px;cursor:pointer;transition:background 0.15s;">
+                  <div style="display:flex;align-items:center;gap:0.6rem;">
+                    <div style="width:32px;height:32px;border-radius:50%;background:linear-gradient(135deg,#0ea5e9,#6366f1);color:#fff;display:flex;align-items:center;justify-content:center;font-weight:900;font-size:0.7rem;flex-shrink:0;box-shadow:0 0 0 2px #38bdf8,0 0 0 4px rgba(56,189,248,0.15);">JV</div>
                     <div>
-                      <div style="font-size:0.78rem; font-weight:800; color:#ffffff;">John Carter</div>
-                      <div style="font-size:0.65rem; color:var(--text-muted);">Primary Guardian</div>
+                      <div style="font-size:0.78rem;font-weight:700;color:var(--text);line-height:1.2;">John Vance</div>
+                      <div style="font-size:0.64rem;color:var(--text-muted);">Active · Last update 10m ago</div>
                     </div>
                   </div>
-                  <span style="font-size:0.68rem; color:#38bdf8; font-weight:800; display:flex; align-items:center; gap:4px;"><span class="online-indicator"></span> Online</span>
+                  <span style="background:rgba(16,185,129,0.1);color:#059669;font-size:0.64rem;font-weight:800;padding:0.15rem 0.5rem;border-radius:20px;border:1px solid rgba(16,185,129,0.18);white-space:nowrap;">98% Adherence</span>
                 </div>
                 <!-- Dr. Sarah Lin -->
-                <div onclick="showMedicalId()" style="display:flex; align-items:center; justify-content:space-between; padding:0.45rem 0.6rem; background:rgba(255,255,255,0.02); border-radius:10px; border:1px solid rgba(255,255,255,0.05); cursor:pointer;">
-                  <div style="display:flex; align-items:center; gap:0.55rem;">
-                    <div style="width:30px; height:30px; border-radius:50%; background:linear-gradient(135deg, #a855f7, #ec4899); color:#fff; display:flex; align-items:center; justify-content:center; font-weight:900; font-size:0.72rem; border:2px solid #c084fc;">SL</div>
+                <div onclick="showMedicalId()" style="
+                  display:flex;align-items:center;justify-content:space-between;
+                  padding:0.5rem 0.65rem;
+                  background:var(--family-row-bg, rgba(0,0,0,0.025));
+                  border:1px solid var(--family-row-border, rgba(0,0,0,0.06));
+                  border-radius:11px;cursor:pointer;transition:background 0.15s;">
+                  <div style="display:flex;align-items:center;gap:0.6rem;">
+                    <div style="width:32px;height:32px;border-radius:50%;background:linear-gradient(135deg,#a855f7,#ec4899);color:#fff;display:flex;align-items:center;justify-content:center;font-weight:900;font-size:0.7rem;flex-shrink:0;box-shadow:0 0 0 2px #c084fc,0 0 0 4px rgba(192,132,252,0.15);">SL</div>
                     <div>
-                      <div style="font-size:0.78rem; font-weight:800; color:#ffffff;">Dr. Sarah Lin</div>
-                      <div style="font-size:0.65rem; color:var(--text-muted);">Cardiologist</div>
+                      <div style="font-size:0.78rem;font-weight:700;color:var(--text);line-height:1.2;">Dr. Sarah Lin</div>
+                      <div style="font-size:0.64rem;color:var(--text-muted);">Cardiologist</div>
                     </div>
                   </div>
-                  <span style="font-size:0.68rem; color:#d8b4fe; font-weight:800;">Next: Nov 10</span>
+                  <span style="font-size:0.64rem;color:#7c3aed;font-weight:800;padding:0.15rem 0.5rem;border-radius:20px;background:rgba(124,58,237,0.08);border:1px solid rgba(124,58,237,0.15);white-space:nowrap;">Next: Nov 10</span>
                 </div>
               </div>
               <!-- Hidden elements to preserve JS compatibility -->
@@ -8212,7 +8299,7 @@
             <div class="regimen-slot-card ${morningState.activeClass}">
               <div class="slot-header-row">
                 <div class="slot-icon-wrap">
-                  <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="${morningState.iconColor}" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                  <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="${morningState.iconColor}" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
                     <circle cx="12" cy="12" r="5"></circle>
                     <line x1="12" y1="1" x2="12" y2="3"></line>
                     <line x1="12" y1="21" x2="12" y2="23"></line>
@@ -8239,7 +8326,7 @@
             <div class="regimen-slot-card ${afternoonState.activeClass}">
               <div class="slot-header-row">
                 <div class="slot-icon-wrap">
-                  <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="${afternoonState.iconColor}" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                  <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="${afternoonState.iconColor}" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
                     <circle cx="12" cy="12" r="4"></circle>
                     <path d="M12 2v2"></path><path d="M12 20v2"></path>
                     <path d="m4.93 4.93 1.41 1.41"></path><path d="m17.66 17.66 1.41 1.41"></path>
@@ -8261,7 +8348,7 @@
             <div class="regimen-slot-card ${eveningState.activeClass}">
               ${eveningState.isDue ? '<div class="slot-due-dot"></div>' : ''}
               <div class="slot-header-row">
-                <div class="slot-icon-wrap" style="background:rgba(56, 189, 248, 0.12);">
+                <div class="slot-icon-wrap">
                   <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="${eveningState.iconColor}" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round">
                     <path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"></path>
                   </svg>
