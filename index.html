@@ -1,4 +1,4 @@
-<!DOCTYPE html>
+﻿<!DOCTYPE html>
 <html lang="en" data-theme="light">
 <head>
   <meta charset="UTF-8">
@@ -7401,6 +7401,15 @@
       return `${d.getFullYear()}-${p(d.getMonth() + 1)}-${p(d.getDate())}`;
     }
 
+    function weekStart(d = new Date()) {
+      const c = new Date(d);
+      const day = (c.getDay() + 6) % 7;
+      c.setDate(c.getDate() - day);
+      c.setHours(0, 0, 0, 0);
+      return c;
+    }
+
+
     // Money helpers (Fix Guide Section 4.1)
     const toPaise = n => Math.round(Number(n) * 100);
     const fmtINR  = p => ((p || 0) / 100).toLocaleString('en-IN', { style: 'currency', currency: 'INR' });
@@ -7967,8 +7976,22 @@
       monthlyBudgetPaise = safeLoad('omnitask_budget', monthlyBudgetPaise, Number.isFinite);
       focusItems        = safeLoad('omnitask_focus', focusItems, isArr);
       hydration         = safeLoad('omnitask_hydration', hydration, isObj);
+      activityLog       = safeLoad('omnitask_activity', activityLog, isArr);
+      doseLog           = safeLoad('omnitask_dose_log', doseLog, isArr);
+      careNotes         = safeLoad('omnitask_care_notes', careNotes, isArr);
+      isDemo            = safeLoad('omnitask_is_demo', isDemo, v => typeof v === 'boolean');
       if (corruptKeys.length) showToast('Some saved data was unreadable and was reset: ' + corruptKeys.join(', '));
     }
+
+    let activityLog = safeLoad('omnitask_activity', [
+      { date: localIso(new Date(Date.now() - 86400000)), type: 'workout', refId: 'fit_1', minutes: 45, kcal: 320 }
+    ], isArr);
+    let doseLog = safeLoad('omnitask_dose_log', [], isArr);
+    let careNotes = safeLoad('omnitask_care_notes', [
+      { at: new Date(Date.now() - 3600000).toISOString(), by: 'Caregiver John', text: 'Eleanor completed morning walk and took morning dose.' }
+    ], isArr);
+    let isDemo = safeLoad('omnitask_is_demo', true, v => typeof v === 'boolean');
+    let lastDeleted = null;
 
     const STORES = {
       omnitask_household_profiles:  () => householdProfiles,
@@ -7984,7 +8007,11 @@
       omnitask_appointments:        () => appointmentsData,
       omnitask_security:            () => securityConfig,
       omnitask_focus:               () => focusItems,
-      omnitask_hydration:           () => hydration
+      omnitask_hydration:           () => hydration,
+      omnitask_activity:            () => activityLog,
+      omnitask_dose_log:            () => doseLog,
+      omnitask_care_notes:          () => careNotes,
+      omnitask_is_demo:             () => isDemo
     };
 
     const lastSaved = {};
@@ -8398,17 +8425,17 @@
       const p = pillById(pillId) || (pillsData || [])[0];
       if (!p) return;
       if (courseDone(p)) {
-        showToast(${p.name} course is complete. Ask your doctor about a refill.);
+        showToast(`${p.name} course is complete. Ask your doctor about a refill.`);
         return;
       }
       slot = slot || nextOpenSlot(p);
       if (!slot) {
-        showToast(Today's  doses are all logged.);
+        showToast(`Today's ${p.name} doses are all logged.`);
         return;
       }
       const prior = loggedAt(p, slot);
       if (prior) {
-        showToast(${p.name}  was already logged at .);
+        showToast(`${p.name} ${slot} was already logged at ${fmtClock(prior.at)}.`);
         return;
       }
 
@@ -8416,7 +8443,7 @@
       const dueMin = clockToMinutes(slot);
       if (dueMin !== null) {
         const early = dueMin - (now.getHours() * 60 + now.getMinutes());
-        if (early > 90 && !(await confirmDialog(${slot} is over  hours away. Log it now?, 'Log now'))) {
+        if (early > 90 && !(await confirmDialog(`${slot} is over ${Math.floor(early / 60)} hours away. Log it now?`, 'Log now'))) {
           return;
         }
       }
@@ -8426,7 +8453,7 @@
       lastActionUndo = { type: 'dose', id: entry.id };
       persistAllData();
       renderAllViews();
-      showToast(Logged , , { undo: true });
+      showToast(`Logged ${p.name}, ${slot}`, { undo: true });
     }
 
     function snoozePillReminder(pillId, minutes = 15) {
@@ -8436,7 +8463,7 @@
       persistAllData();
       renderAllViews();
       const timeStr = new Date(p.snoozedUntil).toLocaleTimeString('en-IN', { hour: 'numeric', minute: '2-digit' });
-      showToast(${p.name} reminder snoozed until );
+      showToast(`${p.name} reminder snoozed until ${timeStr}`);
     }
 
     function adherence(days = 7) {
@@ -8476,17 +8503,17 @@
       if (!PAUSE_CHOICES.includes(hours)) return;
       const startedAt = Date.now();
       safeSave('omnitask_privacy_pause', { until: startedAt + hours * 3600000, startedAt, by: (householdProfiles.senior && householdProfiles.senior.name) || 'Eleanor' });
-      careNotes.unshift({ at: new Date().toISOString(), by: (householdProfiles.senior && householdProfiles.senior.name) || 'Eleanor', text: Paused sensor sharing for h });
+      careNotes.unshift({ at: new Date().toISOString(), by: (householdProfiles.senior && householdProfiles.senior.name) || 'Eleanor', text: `Paused sensor sharing for ${hours}h` });
       safeSave('omnitask_care_notes', careNotes);
       closePrivacyPauseModal();
       updatePrivacyPauseUI();
       renderAuditLog();
-      showToast(Sensor sharing paused for h. The SOS button still works.);
+      showToast(`Sensor sharing paused for ${hours}h. The SOS button still works.`);
     }
 
     function cancelPrivacyPause() {
       if (currentRole === 'caregiver') {
-        showToast(Only  can end a privacy pause.);
+        showToast(`Only ${(householdProfiles.senior && householdProfiles.senior.name) || 'Senior'} can end a privacy pause.`);
         return;
       }
       localStorage.removeItem('omnitask_privacy_pause');
@@ -8522,7 +8549,7 @@
       safeSave('omnitask_activity', activityLog);
       renderFitness();
       renderWorkouts();
-      showToast(Workout logged! 🔥 -day streak.);
+      showToast(`Workout logged! 🔥 ${computeStreak(activityLog)}-day streak.`);
     }
 
     function renderWeekChart() {
@@ -8591,11 +8618,11 @@
       renderWeekChart();
       const currentStreak = computeStreak(activityLog);
       const strkNum = document.getElementById('streakNumber');
-      if (strkNum) strkNum.textContent = ${currentStreak} Days;
+      if (strkNum) strkNum.textContent = `${currentStreak} Days`;
       const badge = document.getElementById('streakBadgeText');
-      if (badge) badge.textContent = ${currentStreak}-Day Streak;
+      if (badge) badge.textContent = `${currentStreak}-Day Streak`;
       const bentoStreak = document.getElementById('bentoStreakText');
-      if (bentoStreak) bentoStreak.textContent = 🔥 -Day Streak;
+      if (bentoStreak) bentoStreak.textContent = `🔥 ${currentStreak}-Day Streak`;
 
       const dotsContainer = document.getElementById('streakDots');
       if (dotsContainer) {
@@ -8621,8 +8648,8 @@
         const mins = todayLogs.reduce((s, l) => s + (l.minutes || 0), 0);
         const kcal = todayLogs.reduce((s, l) => s + (l.kcal || 0), 0);
         todaySum.innerHTML = todayLogs.length > 0
-          ? 🎉 Completed <strong> mins</strong> today (~ kcal). Keep going!
-          : No workouts logged today yet. Click <strong>"Mark Workout Complete"</strong> below.;
+          ? `🎉 Completed <strong>${mins} mins</strong> today (~${kcal} kcal). Keep going!`
+          : `No workouts logged today yet. Click <strong>"Mark Workout Complete"</strong> below.`;
       }
     }
 
@@ -8634,7 +8661,7 @@
       (billsData || []).filter(b => !b.isPaid).forEach(b => {
         const lbl = dueLabel(b.dueDate);
         if (/Overdue|today|in [123] day/i.test(lbl)) {
-          out.push({ icon: '💳', title: b.title, sub: ${fmtINR(b.amountPaise != null ? b.amountPaise : toPaise(b.amount || 0))} • , tab: 'expense' });
+          out.push({ icon: '💳', title: b.title, sub: `${fmtINR(b.amountPaise != null ? b.amountPaise : toPaise(b.amount || 0))} • ${lbl}`, tab: 'expense' });
         }
       });
       (appointmentsData || []).forEach(a => {
@@ -8648,7 +8675,7 @@
       (pillsData || []).forEach(p => {
         const left = daysLeft(p);
         if (left <= (p.refillWarningDays || 5)) {
-          out.push({ icon: '💊', title: ${p.name} Refill Alert, sub: ${left} day remaining in course, tab: 'reminders' });
+          out.push({ icon: '💊', title: `${p.name} Refill Alert`, sub: `${left} day${left === 1 ? '' : 's'} remaining in course`, tab: 'reminders' });
         }
       });
       return out;
@@ -8663,7 +8690,7 @@
         badge.textContent = notifs.length;
         badge.style.display = notifs.length > 0 ? 'inline-flex' : 'none';
       }
-      if (countLabel) countLabel.textContent = ${notifs.length} pending;
+      if (countLabel) countLabel.textContent = `${notifs.length} pending`;
       if (!list) return;
       list.replaceChildren();
       if (notifs.length === 0) {
@@ -8679,13 +8706,13 @@
         item.style.display = 'flex';
         item.style.gap = '0.5rem';
         item.style.alignItems = 'center';
-        item.innerHTML = 
-          <span style="font-size:1.1rem;"></span>
+        item.innerHTML = `
+          <span style="font-size:1.1rem;">${n.icon}</span>
           <div style="flex:1; min-width:0;">
-            <div style="font-weight:700; font-size:0.8rem; color:var(--text);"></div>
-            <div style="font-size:0.7rem; color:var(--text-muted);"></div>
+            <div style="font-weight:700; font-size:0.8rem; color:var(--text);">${escapeHTML(n.title)}</div>
+            <div style="font-size:0.7rem; color:var(--text-muted);">${escapeHTML(n.sub)}</div>
           </div>
-        ;
+        `;
         item.addEventListener('click', () => {
           switchPrimaryTab(n.tab);
           const drop = document.getElementById('notifDropdown');
@@ -8727,12 +8754,12 @@
       (pillsData || []).forEach(p => {
         (p.times || [p.time || '08:30 AM']).forEach(t => {
           const due = clockToMinutes(t);
-          const key = ${localIso()}||;
+          const key = `${localIso()}|${p.id}|${t}`;
           if (due === null || firedRemindersToday.has(key) || Date.now() < (p.snoozedUntil || 0)) return;
           if (mins >= due && mins < due + 30) {
             firedRemindersToday.add(key);
             try {
-              new Notification(⏰ Time for , { body: ${p.dosage || 'Take prescribed dose'} () });
+              new Notification(`⏰ Time for ${p.name}`, { body: `${p.dosage || 'Take prescribed dose'} (${t})` });
             } catch (e) {}
           }
         });
@@ -8787,13 +8814,13 @@
         row.style.fontSize = '0.78rem';
         row.style.margin = '2px 0';
         const timeStr = new Date(n.at).toLocaleTimeString('en-IN', { hour: 'numeric', minute: '2-digit' });
-        row.innerHTML = 
+        row.innerHTML = `
           <div>
-            <strong style="color:var(--text);">:</strong>
-            <span style="color:var(--text); margin-left:0.3rem;"></span>
+            <strong style="color:var(--text);">${escapeHTML(n.by)}:</strong>
+            <span style="color:var(--text); margin-left:0.3rem;">${escapeHTML(n.text)}</span>
           </div>
-          <span style="color:var(--text-muted); font-size:0.7rem; flex-shrink:0; margin-left:0.5rem;"></span>
-        ;
+          <span style="color:var(--text-muted); font-size:0.7rem; flex-shrink:0; margin-left:0.5rem;">${timeStr}</span>
+        `;
         host.appendChild(row);
       });
     }
@@ -8868,7 +8895,7 @@
             empty.style.padding = '0.5rem';
             empty.style.fontSize = '0.78rem';
             empty.style.color = 'var(--text-muted)';
-            empty.textContent = No matches found for "";
+            empty.textContent = `No matches found for "${searchInput.value.trim()}"`;
             resultsBox.appendChild(empty);
             resultsBox.hidden = false;
           } else {
@@ -8893,13 +8920,13 @@
           item.style.borderRadius = '6px';
           item.style.cursor = 'pointer';
           item.style.margin = '2px 0';
-          item.innerHTML = 
+          item.innerHTML = `
             <div>
-              <span style="font-size:0.68rem; font-weight:800; text-transform:uppercase; color:var(--accent); margin-right:0.35rem;">[]</span>
-              <strong style="font-size:0.82rem; color:var(--text);"></strong>
+              <span style="font-size:0.68rem; font-weight:800; text-transform:uppercase; color:var(--accent); margin-right:0.35rem;">[${escapeHTML(h.type)}]</span>
+              <strong style="font-size:0.82rem; color:var(--text);">${escapeHTML(h.label)}</strong>
             </div>
-            <span style="font-size:0.72rem; color:var(--text-muted);"></span>
-          ;
+            <span style="font-size:0.72rem; color:var(--text-muted);">${escapeHTML(h.sub || '')}</span>
+          `;
           item.addEventListener('click', () => {
             switchPrimaryTab(h.tab);
             resultsBox.hidden = true;
@@ -9646,20 +9673,8 @@
       showToast("🛡️ Caregiver Acknowledged: Morning dose verified and recorded.");
     }
 
-    function takePillDoseDynamic(pillId) { takePillDose(pillId); return;
-      const p = pillsData.find(x => x.id === pillId) || pillsData[0];
-      if (p.day >= p.totalDays) {
-        showToast(`🎉 Congratulations! You have completed the ${p.totalDays}-day course of ${p.name}.`);
-        return;
-      }
-      lastActionUndo = { type: 'pill', id: p.id, prevDay: p.day };
-      p.day += 1;
-      persistAllData();
-      renderPills();
-      renderCockpitMedications();
-      renderSeniorTabletPills();
-      renderTimeline();
-      showToast(`💊 Logged Dose: ${p.name} • Day ${courseDay(p)}/${p.totalDays}`);
+    function takePillDoseDynamic(pillId) {
+      takePillDose(pillId);
     }
 
     // 2. Render Bills Cards
@@ -11414,8 +11429,14 @@
       }
     }
 
-    function callSeniorPatient() { const ph = ((householdProfiles && householdProfiles.senior && householdProfiles.senior.phone) || "").replace(/[^\d+]/g, ""); if (ph) { window.location.href = "tel:" + ph; showToast("Opening dialer..."); } else { showToast("No phone number saved for senior patient."); } return;
-      showToast("📞 INITIATING SECURE CAREGIVER CALL:\n• Dialing Patient: Eleanor Vance (+91 98765 43211)\n• Fallback Contact: Master Admin Aswin (+91 98765 43210)\n• Medical Summary & Rx #89421 queued on screen.");
+    function callSeniorPatient() {
+      const ph = ((householdProfiles && householdProfiles.senior && householdProfiles.senior.phone) || '').replace(/[^\d+]/g, '');
+      if (ph) {
+        window.location.href = 'tel:' + ph;
+        showToast('Opening dialer...');
+      } else {
+        showToast('No phone number saved for senior patient.');
+      }
     }
 
     function showMedicalId() {
