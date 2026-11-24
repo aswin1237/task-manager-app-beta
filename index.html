@@ -1076,6 +1076,50 @@
       transform: scale(1.02);
     }
 
+    .pill-med {
+      background: rgba(16, 185, 129, 0.15);
+      color: #10b981;
+      border: 1px solid rgba(16, 185, 129, 0.3);
+    }
+    .pill-health {
+      background: rgba(6, 182, 212, 0.15);
+      color: #06b6d4;
+      border: 1px solid rgba(6, 182, 212, 0.3);
+    }
+    .pill-work {
+      background: rgba(99, 102, 241, 0.15);
+      color: #6366f1;
+      border: 1px solid rgba(99, 102, 241, 0.3);
+    }
+    .pill-fitness {
+      background: rgba(245, 158, 11, 0.15);
+      color: #f59e0b;
+      border: 1px solid rgba(245, 158, 11, 0.3);
+    }
+    html[data-theme="light"] .pill-med {
+      background: #dcfce7 !important;
+      color: #15803d !important;
+      border-color: #86efac !important;
+    }
+    html[data-theme="light"] .pill-health {
+      background: #e0f2fe !important;
+      color: #0284c7 !important;
+      border-color: #7dd3fc !important;
+    }
+    html[data-theme="light"] .pill-work {
+      background: #eff6ff !important;
+      color: #2563eb !important;
+      border-color: #93c5fd !important;
+    }
+    html[data-theme="light"] .pill-fitness {
+      background: #fef3c7 !important;
+      color: #b45309 !important;
+      border-color: #fde68a !important;
+    }
+    html[data-theme="light"] .cal-week-scroll-wrapper {
+      box-shadow: 0 1px 3px rgba(0,0,0,0.05) !important;
+    }
+
     /* Mobile Drawer Backdrop (Hidden on Desktop) */
     .sidebar-backdrop {
       display: none;
@@ -3000,6 +3044,232 @@
       color: #0f172a !important;
     }
     html[data-theme="light"] .panel-box div[style*="color:#ffffff"] {
+      color: #0f172a !important;
+    }
+
+    /* ==========================================================================
+       COMPREHENSIVE LIGHT THEME CARD & TEXT VISIBILITY OVERRIDES
+       Fixes all dark grey slabs across Appointments, Bills, Expense Ledger,
+       Workouts, Habits, Family Oversight, and Insights.
+       ========================================================================== */
+    html[data-theme="light"] .module-card {
+      background: #ffffff !important;
+      border: 1px solid #e2e8f0 !important;
+      border-radius: 14px !important;
+      color: #0f172a !important;
+      box-shadow: 0 1px 3px rgba(0, 0, 0, 0.04), 0 1px 2px rgba(0, 0, 0, 0.02) !important;
+      backdrop-filter: none !important;
+      -webkit-backdrop-filter: none !important;
+    }
+    html[data-theme="light"] .module-card:hover {
+      border-color: #cbd5e1 !important;
+      box-shadow: 0 4px 12px rgba(0, 0, 0, 0.06) !important;
+      transform: translateY(-1px) !important;
+    }
+
+    /* Card Title, Subtitle, and Typography visibility inside cards */
+    html[data-theme="light"] .card-title,
+    html[data-theme="light"] .module-card .card-title {
+      color: #0f172a !important;
+      font-weight: 800 !important;
+    }
+    html[data-theme="light"] .card-sub,
+    html[data-theme="light"] .module-card .card-sub {
+      color: #64748b !important;
+    }
+    html[data-theme="light"] .module-card strong,
+    html[data-theme="light"] .module-card b {
+      color: #0f172a !important;
+    }
+    html[data-theme="light"] .module-card label {
+      color: #0f172a !important;
+    }
+    html[data-theme="light"] .module-card label span {
+      color: #0f172a !important;
+    }
+    html[data-theme="light"] .module-card div[style*="color:var(--text)"] {
+      color: #0f172a !important;
+    }
+    html[data-theme="light"] .module-card div[style*="color:var(--text-muted)"],
+    html[data-theme="light"] .module-card span[style*="color:var(--text-muted)"],
+    html[data-theme="light"] .module-card div[style*="color:#cbd5e1"],
+    html[data-theme="light"] .module-card span[style*="color:#cbd5e1"] {
+      color: #64748b !important;
+    }
+    html[data-theme="light"] .module-card div[style*="color:#ffffff"],
+    html[data-theme="light"] .module-card div[style*="color:#fff"],
+    html[data-theme="light"] .module-card span[style*="color:#ffffff"],
+    html[data-theme="light"] .module-card span[style*="color:#fff"] {
+      color: #0f172a !important;
+    }
+
+    /* Buttons inside cards */
+    html[data-theme="light"] .btn-secondary {
+      background: #f1f5f9 !important;
+      border: 1px solid #cbd5e1 !important;
+      color: #1e293b !important;
+    }
+    html[data-theme="light"] .btn-secondary:hover {
+      background: #e2e8f0 !important;
+      border-color: #94a3b8 !important;
+      color: #0f172a !important;
+    }
+
+    /* Progress Tracks across all cards */
+    html[data-theme="light"] .progress-track {
+      background: #e2e8f0 !important;
+    }
+
+    /* REMINDERS & PILLS: Appointments Column & Medical ID */
+    html[data-theme="light"] #appointmentsListContainer .module-card {
+      background: #ffffff !important;
+      border: 1px solid #e2e8f0 !important;
+      box-shadow: 0 1px 3px rgba(0, 0, 0, 0.04) !important;
+    }
+    html[data-theme="light"] #appointmentsListContainer .module-card:hover {
+      border-color: #cbd5e1 !important;
+      background: #f8fafc !important;
+    }
+    html[data-theme="light"] #appointmentsListContainer .pill-badge {
+      background: #eff6ff !important;
+      color: #2563eb !important;
+      border: 1px solid #bfdbfe !important;
+    }
+
+    /* EXPENSES & BILLS: Top Cockpit, Bills, and Ledger */
+    html[data-theme="light"] #view_expense .panel-box[style*="background:linear-gradient"],
+    html[data-theme="light"] #view_expense .panel-box[style*="linear-gradient"] {
+      background: #ffffff !important;
+      border: 1px solid #e2e8f0 !important;
+      box-shadow: 0 1px 3px rgba(0, 0, 0, 0.04) !important;
+    }
+    html[data-theme="light"] #view_expense .panel-box[style*="linear-gradient"] h2,
+    html[data-theme="light"] #view_expense .panel-box[style*="linear-gradient"] h2 span {
+      color: #0f172a !important;
+    }
+    html[data-theme="light"] #view_expense .panel-box[style*="linear-gradient"] .module-card {
+      background: #f8fafc !important;
+      border-color: #e2e8f0 !important;
+    }
+    html[data-theme="light"] #billsListContainer .module-card {
+      background: #ffffff !important;
+      border: 1px solid #e2e8f0 !important;
+      box-shadow: 0 1px 3px rgba(0, 0, 0, 0.04) !important;
+    }
+    html[data-theme="light"] #billsListContainer .module-card:hover {
+      border-color: #cbd5e1 !important;
+    }
+    html[data-theme="light"] #billsListContainer .module-card div[style*="font-family:'JetBrains Mono'"] {
+      color: #0f172a !important;
+    }
+    html[data-theme="light"] #ledgerList .module-card {
+      background: #ffffff !important;
+      border: 1px solid #e2e8f0 !important;
+      box-shadow: 0 1px 2px rgba(0, 0, 0, 0.03) !important;
+    }
+    html[data-theme="light"] #ledgerList .module-card:hover {
+      background: #f8fafc !important;
+      border-color: #cbd5e1 !important;
+    }
+    html[data-theme="light"] #ledgerList .module-card strong {
+      color: #0f172a !important;
+    }
+    html[data-theme="light"] .cat-breakdown-card {
+      background: #ffffff !important;
+      border: 1px solid #e2e8f0 !important;
+      box-shadow: 0 1px 3px rgba(0, 0, 0, 0.04) !important;
+    }
+    html[data-theme="light"] .cat-breakdown-card:hover {
+      border-color: #cbd5e1 !important;
+      box-shadow: 0 4px 12px rgba(0, 0, 0, 0.06) !important;
+    }
+
+    /* FITNESS & HABITS: Active Workout Regimen & Same-Day Habit Clusters */
+    html[data-theme="light"] #workoutsListContainer .module-card,
+    html[data-theme="light"] #habitsListContainer .module-card {
+      background: #ffffff !important;
+      border: 1px solid #e2e8f0 !important;
+      box-shadow: 0 1px 3px rgba(0, 0, 0, 0.04) !important;
+    }
+    html[data-theme="light"] #workoutsListContainer .module-card:hover,
+    html[data-theme="light"] #habitsListContainer .module-card:hover {
+      border-color: #cbd5e1 !important;
+    }
+    html[data-theme="light"] #workoutsListContainer label {
+      color: #0f172a !important;
+    }
+    html[data-theme="light"] #workoutsListContainer label span {
+      color: #0f172a !important;
+    }
+    html[data-theme="light"] #workoutsListContainer label strong {
+      color: #0f172a !important;
+    }
+
+    /* FAMILY OVERSIGHT: Senior Health, Audit Trail, Devices, Tasks, Protocols */
+    html[data-theme="light"] #view_oversight .module-card {
+      background: #ffffff !important;
+      border: 1px solid #e2e8f0 !important;
+      box-shadow: 0 1px 3px rgba(0, 0, 0, 0.04) !important;
+    }
+    html[data-theme="light"] #view_oversight .module-card:hover {
+      border-color: #cbd5e1 !important;
+    }
+    html[data-theme="light"] #view_oversight .module-card div,
+    html[data-theme="light"] #view_oversight .module-card span:not(.pill-badge),
+    html[data-theme="light"] #view_oversight .module-card strong {
+      color: #0f172a !important;
+    }
+    html[data-theme="light"] #view_oversight .module-card .card-sub,
+    html[data-theme="light"] #view_oversight .module-card div[style*="color:var(--text-muted)"] {
+      color: #64748b !important;
+    }
+    html[data-theme="light"] #householdTasksContainer .module-card {
+      background: #ffffff !important;
+      border: 1px solid #e2e8f0 !important;
+      box-shadow: 0 1px 2px rgba(0, 0, 0, 0.03) !important;
+    }
+    html[data-theme="light"] #householdTasksContainer .module-card:hover {
+      background: #f8fafc !important;
+      border-color: #cbd5e1 !important;
+    }
+    html[data-theme="light"] #householdTasksContainer div[style*="color:var(--text)"] {
+      color: #0f172a !important;
+    }
+    html[data-theme="light"] #escStage1Card,
+    html[data-theme="light"] #escStage2Card,
+    html[data-theme="light"] #escStage3Card {
+      background: #ffffff !important;
+      border: 1px solid #e2e8f0 !important;
+      border-left-width: 4px !important;
+      box-shadow: 0 1px 3px rgba(0, 0, 0, 0.04) !important;
+    }
+    html[data-theme="light"] #escStage1Card div,
+    html[data-theme="light"] #escStage2Card div,
+    html[data-theme="light"] #escStage3Card div {
+      color: #0f172a !important;
+    }
+    html[data-theme="light"] #escStage1Card .card-sub,
+    html[data-theme="light"] #escStage2Card .card-sub,
+    html[data-theme="light"] #escStage3Card .card-sub {
+      color: #64748b !important;
+    }
+
+    /* INSIGHTS TAB: Summary Cards & Streak Items */
+    html[data-theme="light"] #view_insights .module-card {
+      background: #ffffff !important;
+      border: 1px solid #e2e8f0 !important;
+      box-shadow: 0 1px 3px rgba(0, 0, 0, 0.04) !important;
+    }
+    html[data-theme="light"] #view_insights div[style*="background:rgba(255,255,255,0.03)"] {
+      background: #f8fafc !important;
+      border: 1px solid #e2e8f0 !important;
+    }
+    html[data-theme="light"] #view_insights div[style*="color:#cbd5e1"],
+    html[data-theme="light"] #view_insights span[style*="color:#cbd5e1"] {
+      color: #64748b !important;
+    }
+    html[data-theme="light"] #view_insights div[style*="color:#ffffff"],
+    html[data-theme="light"] #view_insights div[style*="color:#fff"] {
       color: #0f172a !important;
     }
 
@@ -10462,7 +10732,7 @@
     }
 
     function showMedicalId() {
-      alert("📋 EMERGENCY MEDICAL ID CARD:\n• Patient: Eleanor Vance\n• Date of Birth: 1948-03-12\n• Active Rx: Metformin 500mg (2x Daily)\n• Blood Type: O+\n• Prescribing Doctor: Dr. Sarah Lin (+91 98765 43220)\n• Caregiver: John Vance (+91 98765 43212)\n• Primary Admin: Aswin (+91 98765 43210)");
+      showToast("📋 Medical ID: Eleanor Vance • Blood O+ • Severe Penicillin Allergy • Rx: Metformin 500mg • Dr. Sarah Lin (+91 98765 43220)");
     }
 
     function printDoctorSummary() {
