@@ -1522,16 +1522,39 @@
       box-shadow: 0 4px 14px rgba(0, 0, 0, 0.2);
     }
 
+    .cockpit-rx-item {
+      background: var(--surface);
+      border: 1px solid var(--surface-border);
+      color: var(--text);
+      border-radius: 14px;
+      padding: 0.6rem 0.85rem; flex-shrink: 0;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 0.75rem;
+      transition: all 0.2s cubic-bezier(0.4, 0, 0.2, 1);
+      box-shadow: 0 1px 3px rgba(0, 0, 0, 0.04);
+    }
+    :root[data-theme="dark"] .cockpit-rx-item {
+      background: linear-gradient(135deg, rgba(25, 34, 62, 0.82) 0%, rgba(13, 18, 36, 0.96) 100%);
+      border: 1px solid rgba(255, 255, 255, 0.08);
+      box-shadow: 0 4px 14px rgba(0, 0, 0, 0.2);
+    }
+
     .cockpit-rx-item:hover {
-      border-color: rgba(6, 182, 212, 0.4);
+      border-color: var(--accent);
       transform: translateY(-1px);
+      box-shadow: 0 4px 12px rgba(0, 0, 0, 0.06);
+    }
+    :root[data-theme="dark"] .cockpit-rx-item:hover {
+      border-color: rgba(6, 182, 212, 0.4);
       box-shadow: 0 8px 20px rgba(0, 0, 0, 0.32);
     }
 
     .timeline-event-item {
-      background: linear-gradient(135deg, rgba(25, 34, 64, 0.68) 0%, rgba(13, 18, 36, 0.88) 100%);
-      backdrop-filter: blur(18px) saturate(180%);
-      border: 1px solid rgba(255, 255, 255, 0.08);
+      background: var(--surface);
+      border: 1px solid var(--surface-border);
+      color: var(--text);
       border-radius: 14px;
       padding: 0.6rem 0.85rem; flex-shrink: 0;
       display: flex;
@@ -1539,13 +1562,23 @@
       justify-content: space-between;
       gap: 0.75rem;
       transition: all 0.25s cubic-bezier(0.4, 0, 0.2, 1);
+      box-shadow: 0 1px 3px rgba(0, 0, 0, 0.04);
+    }
+    :root[data-theme="dark"] .timeline-event-item {
+      background: linear-gradient(135deg, rgba(25, 34, 64, 0.68) 0%, rgba(13, 18, 36, 0.88) 100%);
+      backdrop-filter: blur(18px) saturate(180%);
+      border: 1px solid rgba(255, 255, 255, 0.08);
       box-shadow: 0 4px 18px rgba(0, 0, 0, 0.28), inset 0 1px 1px rgba(255, 255, 255, 0.1);
     }
 
     .timeline-event-item:hover {
+      border-color: var(--accent);
+      transform: translateX(3px) translateY(-1px);
+      box-shadow: 0 4px 12px rgba(0, 0, 0, 0.06);
+    }
+    :root[data-theme="dark"] .timeline-event-item:hover {
       background: linear-gradient(135deg, rgba(35, 48, 88, 0.8) 0%, rgba(18, 25, 52, 0.95) 100%);
       border-color: rgba(99, 102, 241, 0.45);
-      transform: translateX(3px) translateY(-1px);
       box-shadow: 0 8px 25px rgba(0, 0, 0, 0.4), 0 0 18px rgba(99, 102, 241, 0.2), inset 0 1px 1px rgba(255, 255, 255, 0.18);
     }
 
@@ -1556,42 +1589,59 @@
     }
 
     .panel-box {
-      background: linear-gradient(145deg, rgba(20, 27, 47, 0.75) 0%, rgba(11, 16, 29, 0.88) 100%);
-      backdrop-filter: blur(18px) saturate(160%);
-      border: 1px solid rgba(255, 255, 255, 0.08);
+      background: var(--surface);
+      border: 1px solid var(--surface-border);
+      color: var(--text);
       border-radius: 18px;
       padding: 1.25rem;
       display: flex;
       flex-direction: column;
       gap: 1rem;
+      box-shadow: 0 1px 3px rgba(0, 0, 0, 0.04);
+    }
+    :root[data-theme="dark"] .panel-box {
+      background: linear-gradient(145deg, rgba(20, 27, 47, 0.75) 0%, rgba(11, 16, 29, 0.88) 100%);
+      backdrop-filter: blur(18px) saturate(160%);
+      border: 1px solid rgba(255, 255, 255, 0.08);
       box-shadow: 0 12px 35px -5px rgba(0, 0, 0, 0.5), inset 0 1px 1px rgba(255, 255, 255, 0.07);
     }
 
     .panel-header {
       font-size: 1rem;
       font-weight: 800;
+      color: var(--text);
       display: flex;
       align-items: center;
       justify-content: space-between;
       padding-bottom: 0.75rem;
-      border-bottom: 1px solid rgba(255, 255, 255, 0.07);
+      border-bottom: 1px solid var(--surface-border);
     }
 
     .module-card {
-      background: linear-gradient(135deg, rgba(25, 34, 58, 0.5) 0%, rgba(15, 21, 38, 0.7) 100%);
-      border: 1px solid rgba(255, 255, 255, 0.07);
+      background: var(--surface);
+      border: 1px solid var(--surface-border);
+      color: var(--text);
       border-radius: 14px;
       padding: 0.95rem 1.1rem;
       display: flex;
       flex-direction: column;
       gap: 0.65rem;
       transition: all 0.25s cubic-bezier(0.4, 0, 0.2, 1);
+      box-shadow: 0 1px 3px rgba(0, 0, 0, 0.04);
+    }
+    :root[data-theme="dark"] .module-card {
+      background: linear-gradient(135deg, rgba(25, 34, 58, 0.5) 0%, rgba(15, 21, 38, 0.7) 100%);
+      border: 1px solid rgba(255, 255, 255, 0.07);
       box-shadow: 0 4px 16px rgba(0, 0, 0, 0.25);
     }
 
     .module-card:hover {
-      border-color: rgba(99, 102, 241, 0.4);
+      border-color: var(--accent);
       transform: translateY(-2px);
+      box-shadow: 0 6px 20px rgba(0, 0, 0, 0.08);
+    }
+    :root[data-theme="dark"] .module-card:hover {
+      border-color: rgba(99, 102, 241, 0.4);
       box-shadow: 0 8px 24px rgba(0, 0, 0, 0.4);
     }
 
@@ -4400,7 +4450,55 @@
     }
     html[data-theme="light"] .regimen-btn-secondary:hover {
       background: #e2e8f0;
-    }</style>
+    }    /* ==========================================================================
+       SECTION 11 & 12: TYPE SCALE FLOOR, TAP TARGETS, ACCESSIBILITY & CONTRAST
+       ========================================================================== */
+    :root {
+      --fs-xs: 0.8125rem;   /* 13px floor */
+      --fs-sm: 0.875rem;    /* 14px */
+      --fs-md: 1rem;        /* 16px body */
+      --fs-lg: 1.25rem;
+      --fs-xl: 1.625rem;
+      --lh: 1.5;
+    }
+
+    /* 11.1 Floor at 13px */
+    .tiny, .label-sm, .meta, .badge, .card-sub,
+    [style*="font-size:10px"], [style*="font-size: 10px"],
+    [style*="font-size:11px"], [style*="font-size: 11px"],
+    [style*="font-size:0.65rem"], [style*="font-size: 0.65rem"] {
+      font-size: var(--fs-xs) !important;
+    }
+
+    /* 11.2 Tap Targets Minimum 44px on Interactive Elements */
+    button, [role="button"], a.btn, .tab, .chip, select {
+      min-height: 44px;
+    }
+    button, [role="button"] {
+      padding-inline: 12px;
+    }
+    input[type="checkbox"], input[type="radio"] {
+      min-width: 20px;
+      min-height: 20px;
+      cursor: pointer;
+    }
+
+    /* Accessible focus indicator for keyboard navigation */
+    :focus-visible {
+      outline: 2px solid var(--accent) !important;
+      outline-offset: 2px !important;
+    }
+
+    /* 11.8 Reduced Motion */
+    @media (prefers-reduced-motion: reduce) {
+      *, *::before, *::after {
+        animation-duration: 0.01ms !important;
+        animation-iteration-count: 1 !important;
+        transition-duration: 0.01ms !important;
+        scroll-behavior: auto !important;
+      }
+    }
+  </style>
 </head>
 <body>
 
@@ -4703,15 +4801,15 @@
         <div class="sidebar-mode-card" style="padding:0.65rem 0.75rem; background:rgba(255,255,255,0.03); border:1px solid rgba(255,255,255,0.08); border-radius:12px; display:flex; flex-direction:column; gap:0.35rem;">
           <div style="font-size:0.68rem; font-weight:800; text-transform:uppercase; letter-spacing:0.05em; color:var(--text-muted); padding:0 0.2rem;">Mode</div>
           <div class="role-switch-pills" style="display:flex; flex-direction:column; gap:0.25rem; background:transparent; border:none; padding:0;">
-            <button class="role-btn active" id="btnRolePower" onclick="setMode('power')" style="display:flex; align-items:center; width:100%; text-align:left; gap:0.55rem; padding:0.45rem 0.65rem; border-radius:8px;">
+            <button class="role-btn active" id="btnRolePower" onclick="requestMode('power')" style="display:flex; align-items:center; width:100%; text-align:left; gap:0.55rem; padding:0.45rem 0.65rem; border-radius:8px;">
               <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" style="flex-shrink:0;"><polygon points="13 2 3 14 12 14 11 22 21 10 12 10 13 2"/></svg>
               <span class="role-btn-label" style="font-weight:700;">Power</span>
             </button>
-            <button class="role-btn" id="btnRoleSenior" onclick="setMode('senior')" style="display:flex; align-items:center; width:100%; text-align:left; gap:0.55rem; padding:0.45rem 0.65rem; border-radius:8px;">
+            <button class="role-btn" id="btnRoleSenior" onclick="requestMode('senior')" style="display:flex; align-items:center; width:100%; text-align:left; gap:0.55rem; padding:0.45rem 0.65rem; border-radius:8px;">
               <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="flex-shrink:0;"><path d="M16 21v-2a4 4 0 0 0-4-4H6a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M22 21v-2a4 4 0 0 0-3-3.87"/><path d="M16 3.13a4 4 0 0 1 0 7.75"/></svg>
               <span class="role-btn-label" style="font-weight:700;">Senior Dignity</span>
             </button>
-            <button class="role-btn" id="btnRoleCaregiver" onclick="setMode('caregiver')" style="display:flex; align-items:center; width:100%; text-align:left; gap:0.55rem; padding:0.45rem 0.65rem; border-radius:8px;">
+            <button class="role-btn" id="btnRoleCaregiver" onclick="requestMode('caregiver')" style="display:flex; align-items:center; width:100%; text-align:left; gap:0.55rem; padding:0.45rem 0.65rem; border-radius:8px;">
               <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="flex-shrink:0;"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/></svg>
               <span class="role-btn-label" style="font-weight:700;">Caregiver</span>
             </button>
@@ -4763,11 +4861,12 @@
           </svg>
         </button>
 
-        <!-- Global Search with &#8984;K -->
-        <div class="topbar-search" style="max-width:380px;">
+        <!-- Global Search with ⌘K / Ctrl K (Unified Non-Jumping Search Fix 6.6) -->
+        <div class="topbar-search" style="max-width:380px; position:relative;">
           <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="opacity:0.7; flex-shrink:0;"><circle cx="11" cy="11" r="8"></circle><line x1="21" y1="21" x2="16.65" y2="16.65"></line></svg>
-          <input type="text" id="globalOmniSearchInput" placeholder="Search tasks, meds, expenses..." oninput="handleGlobalSearch(this.value)">
-          <kbd style="background:rgba(255,255,255,0.08); border:1px solid rgba(255,255,255,0.15); border-radius:5px; padding:2px 6px; font-size:0.65rem; color:#cbd5e1; font-family:inherit;">&#8984;K</kbd>
+          <input type="text" id="globalOmniSearchInput" placeholder="Search tasks, meds, expenses..." autocomplete="off">
+          <kbd id="kbdHint" style="background:rgba(255,255,255,0.08); border:1px solid rgba(255,255,255,0.15); border-radius:5px; padding:2px 6px; font-size:0.65rem; color:#cbd5e1; font-family:inherit;">Ctrl K</kbd>
+          <div id="searchResults" role="listbox" class="module-card" style="position:absolute; top:calc(100% + 6px); left:0; right:0; max-height:360px; overflow-y:auto; z-index:1200; box-shadow:0 12px 30px rgba(0,0,0,0.2); padding:0.5rem;" hidden></div>
         </div>
 
         <!-- Topbar Action Icons & Right Utilities -->
@@ -4787,10 +4886,20 @@
             <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="5"/><line x1="12" y1="1" x2="12" y2="3"/><line x1="12" y1="21" x2="12" y2="23"/><line x1="4.22" y1="4.22" x2="5.64" y2="5.64"/><line x1="18.36" y1="18.36" x2="19.78" y2="19.78"/><line x1="1" y1="12" x2="3" y2="12"/><line x1="21" y1="12" x2="23" y2="12"/><line x1="4.22" y1="19.78" x2="5.64" y2="18.36"/><line x1="18.36" y1="5.64" x2="19.78" y2="4.22"/></svg>
           </button>
 
-          <button class="topbar-icon-btn" onclick="showToast('3 Notifications: Dr. Lin review, ConEd due Oct 26, &amp; Metformin taken.')" title="Notifications">
-            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M18 8A6 6 0 0 0 6 8c0 7-3 9-3 9h18s-3-2-3-9"/><path d="M13.73 21a2 2 0 0 1-3.46 0"/></svg>
-            <span class="notification-badge">3</span>
-          </button>
+          <!-- Data-Driven Notifications (Fix 6.5) -->
+          <div style="position:relative; display:inline-block;">
+            <button class="topbar-icon-btn" onclick="toggleNotificationsDropdown()" id="notifBtn" aria-label="Notifications" aria-expanded="false" title="Notifications">
+              <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M18 8A6 6 0 0 0 6 8c0 7-3 9-3 9h18s-3-2-3-9"/><path d="M13.73 21a2 2 0 0 1-3.46 0"/></svg>
+              <span class="notification-badge" id="notifBadge">0</span>
+            </button>
+            <div id="notifDropdown" class="module-card" style="position:absolute; right:0; top:calc(100% + 8px); width:310px; max-height:380px; overflow-y:auto; z-index:1100; box-shadow:0 12px 30px rgba(0,0,0,0.18); padding:0.75rem;" hidden>
+              <div style="font-weight:800; font-size:0.85rem; padding-bottom:0.4rem; border-bottom:1px solid var(--surface-border); margin-bottom:0.5rem; display:flex; justify-content:space-between; align-items:center;">
+                <span>🔔 Actionable Notifications</span>
+                <span id="notifCountLabel" style="font-size:0.72rem; color:var(--text-muted);">0 pending</span>
+              </div>
+              <div id="notifList" style="display:flex; flex-direction:column; gap:0.45rem;"></div>
+            </div>
+          </div>
 
           <!-- Emergency Dial 112 SOS Pill Button (Matching mockup) -->
           <button class="btn" onclick="openSosModal()" style="background:#ef4444; color:#ffffff; font-weight:900; font-size:0.75rem; padding:0.35rem 0.85rem; border-radius:20px; border:none; display:inline-flex; align-items:center; gap:4px; box-shadow:0 3px 12px rgba(239,68,68,0.45); cursor:pointer;" title="Emergency SOS Dial 112">
@@ -4917,27 +5026,15 @@
                   <p class="scenic-hero-subtitle" id="heroDateSubtitle" style="font-size:0.88rem; color:#cbd5e1; margin:0; font-style:italic;">"A calmer, more organised life together."</p>
                 </div>
 
-                <!-- Right Side Frosted Glass Card: Today's Focus -->
+                <!-- Right Side Frosted Glass Card: Today's Focus (Fix Guide Section 6.2) -->
                 <div class="hero-focus-card" style="background:rgba(15, 23, 42, 0.68); backdrop-filter:blur(16px); -webkit-backdrop-filter:blur(16px); border:1px solid rgba(255,255,255,0.18); border-radius:14px; padding:0.9rem 1.25rem; min-width:275px; box-shadow:0 10px 25px rgba(0,0,0,0.45);">
                   <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:0.55rem;">
                     <div style="font-size:0.78rem; font-weight:800; color:#ffffff; display:flex; align-items:center; gap:5px;">
                       <span style="color:#60a5fa;"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" style="vertical-align:middle; margin-right:4px;"><circle cx="12" cy="12" r="10"/><circle cx="12" cy="12" r="6"/><circle cx="12" cy="12" r="2"/></svg></span> Today's Focus
                     </div>
-                    <span class="pill-badge" style="background:rgba(37,99,235,0.25); color:#93c5fd; font-size:0.65rem; font-weight:800;">3 items</span>
+                    <span class="pill-badge" id="focusCount" style="background:rgba(37,99,235,0.25); color:#93c5fd; font-size:0.65rem; font-weight:800;">Loading...</span>
                   </div>
-                  <div style="display:flex; flex-direction:column; gap:0.45rem;">
-                    <label style="display:flex; align-items:center; gap:0.5rem; font-size:0.75rem; color:#86efac; cursor:pointer;">
-                      <input type="checkbox" checked style="accent-color:#10b981; width:14px; height:14px; cursor:pointer;" onchange="showToast('Focus item updated: Morning Workout')">
-                      <span style="text-decoration:line-through; opacity:0.85;">Morning Workout (07:00 AM)</span>
-                    </label>
-                    <label style="display:flex; align-items:center; gap:0.5rem; font-size:0.75rem; color:#f1f5f9; cursor:pointer;">
-                      <input type="checkbox" style="accent-color:#2563eb; width:14px; height:14px; cursor:pointer;" onchange="showToast('Focus item updated: Take Vitamins')">
-                      <span>Take Vitamins (08:30 AM)</span>
-                    </label>
-                    <label style="display:flex; align-items:center; gap:0.5rem; font-size:0.75rem; color:#f1f5f9; cursor:pointer;">
-                      <input type="checkbox" style="accent-color:#2563eb; width:14px; height:14px; cursor:pointer;" onchange="showToast('Focus item updated: Edit Portfolio Photos')">
-                      <span>Edit Portfolio Photos (02:00 PM)</span>
-                    </label>
+                  <div id="focusList" style="display:flex; flex-direction:column; gap:0.45rem;">
                   </div>
                 </div>
               </div>
@@ -4981,8 +5078,8 @@
                   <span class="pill-badge" id="bentoBillsPendingCount" style="background:rgba(245,158,11,0.18); color:#fbbf24; font-size:0.65rem;">1 payment due</span>
                 </div>
                 <div style="margin-top:0.35rem;">
-                  <div style="font-size:1.45rem; font-weight:900; font-family:'JetBrains Mono',monospace; color:#ffffff;" id="bentoBillsTotalAmount">&#8377;142.50</div>
-                  <div style="font-size:0.68rem; color:var(--text-muted); margin-top:2px;">Next: ConEd due Oct 26</div>
+                  <div style="font-size:1.45rem; font-weight:900; font-family:'JetBrains Mono',monospace; color:var(--text);" id="bentoBillsTotalAmount">&#8377;0.00</div>
+                  <div style="font-size:0.68rem; color:var(--text-muted); margin-top:2px;" id="bentoBillsNext">Loading bills...</div>
                 </div>
                 <svg width="100%" height="20" viewBox="0 0 120 20" style="margin-top:0.4rem; overflow:visible;">
                   <path d="M0,15 Q30,18 60,8 T120,4" fill="none" stroke="#f59e0b" stroke-width="2.5" stroke-linecap="round"/>
@@ -5015,14 +5112,14 @@
               <div class="bento-kpi-card" onclick="openSalaryModal()">
                 <div class="bento-kpi-header">
                   <span style="font-size:0.78rem; font-weight:800; color:var(--text);">Monthly Budget</span>
-                  <span class="pill-badge" style="background:rgba(59,130,246,0.18); color:#60a5fa; font-size:0.65rem;">50% spent</span>
+                  <span class="pill-badge" id="homeBudgetPct" style="background:rgba(59,130,246,0.18); color:#60a5fa; font-size:0.65rem;">0% spent</span>
                 </div>
                 <div style="margin-top:0.35rem;">
-                  <div style="font-size:1.15rem; font-weight:900; font-family:'JetBrains Mono',monospace; color:#ffffff;">&#8377;12,500 <span style="font-size:0.75rem; color:var(--text-muted); font-weight:600;">of &#8377;25,000</span></div>
-                  <div style="width:100%; height:7px; background:rgba(255,255,255,0.08); border-radius:5px; margin-top:0.45rem; overflow:hidden;">
-                    <div style="width:50%; height:100%; background:linear-gradient(90deg, #2563eb, #6366f1); border-radius:5px;"></div>
+                  <div style="font-size:1.15rem; font-weight:900; font-family:'JetBrains Mono',monospace; color:var(--text);" id="homeBudgetAmount">&#8377;0 <span style="font-size:0.75rem; color:var(--text-muted); font-weight:600;">of &#8377;25,000</span></div>
+                  <div class="progress-track" style="height:7px; margin-top:0.45rem;">
+                    <div id="homeBudgetFill" class="progress-fill" style="width:0%; height:100%; background:linear-gradient(90deg, #2563eb, #6366f1); border-radius:5px;"></div>
                   </div>
-                  <div style="font-size:0.68rem; color:var(--text-muted); margin-top:0.35rem;">&#8377;12,500 remaining &bull; 8 days left</div>
+                  <div style="font-size:0.68rem; color:var(--text-muted); margin-top:0.35rem;" id="homeBudgetNote">&#8377;0 remaining</div>
                 </div>
               </div>
             </div>
@@ -5083,50 +5180,15 @@
                 <div>
                   <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:0.5rem;">
                     <span style="font-size:0.8rem; font-weight:800; color:var(--text);">Today's Spend</span>
-                    <span class="pill-badge" style="background:rgba(239,68,68,0.18); color:#f87171; font-size:0.65rem; font-weight:800;">&darr; 12% vs avg</span>
+                    <span class="pill-badge" id="bentoSpendTrendBadge" style="background:rgba(16,185,129,0.15); color:var(--emerald); font-size:0.65rem; font-weight:800;">Real-Time</span>
                   </div>
                   <div style="display:flex; align-items:baseline; gap:0.5rem;">
-                    <div style="font-size:1.6rem; font-weight:900; font-family:'JetBrains Mono',monospace; color:#ffffff;" id="calDailySpend">&#8377;420</div>
+                    <div style="font-size:1.6rem; font-weight:900; font-family:'JetBrains Mono',monospace; color:var(--text);" id="calDailySpend">&#8377;0.00</div>
                     <div style="font-size:0.7rem; color:var(--text-muted);" id="calSpendDesc">Daily spend velocity</div>
                   </div>
 
-                  <div style="display:flex; flex-direction:column; gap:0.45rem; margin-top:0.75rem;">
-                    <div>
-                      <div style="display:flex; justify-content:space-between; font-size:0.7rem; margin-bottom:2px;">
-                        <span style="color:var(--text-muted);">Food & Dining</span>
-                        <span style="font-family:'JetBrains Mono',monospace; font-weight:800; color:#ffffff;">&#8377;240</span>
-                      </div>
-                      <div style="width:100%; height:5px; background:rgba(255,255,255,0.06); border-radius:3px; overflow:hidden;">
-                        <div style="width:57%; height:100%; background:#f59e0b; border-radius:3px;"></div>
-                      </div>
-                    </div>
-                    <div>
-                      <div style="display:flex; justify-content:space-between; font-size:0.7rem; margin-bottom:2px;">
-                        <span style="color:var(--text-muted);">Transport</span>
-                        <span style="font-family:'JetBrains Mono',monospace; font-weight:800; color:#ffffff;">&#8377;120</span>
-                      </div>
-                      <div style="width:100%; height:5px; background:rgba(255,255,255,0.06); border-radius:3px; overflow:hidden;">
-                        <div style="width:28%; height:100%; background:#3b82f6; border-radius:3px;"></div>
-                      </div>
-                    </div>
-                    <div>
-                      <div style="display:flex; justify-content:space-between; font-size:0.7rem; margin-bottom:2px;">
-                        <span style="color:var(--text-muted);">Coffee & Snacks</span>
-                        <span style="font-family:'JetBrains Mono',monospace; font-weight:800; color:#ffffff;">&#8377;60</span>
-                      </div>
-                      <div style="width:100%; height:5px; background:rgba(255,255,255,0.06); border-radius:3px; overflow:hidden;">
-                        <div style="width:14%; height:100%; background:#8b5cf6; border-radius:3px;"></div>
-                      </div>
-                    </div>
-                    <div>
-                      <div style="display:flex; justify-content:space-between; font-size:0.7rem; margin-bottom:2px;">
-                        <span style="color:var(--text-muted);">Shopping</span>
-                        <span style="font-family:'JetBrains Mono',monospace; font-weight:800; color:#ffffff;">&#8377;0</span>
-                      </div>
-                      <div style="width:100%; height:5px; background:rgba(255,255,255,0.06); border-radius:3px; overflow:hidden;">
-                        <div style="width:0%; height:100%; background:#10b981; border-radius:3px;"></div>
-                      </div>
-                    </div>
+                  <div id="todaySpendCategoryContainer" style="display:flex; flex-direction:column; gap:0.45rem; margin-top:0.75rem;">
+                    <!-- Rendered dynamically by renderHomeFinance() -->
                   </div>
                 </div>
 
@@ -5280,9 +5342,9 @@
 
                 <div>
                   <div style="display:flex; gap:0.45rem; margin-top:0.75rem;">
-                    <button class="btn btn-primary" onclick="takePillDoseDynamic('p1')" style="flex:1; background:#2563eb; font-weight:800; font-size:0.75rem; border-radius:8px;">
+                    <button class="btn btn-primary" onclick="takePillDose('pill_1')" style="flex:1; background:#2563eb; font-weight:800; font-size:0.75rem; border-radius:8px;">
                       Mark as Taken &#10003;</button>
-                    <button class="btn btn-secondary" onclick="showToast('Metformin reminder snoozed for 15 mins')" style="font-size:0.75rem; border-radius:8px; padding:0.3rem 0.6rem;">Snooze</button>
+                    <button class="btn btn-secondary" onclick="snoozePillReminder('pill_1')" style="font-size:0.75rem; border-radius:8px; padding:0.3rem 0.6rem;">Snooze</button>
                   </div>
                   <div id="activeMedicationsCockpitList" style="display:none;"></div>
                 </div>
@@ -5495,7 +5557,7 @@
                       <div style="font-size:0.64rem;color:var(--text-muted);">Cardiologist</div>
                     </div>
                   </div>
-                  <span style="font-size:0.64rem;color:#7c3aed;font-weight:800;padding:0.15rem 0.5rem;border-radius:20px;background:rgba(124,58,237,0.08);border:1px solid rgba(124,58,237,0.15);white-space:nowrap;">Next: Nov 10</span>
+                  <span id="nextApptBadge" style="font-size:0.64rem;color:#7c3aed;font-weight:800;padding:0.15rem 0.5rem;border-radius:20px;background:rgba(124,58,237,0.08);border:1px solid rgba(124,58,237,0.15);white-space:nowrap;">Next: Lab</span>
                 </div>
               </div>
               <!-- Hidden elements to preserve JS compatibility -->
@@ -5563,24 +5625,24 @@
             
             <div class="senior-touch-grid">
               <!-- Tile 1: Emergency SOS -->
-              <div class="senior-touch-tile sos-tile" onclick="openSosModal()">
+              <button type="button" class="senior-touch-tile sos-tile" onclick="openSosModal()" aria-label="Emergency SOS" style="text-align:left; border:none; cursor:pointer;">
                 <div style="display:flex; justify-content:space-between; align-items:center;">
                   <div style="font-size:2.4rem;">🚨</div>
-                  <span class="pill-badge" style="background:#ef4444; color:#fff; font-weight:900; font-size:0.85rem; padding:0.35rem 0.75rem;">1-TAP SOS</span>
+                  <span class="pill-badge" style="background:#ef4444; color:#fff; font-weight:900; font-size:0.85rem; padding:0.35rem 0.75rem;">SOS</span>
                 </div>
                 <div>
                   <div style="font-size:1.55rem; font-weight:900; color:#ef4444;">EMERGENCY SOS</div>
                   <div style="font-size:1.05rem; color:var(--text); margin-top:4px; line-height:1.35;">
-                    Tap once to alert Caregiver John & dispatch emergency contacts.
+                    Tap to see emergency options & contact caregiver.
                   </div>
                 </div>
                 <div style="font-size:1.1rem; font-weight:900; color:#ef4444; margin-top:auto; padding-top:0.4rem;">
                   🚨 TAP FOR IMMEDIATE HELP →
                 </div>
-              </div>
+              </button>
 
               <!-- Tile 2: Call Caregiver John -->
-              <div class="senior-touch-tile caregiver-tile" onclick="callSeniorPatient()">
+              <button type="button" class="senior-touch-tile caregiver-tile" onclick="callSeniorPatient()" aria-label="Call Caregiver John" style="text-align:left; border:none; cursor:pointer;">
                 <div style="display:flex; justify-content:space-between; align-items:center;">
                   <div style="font-size:2.4rem;">🛡️</div>
                   <span class="pill-badge" style="background:var(--emerald-bg); color:var(--emerald); font-weight:900; font-size:0.85rem; padding:0.35rem 0.75rem;">🟢 ONLINE</span>
@@ -5594,24 +5656,24 @@
                 <div style="font-size:1.1rem; font-weight:900; color:var(--accent); margin-top:auto; padding-top:0.4rem;">
                   📞 TAP TO CALL JOHN →
                 </div>
-              </div>
+              </button>
 
-              <!-- Tile 3: Water & Hydration Tracker -->
-              <div class="senior-touch-tile" onclick="showToast('💧 Great job, Eleanor! Logged 1 glass of fresh water.')">
+              <!-- Tile 3: Water & Hydration Tracker (Fix Guide Section 6.3) -->
+              <button type="button" class="senior-touch-tile" onclick="logWater()" aria-label="Log Glass of Water" style="text-align:left; border:none; cursor:pointer;">
                 <div style="display:flex; justify-content:space-between; align-items:center;">
                   <div style="font-size:2.4rem;">💧</div>
                   <span class="pill-badge" style="background:rgba(6,182,212,0.15); color:var(--cyan); font-weight:900; font-size:0.85rem; padding:0.35rem 0.75rem;">HYDRATION</span>
                 </div>
                 <div>
-                  <div style="font-size:1.45rem; font-weight:900;">Drink Fresh Water</div>
+                  <div style="font-size:1.45rem; font-weight:900; color:var(--text);">Drink Fresh Water</div>
                   <div style="font-size:1.05rem; color:var(--text-muted); margin-top:4px; line-height:1.35;">
-                    Goal: 6 glasses today • Tap whenever you finish a cup of water.
+                    Goal: <span id="waterCount" style="font-weight:800; color:var(--cyan);">0 of 6 glasses</span> • Tap whenever you finish a cup.
                   </div>
                 </div>
                 <div style="font-size:1.05rem; font-weight:900; color:var(--cyan); margin-top:auto; padding-top:0.4rem;">
                   💧 + LOG 1 GLASS OF WATER →
                 </div>
-              </div>
+              </button>
 
               <!-- Tile 4: Doctor Lin & Medical ID -->
               <div class="senior-touch-tile" onclick="showMedicalId()">
@@ -5799,13 +5861,18 @@
             </div>
           </div>
 
-          <!-- Caregiver Audit Stream & Clinical Notes -->
+          <!-- Caregiver Audit Stream & Clinical Notes (Fix 6.3) -->
           <div class="panel-box">
             <div class="panel-header">
               <span>📋 Caregiver Real-Time Audit Log</span>
-              <button class="btn btn-secondary" style="font-size:0.72rem; padding:0.2rem 0.5rem;" onclick="showToast('📝 Note saved to Eleanor Vance clinical chart.')">
+              <button class="btn btn-secondary" style="font-size:0.72rem; padding:0.2rem 0.5rem;" onclick="toggleNoteRow()">
                 + Add Note
               </button>
+            </div>
+            <div class="note-row" id="noteRow" hidden style="margin-bottom:0.75rem; display:flex; gap:0.5rem;">
+              <label for="noteInput" class="sr-only">Note</label>
+              <input id="noteInput" maxlength="280" placeholder="Add a note for the care log" style="flex:1; padding:0.4rem 0.6rem; border-radius:8px; border:1px solid var(--surface-border); background:var(--surface); color:var(--text); font-size:0.85rem;">
+              <button type="button" class="btn btn-primary" onclick="saveCaregiverNote()" style="padding:0.4rem 0.8rem; font-size:0.8rem; font-weight:700;">Save</button>
             </div>
             <div style="display:flex; flex-direction:column; gap:0.45rem; font-size:0.78rem; color:var(--text);" id="caregiverLiveStream">
               <div style="display:flex; justify-content:space-between; padding:0.4rem 0.6rem; background:var(--bg); border-radius:8px;">
@@ -6025,13 +6092,14 @@
         <div class="fitness-ui-root">
           
           <!-- Top Greeting Sub-Bar -->
+          <!-- Top Greeting Sub-Bar -->
           <div class="fitness-ui-header">
             <div>
-              <div class="fitness-ui-greeting-sub">Personalized Health & Endurance Dashboard</div>
-              <h2 class="fitness-ui-greeting-title">Good Morning, Welcome Back! 💪</h2>
+              <div class="fitness-ui-greeting-sub">Personal Activity, Regimens & Habit Tracker</div>
+              <h2 class="fitness-ui-greeting-title">Fitness 💪</h2>
             </div>
             <div style="display:flex; gap:0.5rem; align-items:center;">
-              <span class="pill-badge" style="background:var(--purple-bg); color:var(--purple); font-weight:800; font-size:0.8rem;" id="streakBadgeText">7-Day Streak</span>
+              <span class="pill-badge" style="background:var(--purple-bg); color:var(--purple); font-weight:800; font-size:0.8rem;" id="streakBadgeText">0-Day Streak</span>
               <button class="btn btn-primary" onclick="openQuickAddModal('fitness')" style="font-size:0.75rem; font-weight:800; padding:0.4rem 0.85rem; border-radius:10px; background:#2563eb; color:#fff;">
                 ➕ Add Workout
               </button>
@@ -6041,433 +6109,33 @@
             </div>
           </div>
 
-          <!-- ROW 1: Activity (Monthly Bars), Overview (Ring Chart), Fitness Goal (Side Planks / Rope Lifting) -->
-          <div class="fitness-grid-3">
-            
-            <!-- Card 1: Activity -->
-            <div class="fitness-card">
+          <!-- Fix Guide Section 7.1: Data-Driven Fitness Cards -->
+          <div class="fitness-grid-3" style="margin-bottom:1.25rem;">
+            <!-- Card 1: Real Week Activity Chart -->
+            <div class="fitness-card" aria-labelledby="weekTitle">
               <div class="fitness-card-header">
-                <div class="fitness-card-title">Activity</div>
-                <select class="fitness-select-pill" onchange="showToast('Filtered Activity to ' + this.value)">
-                  <option value="Monthly">Monthly ▾</option>
-                  <option value="Weekly">Weekly ▾</option>
-                  <option value="Yearly">Yearly ▾</option>
-                </select>
+                <div class="fitness-card-title" id="weekTitle">📊 This Week (Minutes Exercised)</div>
               </div>
-              <div class="activity-bar-container" id="activityBarContainer">
-                <!-- Bar 1: Jan 30% -->
-                <div class="activity-bar-col" onclick="showToast('Jan Activity: 30% completion')">
-                  <div class="activity-bar-track">
-                    <span class="activity-bar-pct">30%</span>
-                    <div class="activity-bar-fill" style="height:30%;"></div>
-                  </div>
-                  <span class="activity-bar-label">Jan</span>
-                </div>
-                <!-- Bar 2: Feb 70% -->
-                <div class="activity-bar-col" onclick="showToast('Feb Activity: 70% completion')">
-                  <div class="activity-bar-track">
-                    <span class="activity-bar-pct">70%</span>
-                    <div class="activity-bar-fill" style="height:70%;"></div>
-                  </div>
-                  <span class="activity-bar-label">Feb</span>
-                </div>
-                <!-- Bar 3: Mar 50% -->
-                <div class="activity-bar-col" onclick="showToast('Mar Activity: 50% completion')">
-                  <div class="activity-bar-track">
-                    <span class="activity-bar-pct">50%</span>
-                    <div class="activity-bar-fill" style="height:50%;"></div>
-                  </div>
-                  <span class="activity-bar-label">Mar</span>
-                </div>
-                <!-- Bar 4: Apr 60% (Active Highlight) -->
-                <div class="activity-bar-col" onclick="showToast('Apr Activity: 60% completion (Target Achieved)')">
-                  <div class="activity-bar-track active-bar">
-                    <span class="activity-bar-pct">60%</span>
-                    <div class="activity-bar-fill" style="height:60%;"></div>
-                  </div>
-                  <span class="activity-bar-label">Apr</span>
-                </div>
-                <!-- Bar 5: May 09% -->
-                <div class="activity-bar-col" onclick="showToast('May Activity: 9% completion')">
-                  <div class="activity-bar-track">
-                    <span class="activity-bar-pct">09%</span>
-                    <div class="activity-bar-fill" style="height:15%;"></div>
-                  </div>
-                  <span class="activity-bar-label">May</span>
-                </div>
-                <!-- Bar 6: Jun 12% -->
-                <div class="activity-bar-col" onclick="showToast('Jun Activity: 12% completion')">
-                  <div class="activity-bar-track">
-                    <span class="activity-bar-pct">12%</span>
-                    <div class="activity-bar-fill" style="height:18%;"></div>
-                  </div>
-                  <span class="activity-bar-label">Jun</span>
-                </div>
-                <!-- Bar 7: Jul 11% -->
-                <div class="activity-bar-col" onclick="showToast('Jul Activity: 11% completion')">
-                  <div class="activity-bar-track">
-                    <span class="activity-bar-pct">11%</span>
-                    <div class="activity-bar-fill" style="height:17%;"></div>
-                  </div>
-                  <span class="activity-bar-label">Jul</span>
-                </div>
-                <!-- Bar 8: Aug 10% -->
-                <div class="activity-bar-col" onclick="showToast('Aug Activity: 10% completion')">
-                  <div class="activity-bar-track">
-                    <span class="activity-bar-pct">10%</span>
-                    <div class="activity-bar-fill" style="height:16%;"></div>
-                  </div>
-                  <span class="activity-bar-label">Aug</span>
-                </div>
-              </div>
+              <div id="weekChart" style="padding:0.5rem 0;"></div>
             </div>
 
-            <!-- Card 2: Overview (Ring Chart & Nutrition Targets) -->
+            <!-- Card 2: Derived Daily Workout Streak -->
             <div class="fitness-card">
               <div class="fitness-card-header">
-                <div class="fitness-card-title">Overview</div>
-                <select class="fitness-select-pill" onchange="showToast('Filtered Nutrition Overview to ' + this.value)">
-                  <option value="Monthly">Monthly ▾</option>
-                  <option value="Weekly">Weekly ▾</option>
-                  <option value="Today">Today ▾</option>
-                </select>
+                <div class="fitness-card-title">🔥 Daily Workout Streak</div>
               </div>
-              <div class="overview-content-row">
-                <!-- Circular SVG Progress Ring (84% 1,290 ml) -->
-                <div class="ring-chart-wrap">
-                  <svg width="120" height="120" viewBox="0 0 120 120" style="transform: rotate(-90deg);">
-                    <!-- Background Track -->
-                    <circle cx="60" cy="60" r="48" fill="none" stroke="rgba(255,255,255,0.06)" stroke-width="10"></circle>
-                    <!-- Calories Burn Arc (Yellow) -->
-                    <circle cx="60" cy="60" r="48" fill="none" stroke="#fde047" stroke-width="10" stroke-dasharray="301.59" stroke-dashoffset="200" stroke-linecap="round"></circle>
-                    <!-- Protein / Hydration Arc (Mint Green 84%) -->
-                    <circle cx="60" cy="60" r="48" fill="none" stroke="#86efac" stroke-width="10" stroke-dasharray="301.59" stroke-dashoffset="48.25" stroke-linecap="round"></circle>
-                  </svg>
-                  <div class="ring-chart-label">
-                    <span class="ring-chart-val">84%</span>
-                    <span class="ring-chart-sub">1,290 ml</span>
-                  </div>
-                </div>
-
-                <!-- Breakdown Legend & Metric Stats -->
-                <div class="overview-metric-list">
-                  <div class="overview-metric-item">
-                    <div class="overview-metric-top">
-                      <span class="overview-metric-name"><span class="overview-metric-dot" style="background:#fde047;"></span> Calories burn</span>
-                      <div class="overview-metric-vals">
-                        <span class="overview-val-big">33.5%</span>
-                        <span class="overview-val-delta">+1.25%</span>
-                      </div>
-                    </div>
-                  </div>
-                  <div class="overview-metric-item">
-                    <div class="overview-metric-top">
-                      <span class="overview-metric-name"><span class="overview-metric-dot" style="background:#86efac;"></span> Protein</span>
-                      <div class="overview-metric-vals">
-                        <span class="overview-val-big">23.02%</span>
-                        <span class="overview-val-delta">+3.43%</span>
-                      </div>
-                    </div>
-                  </div>
-                  <div class="overview-metric-item">
-                    <div class="overview-metric-top">
-                      <span class="overview-metric-name"><span class="overview-metric-dot" style="background:#cbd5e1;"></span> Carbs</span>
-                      <div class="overview-metric-vals">
-                        <span class="overview-val-big">11.24%</span>
-                        <span class="overview-val-delta">+2.12%</span>
-                      </div>
-                    </div>
-                  </div>
-                </div>
-              </div>
+              <div id="streakNumber" style="font-size:1.85rem; font-weight:900; color:var(--text); margin:0.4rem 0;">0 Days</div>
+              <div id="streakDots" class="streak-dots" style="display:flex; gap:0.45rem; align-items:center; margin-top:0.4rem;"></div>
             </div>
 
-            <!-- Card 3: Fitness Goal Duo (Side Planks & Rope Lifting) -->
+            <!-- Card 3: Today's Summary -->
             <div class="fitness-card">
               <div class="fitness-card-header">
-                <div class="fitness-card-title">Fitness goal</div>
-                <select class="fitness-select-pill" onchange="showToast('Filtered Goals to ' + this.value)">
-                  <option value="Monthly">Monthly ▾</option>
-                  <option value="Weekly">Weekly ▾</option>
-                </select>
+                <div class="fitness-card-title">⚡ Today's Fitness Summary</div>
               </div>
-              <div class="fitness-goal-duo">
-                <!-- Goal 1: Side Planks -->
-                <div class="goal-card-item goal-card-amber" onclick="completeWorkout(); showToast('Completed Side Planks session! 12 sets logged.')">
-                  <div>
-                    <div class="goal-card-title">Side planks</div>
-                    <div class="goal-card-sets">12 sets/day</div>
-                    <div class="goal-badge-pill">
-                      <span>🎉</span> Bravo
-                    </div>
-                  </div>
-                  <svg class="goal-svg-graph" viewBox="0 0 100 40" preserveAspectRatio="none">
-                    <path d="M 0 35 Q 25 10 50 30 T 100 15" fill="none" stroke="#854d0e" stroke-width="2.5" stroke-linecap="round"></path>
-                    <circle cx="85" cy="17" r="3" fill="#854d0e"></circle>
-                  </svg>
-                </div>
-
-                <!-- Goal 2: Rope Lifting -->
-                <div class="goal-card-item goal-card-emerald" onclick="completeWorkout(); showToast('Completed Rope Lifting session! 10 sets logged.')">
-                  <div>
-                    <div class="goal-card-title">Rope lifting</div>
-                    <div class="goal-card-sets">10 sets/day</div>
-                    <div class="goal-badge-pill">
-                      <span>👍</span> Well
-                    </div>
-                  </div>
-                  <svg class="goal-svg-graph" viewBox="0 0 100 40" preserveAspectRatio="none">
-                    <path d="M 0 25 Q 30 35 60 15 T 100 28" fill="none" stroke="#065f46" stroke-width="2.5" stroke-linecap="round"></path>
-                    <circle cx="90" cy="26" r="3" fill="#065f46"></circle>
-                  </svg>
-                </div>
-              </div>
+              <div id="todaySummary" style="font-size:0.88rem; color:var(--text-muted); padding:0.5rem 0;"></div>
             </div>
-
           </div>
-
-          <!-- ROW 2: Trainer, Recommend Activity, Heart Rate -->
-          <div class="fitness-grid-3">
-            
-            <!-- Col 1: Trainer -->
-            <div class="fitness-card">
-              <div class="fitness-card-header">
-                <div class="fitness-card-title">Trainer</div>
-                <span style="font-size:0.74rem; font-weight:700; color:var(--accent); cursor:pointer;" onclick="showToast('View all assigned coaches: John Arnold & Adam Smith')">View all &rsaquo;</span>
-              </div>
-              <div class="trainer-card-duo">
-                <!-- Trainer 1: John Arnold -->
-                <div class="trainer-card-node yoga" onclick="showToast('Coach John Arnold: Yoga & Mobility routine scheduled.')">
-                  <div class="trainer-name">John Arnold</div>
-                  <div class="trainer-specialty">Yoga expert</div>
-                  <div class="trainer-avatar-box">
-                    <div style="width:52px; height:52px; border-radius:50%; background:#f59e0b; display:flex; align-items:center; justify-content:center; font-size:1.6rem; border:2px solid #fbbf24; box-shadow:0 4px 12px rgba(0,0,0,0.25);">
-                      🧘
-                    </div>
-                  </div>
-                </div>
-                <!-- Trainer 2: Adam Smith -->
-                <div class="trainer-card-node power" onclick="showToast('Coach Adam Smith: Hypertrophy & Power routine scheduled.')">
-                  <div class="trainer-name">Adam Smith</div>
-                  <div class="trainer-specialty">Fitness expert</div>
-                  <div class="trainer-avatar-box">
-                    <div style="width:52px; height:52px; border-radius:50%; background:#10b981; display:flex; align-items:center; justify-content:center; font-size:1.6rem; border:2px solid #34d399; box-shadow:0 4px 12px rgba(0,0,0,0.25);">
-                      🏋️
-                    </div>
-                  </div>
-                </div>
-              </div>
-            </div>
-
-            <!-- Col 2: Recommend Activity -->
-            <div class="fitness-card">
-              <div class="fitness-card-header">
-                <div class="fitness-card-title">Recommend activity</div>
-                <select class="fitness-select-pill" onchange="showToast('Filtered Recommended Activities to ' + this.value)">
-                  <option value="Monthly">Monthly ▾</option>
-                  <option value="Weekly">Weekly ▾</option>
-                </select>
-              </div>
-              <div class="rec-activity-list">
-                <!-- Activity 1: Fitness for beginners -->
-                <div class="rec-activity-item" onclick="showToast('Starting Fitness for beginners with Toren Twin!')">
-                  <div style="display:flex; align-items:center;">
-                    <div class="rec-act-icon" style="background:rgba(234, 179, 8, 0.2); color:#facc15;">🏋️</div>
-                    <div class="rec-act-info">
-                      <div class="rec-act-title">Fitness for beginners</div>
-                      <div class="rec-act-meta">17 Feb, 2026 at 5.30 PM</div>
-                    </div>
-                  </div>
-                  <div class="rec-act-coach">
-                    <span class="coach-mini-avatar">TT</span>
-                    <span>Toren Twin</span>
-                  </div>
-                </div>
-
-                <!-- Activity 2: Beginner to advance gym -->
-                <div class="rec-activity-item" onclick="showToast('Starting Beginner to advance gym with Ardin Swen!')">
-                  <div style="display:flex; align-items:center;">
-                    <div class="rec-act-icon" style="background:rgba(52, 211, 153, 0.2); color:#4ade80;">🏃</div>
-                    <div class="rec-act-info">
-                      <div class="rec-act-title">Beginner to advance gym</div>
-                      <div class="rec-act-meta">17 Feb, 2026 at 4.30 PM</div>
-                    </div>
-                  </div>
-                  <div class="rec-act-coach">
-                    <span class="coach-mini-avatar" style="background:#059669;">AS</span>
-                    <span>Ardin Swen</span>
-                  </div>
-                </div>
-
-                <!-- Activity 3: Ultimate body workout -->
-                <div class="rec-activity-item" onclick="showToast('Starting Ultimate body workout with Adam Smith!')">
-                  <div style="display:flex; align-items:center;">
-                    <div class="rec-act-icon" style="background:rgba(147, 197, 253, 0.2); color:#60a5fa;">⚡</div>
-                    <div class="rec-act-info">
-                      <div class="rec-act-title">Ultimate body workout</div>
-                      <div class="rec-act-meta">17 Feb, 2026 at 3.30 PM</div>
-                    </div>
-                  </div>
-                  <div class="rec-act-coach">
-                    <span class="coach-mini-avatar" style="background:#2563eb;">AS</span>
-                    <span>Adam Smith</span>
-                  </div>
-                </div>
-              </div>
-            </div>
-
-            <!-- Col 3: Heart Rate -->
-            <div class="fitness-card">
-              <div class="fitness-card-header">
-                <div class="fitness-card-title">Heart rate</div>
-                <select class="fitness-select-pill" onchange="showToast('Filtered Heart Rate telemetry to ' + this.value)">
-                  <option value="Weekly">Weekly ▾</option>
-                  <option value="Live">Live Telemetry ▾</option>
-                </select>
-              </div>
-              <div class="heart-rate-content">
-                <!-- SVG Waveform Chart with 70 beats/m pin -->
-                <svg class="heart-rate-graph-svg" viewBox="0 0 280 110" preserveAspectRatio="none">
-                  <!-- Grid Guides -->
-                  <line x1="30" y1="20" x2="270" y2="20" stroke="rgba(255,255,255,0.06)" stroke-dasharray="3,3"></line>
-                  <text x="5" y="24" fill="var(--text-muted)" font-size="9">90b</text>
-
-                  <line x1="30" y1="50" x2="270" y2="50" stroke="rgba(255,255,255,0.06)" stroke-dasharray="3,3"></line>
-                  <text x="5" y="54" fill="var(--text-muted)" font-size="9">80b</text>
-
-                  <line x1="30" y1="80" x2="270" y2="80" stroke="rgba(255,255,255,0.06)" stroke-dasharray="3,3"></line>
-                  <text x="5" y="84" fill="var(--text-muted)" font-size="9">40b</text>
-
-                  <text x="12" y="104" fill="var(--text-muted)" font-size="9">0b</text>
-
-                  <!-- Smooth Heart Rate Spline -->
-                  <path d="M 35 98 C 65 98, 75 75, 100 45 C 120 20, 135 70, 160 52 C 185 35, 210 65, 260 48" fill="none" stroke="#d9f99d" stroke-width="3" stroke-linecap="round"></path>
-
-                  <!-- 70 beats/m Focal Pin on Tue -->
-                  <circle cx="160" cy="52" r="11" fill="#d9f99d" fill-opacity="0.3"></circle>
-                  <circle cx="160" cy="52" r="5" fill="#ffffff"></circle>
-                  <rect x="118" y="34" width="56" height="16" rx="4" fill="rgba(15,23,42,0.85)" stroke="rgba(217,249,157,0.4)"></rect>
-                  <text x="123" y="46" fill="#ffffff" font-size="8.5" font-weight="800">70beats/m</text>
-
-                  <!-- Weekday Labels -->
-                  <text x="40" y="108" fill="var(--text-muted)" font-size="9">Sun</text>
-                  <text x="95" y="108" fill="var(--text-muted)" font-size="9">Mon</text>
-                  <text x="150" y="108" fill="var(--text)" font-weight="800" font-size="9">Tue</text>
-                  <text x="205" y="108" fill="var(--text-muted)" font-size="9">Wed</text>
-                  <text x="250" y="108" fill="var(--text-muted)" font-size="9">Thu</text>
-                </svg>
-              </div>
-            </div>
-
-          </div>
-
-          <!-- ROW 3: Output (Calory loss / Weight loss) & Recommended food (4-Step Timeline) -->
-          <div class="fitness-grid-3" style="grid-template-columns: 0.95fr 2.05fr;">
-            
-            <!-- Col 1: Output -->
-            <div class="fitness-card">
-              <div class="fitness-card-header">
-                <div class="fitness-card-title">Output</div>
-                <select class="fitness-select-pill" onchange="showToast('Filtered Output metrics to ' + this.value)">
-                  <option value="Monthly">Monthly ▾</option>
-                  <option value="Weekly">Weekly ▾</option>
-                </select>
-              </div>
-              <div class="fitness-output-duo">
-                <!-- Metric 1: Calory loss -->
-                <div class="output-metric-card output-calory" onclick="showToast('Logged Calory loss: .123 gm today!')">
-                  <div style="display:flex; align-items:center;">
-                    <div class="output-icon-box">🥗</div>
-                    <div class="output-details">
-                      <div class="output-title">Calory loss</div>
-                      <div class="output-val">.123 gm</div>
-                    </div>
-                  </div>
-                  <span class="output-tag">😍 WOW</span>
-                </div>
-
-                <!-- Metric 2: Weight loss -->
-                <div class="output-metric-card output-weight" onclick="showToast('Logged Weight loss: 1.23 kg this month!')">
-                  <div style="display:flex; align-items:center;">
-                    <div class="output-icon-box">⚖️</div>
-                    <div class="output-details">
-                      <div class="output-title">Weight loss</div>
-                      <div class="output-val">1.23 kg</div>
-                    </div>
-                  </div>
-                  <span class="output-tag">🔥 Great</span>
-                </div>
-              </div>
-            </div>
-
-            <!-- Col 2: Recommended food (Day one -> Day four) -->
-            <div class="fitness-card">
-              <div class="fitness-card-header">
-                <div class="fitness-card-title">Recommended food</div>
-                <select class="fitness-select-pill" onchange="showToast('Filtered Nutrition Schedule to ' + this.value)">
-                  <option value="Monthly">Monthly ▾</option>
-                  <option value="Weekly">Weekly ▾</option>
-                </select>
-              </div>
-              <div class="rec-food-timeline">
-                
-                <!-- Day One: Veggies and Hummus -->
-                <div class="food-card-node done" onclick="showToast('Day 1 Completed: Veggies and Hummus logged for dinner!')">
-                  <span class="food-step-label">Day one</span>
-                  <div class="food-card-header-row">
-                    <span class="food-check-circle">✓</span>
-                    <span class="food-title">Veggis and Hummus</span>
-                  </div>
-                  <div class="food-bottom-row">
-                    <div class="food-timing"><strong>7</strong> days<br>only dinner time</div>
-                    <div class="food-img-bubble">🍲</div>
-                  </div>
-                </div>
-
-                <!-- Day Two: A bowl of salad (Active Day Highlight) -->
-                <div class="food-card-node active-diet" onclick="showToast('Day 2 Active: A bowl of salad marked for lunch!')">
-                  <span class="food-step-label">Day two</span>
-                  <div class="food-card-header-row">
-                    <span class="food-check-circle">✓</span>
-                    <span class="food-title">A bowl of salad</span>
-                  </div>
-                  <div class="food-bottom-row">
-                    <div class="food-timing"><strong>12</strong> days<br>only lunch time</div>
-                    <div class="food-img-bubble" style="background:rgba(16,185,129,0.3); border-color:#86efac;">🥗</div>
-                  </div>
-                </div>
-
-                <!-- Day Three: Green variety foods -->
-                <div class="food-card-node" onclick="showToast('Day 3 Queued: Green variety foods scheduled for breakfast!')">
-                  <span class="food-step-label">Day three</span>
-                  <div class="food-card-header-row">
-                    <span class="food-check-circle">✓</span>
-                    <span class="food-title">Green variety foods</span>
-                  </div>
-                  <div class="food-bottom-row">
-                    <div class="food-timing"><strong>13</strong> days<br>for breakfast</div>
-                    <div class="food-img-bubble">🥬</div>
-                  </div>
-                </div>
-
-                <!-- Day Four: A bowl of berries -->
-                <div class="food-card-node" onclick="showToast('Day 4 Queued: A bowl of berries scheduled for breakfast!')">
-                  <span class="food-step-label">Day four</span>
-                  <div class="food-card-header-row">
-                    <span class="food-check-circle">✓</span>
-                    <span class="food-title">A bowl of berries</span>
-                  </div>
-                  <div class="food-bottom-row">
-                    <div class="food-timing"><strong>9</strong> days<br>for breakfast</div>
-                    <div class="food-img-bubble">🍓</div>
-                  </div>
-                </div>
-
-              </div>
-            </div>
-
-          </div>
-
           <!-- Bottom IA Extension: Dynamic Workouts & Custom Single-Use Habit Clusters -->
           <div style="display:grid; grid-template-columns: 1fr 1fr; gap:1.1rem; margin-top:0.25rem;">
             <!-- Dynamic Workouts Runner -->
@@ -7115,19 +6783,27 @@
       </p>
 
       <div class="form-group" style="margin-top:0.85rem;">
-        <label style="font-size:0.75rem; font-weight:700;">Monthly Salary Amount (₹ INR)</label>
+        <label style="font-size:0.75rem; font-weight:700;">Monthly Take-Home Income (₹ INR)</label>
         <div style="position:relative;">
           <span style="position:absolute; left:12px; top:50%; transform:translateY(-50%); font-weight:800; font-size:1.15rem; color:var(--text-muted);">₹</span>
-          <input type="number" step="50" min="0" class="form-input" id="inpMonthlySalary" value="5000" style="padding-left:1.85rem; font-size:1.15rem; font-weight:800; font-family:'JetBrains Mono',monospace;">
+          <input type="number" step="500" min="0" class="form-input" id="inpMonthlySalary" value="50000" style="padding-left:1.85rem; font-size:1.15rem; font-weight:800; font-family:'JetBrains Mono',monospace;">
+        </div>
+      </div>
+
+      <div class="form-group" style="margin-top:0.65rem;">
+        <label style="font-size:0.75rem; font-weight:700;">Monthly Spending Budget (₹ INR)</label>
+        <div style="position:relative;">
+          <span style="position:absolute; left:12px; top:50%; transform:translateY(-50%); font-weight:800; font-size:1.15rem; color:var(--text-muted);">₹</span>
+          <input type="number" step="500" min="0" class="form-input" id="inpMonthlyBudget" value="25000" style="padding-left:1.85rem; font-size:1.15rem; font-weight:800; font-family:'JetBrains Mono',monospace;">
         </div>
       </div>
 
       <div style="display:flex; gap:0.4rem; flex-wrap:wrap; margin-top:0.4rem;">
         <span style="font-size:0.72rem; color:var(--text-muted); width:100%; font-weight:600;">Quick Salary Presets:</span>
-        <button type="button" class="btn btn-secondary" style="padding:0.25rem 0.55rem; font-size:0.72rem;" onclick="setSalaryPreset(3500)">₹3,500</button>
-        <button type="button" class="btn btn-secondary" style="padding:0.25rem 0.55rem; font-size:0.72rem;" onclick="setSalaryPreset(5000)">₹5,000</button>
-        <button type="button" class="btn btn-secondary" style="padding:0.25rem 0.55rem; font-size:0.72rem;" onclick="setSalaryPreset(6500)">₹6,500</button>
-        <button type="button" class="btn btn-secondary" style="padding:0.25rem 0.55rem; font-size:0.72rem;" onclick="setSalaryPreset(8000)">₹8,000</button>
+        <button type="button" class="btn btn-secondary" style="padding:0.25rem 0.55rem; font-size:0.72rem;" onclick="setSalaryPreset(25000)">₹25,000</button>
+        <button type="button" class="btn btn-secondary" style="padding:0.25rem 0.55rem; font-size:0.72rem;" onclick="setSalaryPreset(50000)">₹50,000</button>
+        <button type="button" class="btn btn-secondary" style="padding:0.25rem 0.55rem; font-size:0.72rem;" onclick="setSalaryPreset(75000)">₹75,000</button>
+        <button type="button" class="btn btn-secondary" style="padding:0.25rem 0.55rem; font-size:0.72rem;" onclick="setSalaryPreset(100000)">₹1,00,000</button>
       </div>
 
       <div style="display:flex; justify-content:flex-end; gap:0.5rem; margin-top:1.25rem; border-top:1px solid var(--surface-border); padding-top:0.85rem;">
@@ -7189,7 +6865,7 @@
         <div class="form-group">
           <label style="font-size:0.72rem; font-weight:700;">Elder 4-Digit Access PIN (Simplified Phone / Tablet Login)</label>
           <div style="display:flex; gap:0.6rem; align-items:center;">
-            <input type="text" maxlength="4" class="form-input" id="cfgSeniorPin" value="1234" style="font-family:'JetBrains Mono',monospace; font-size:1.15rem; font-weight:800; letter-spacing:0.25em; text-align:center; width:110px; border-color:var(--emerald);">
+            <input type="password" inputmode="numeric" pattern="\d{4}" maxlength="4" class="form-input" id="cfgSeniorPin" value="" placeholder="Leave blank to keep current" autocomplete="off" style="font-family:'JetBrains Mono',monospace; font-size:0.95rem; font-weight:800; letter-spacing:0.15em; text-align:center; width:220px; border-color:var(--emerald);">
             <div style="font-size:0.72rem; color:var(--text-muted); line-height:1.3;">
               Sets the simplified PIN. Updates immediately on the elder person's phone for 0-friction access.
             </div>
@@ -7216,7 +6892,7 @@
 
         <div class="form-group">
           <label style="font-size:0.72rem; font-weight:700;">Caregiver Access Password / Invite Token</label>
-          <input type="text" class="form-input" id="cfgCaregiverPass" value="caregiver2026" style="font-family:'JetBrains Mono',monospace; font-size:0.85rem;">
+          <input type="password" class="form-input" id="cfgCaregiverPass" value="" placeholder="Leave blank to keep current" autocomplete="new-password" style="font-family:'JetBrains Mono',monospace; font-size:0.85rem;">
         </div>
 
         <div class="form-group">
@@ -7594,10 +7270,10 @@
   </div>
 
   <!-- Floating Emergency SOS Button (Always Accessible, Prominent in Senior Mode) -->
-  <div id="floatingSosBtn" class="floating-sos-btn" onclick="openSosModal()" title="Emergency SOS — Immediate Family & Medical Alert">
+  <button type="button" id="floatingSosBtn" class="floating-sos-btn" onclick="openSosModal()" aria-label="Emergency SOS" title="Emergency SOS — Immediate Family & Medical Alert">
     <span style="font-size:1.25rem;">🚨</span>
     <span>EMERGENCY SOS</span>
-  </div>
+  </button>
 
   <!-- Modal 6: Emergency SOS & Medical ID Modal -->
   <div class="modal-backdrop" id="sosModal" onclick="closeSosModal()">
@@ -7630,27 +7306,15 @@
         </div>
       </div>
 
-      <!-- Emergency Medical ID Card Snapshot -->
-      <div style="background:var(--bg); border:1px solid var(--surface-border); border-radius:12px; padding:0.9rem; display:flex; flex-direction:column; gap:0.4rem;">
-        <div style="font-size:0.8rem; font-weight:800; color:var(--accent); display:flex; justify-content:space-between;">
-          <span>📋 ELEANOR VANCE (MEDICAL ID)</span>
-          <span>BLOOD: O+</span>
-        </div>
-        <div style="font-size:0.78rem; line-height:1.45; color:var(--text);">
-          • <strong>DOB:</strong> March 12, 1948 (Age 78)<br>
-          • <strong>Critical Regimen:</strong> Metformin 500mg Oral Tablet (Rx #89421)<br>
-          • <strong>Severe Allergy:</strong> <span style="color:#ef4444; font-weight:800;">PENICILLIN (Anaphylaxis Risk)</span><br>
-          • <strong>Attending Physician:</strong> Dr. Sarah Lin (Phone: +91 98765 43220)<br>
-          • <strong>Hospital Preference:</strong> St. Jude Memorial Hospital
-        </div>
-      </div>
+      <!-- Emergency Medical ID Card Snapshot (Data-driven via renderMedicalId) -->
+      <div id="sosMedicalId" style="background:var(--bg); border:1px solid var(--surface-border); border-radius:12px; padding:0.9rem; display:flex; flex-direction:column; gap:0.4rem; font-size:0.9rem; line-height:1.5;"></div>
 
       <!-- Broadcast SOS Button -->
       <button class="btn" style="background:linear-gradient(135deg, #f59e0b, #d97706); color:#fff; font-weight:800; padding:0.75rem;" onclick="broadcastSosEmergency()">
-        📡 Broadcast SOS Alarm to Household Devices
+        📡 Text my caregiver with my location
       </button>
 
-      <div style="display:flex; justify-content:flex-end;">
+      <div style="display:flex; justify-content:flex-end; gap:0.5rem; margin-top:0.35rem;">
         <button class="btn" style="background:linear-gradient(135deg,#22c55e,#16a34a); color:#fff; font-weight:800;" onclick="markIAmSafe()">✅ I Am Safe</button>
         <button class="btn btn-secondary" onclick="closeSosModal()">Close</button>
       </div>
@@ -7700,11 +7364,20 @@
     </div>
   </div>
 
-  <!-- Floating Feedback Toast -->
-  <div class="toast-popup" id="toast">
+  <!-- Floating Feedback Toast (Fix Guide Section 6.1) -->
+  <div class="toast-popup" id="toast" role="status" aria-live="polite">
     <span id="toastMsg">✅ Action Saved</span>
-    <button class="btn btn-secondary" style="padding:0.2rem 0.5rem; font-size:0.7rem;" onclick="undoLastAction()">↩️ Undo</button>
+    <button id="toastUndoBtn" class="btn btn-secondary" style="display:none; padding:0.2rem 0.5rem; font-size:0.7rem;" onclick="undoLastAction()">↩️ Undo</button>
   </div>
+
+  <!-- Native Accessible Confirmation Dialog (Fix Guide Section 8.6) -->
+  <dialog id="confirmDlg" aria-labelledby="confirmMsg" style="border:1px solid var(--surface-border); background:var(--card-bg); color:var(--text); border-radius:12px; padding:1.25rem; max-width:400px; box-shadow:var(--shadow-md);">
+    <p id="confirmMsg" style="font-size:0.9rem; margin:0 0 1rem 0; line-height:1.45;"></p>
+    <form method="dialog" style="display:flex; justify-content:flex-end; gap:0.5rem;">
+      <button value="cancel" class="btn btn-secondary">Cancel</button>
+      <button value="ok" id="confirmOk" class="btn" style="background:var(--rose); color:#fff;">OK</button>
+    </form>
+  </dialog>
 
   <!-- ==========================================================================
        JAVASCRIPT DYNAMIC REACTIVE ENGINE & DATA REPOSITORY
@@ -7720,6 +7393,66 @@
         .replace(/"/g, '&quot;')
         .replace(/'/g, '&#39;');
     }
+    const esc = escapeHTML;
+
+    // Local date helper (Fix Guide Section 5.1 - eliminates 5.5hr IST midnight drift)
+    function localIso(d = new Date()) {
+      const p = n => String(n).padStart(2, '0');
+      return `${d.getFullYear()}-${p(d.getMonth() + 1)}-${p(d.getDate())}`;
+    }
+
+    // Money helpers (Fix Guide Section 4.1)
+    const toPaise = n => Math.round(Number(n) * 100);
+    const fmtINR  = p => ((p || 0) / 100).toLocaleString('en-IN', { style: 'currency', currency: 'INR' });
+
+    function toIsoDate(v) {                       // "Oct 2" or "October 23" -> "2026-10-02"
+      if (!v) return localIso();
+      if (/^\d{4}-\d{2}-\d{2}$/.test(v)) return v;
+      const d = new Date(`${v} ${new Date().getFullYear()}`);
+      return isNaN(d.getTime()) ? localIso() : localIso(d);
+    }
+
+    function dueLabel(iso) {
+      if (!iso) return 'No due date';
+      const diff = Math.round((new Date(iso + 'T00:00') - new Date(localIso() + 'T00:00')) / 86400000);
+      return diff < 0 ? `Overdue by ${-diff} day${diff === -1 ? '' : 's'}`
+           : diff === 0 ? 'Due today'
+           : `Due in ${diff} day${diff === 1 ? '' : 's'}`;
+    }
+
+    // Safe storage & robustness helpers (Fix Guide Section 8.1)
+    const clone = v => JSON.parse(JSON.stringify(v));
+    const isArr = Array.isArray;
+    const isObj = v => v !== null && typeof v === 'object' && !Array.isArray(v);
+    const arrOf = test => v => Array.isArray(v) && v.every(test);
+    const corruptKeys = [];
+
+    function safeLoad(key, fallback, validate) {
+      let raw = null;
+      try { raw = localStorage.getItem(key); } catch (e) { return clone(fallback); }
+      if (raw === null) return clone(fallback);
+      try {
+        const v = JSON.parse(raw);
+        if (validate && !validate(v)) throw new Error('unexpected shape');
+        return v;
+      } catch (e) {
+        corruptKeys.push(key);
+        try { localStorage.setItem(key + '__corrupt', raw); } catch (_) {}
+        return clone(fallback);
+      }
+    }
+
+    function safeSave(key, value) {
+      try { localStorage.setItem(key, JSON.stringify(value)); return true; }
+      catch (e) { reportStorageFailure(e); return false; }
+    }
+
+    function reportStorageFailure(e) {
+      const full = e && (e.name === 'QuotaExceededError' || e.code === 22);
+      showToast(full
+        ? 'Storage is full, so your last change was not saved. Export a backup and delete old receipts.'
+        : 'Could not save. Your browser may be blocking storage (private window).');
+    }
 
     function stopPropagation(e) {
       if (e && e.stopPropagation) e.stopPropagation();
@@ -7729,25 +7462,29 @@
     let landingPersonaRole = 'power';
     let activePrimaryTab = 'home';
 
-    let securityConfig = {
-      seniorPinHash: null,       // SHA-256 hex of PIN (default '1234')
-      caregiverPassHash: null,   // SHA-256 hex of password (default 'caregiver2026')
-      seniorPin: '1234',         // kept as fallback for settings display/reset only
-      caregiverPass: 'caregiver2026',
-      escalationDelay: '30'
-    };
+    let securityConfig = { salt: null, seniorPinHash: null, caregiverHash: null, adminHash: null, escalationDelay: '30' };
 
-    // Web Crypto SHA-256 helper (Section 2 Fix Guide)
-    async function hashSecret(plaintext) {
-      const enc = new TextEncoder();
-      const buf = await crypto.subtle.digest('SHA-256', enc.encode(String(plaintext)));
+    // Web Crypto SHA-256 helper (Fix Guide Section 2.2)
+    async function hashSecret(secret, salt) {
+      const data = new TextEncoder().encode((salt || '') + ':' + secret);
+      const buf = await crypto.subtle.digest('SHA-256', data);
       return Array.from(new Uint8Array(buf)).map(b => b.toString(16).padStart(2, '0')).join('');
     }
 
-    async function verifySecret(plaintext, storedHash) {
-      if (!storedHash) return true; // no hash set → accept (first-login fallback)
-      const h = await hashSecret(plaintext);
-      return h === storedHash;
+    function persistSecurity() {
+      try { localStorage.setItem('omnitask_security', JSON.stringify(securityConfig)); } catch (e) {}
+    }
+
+    // Run once after loadPersistedData(): converts old plaintext values, drops known defaults
+    async function migrateSecurity() {
+      securityConfig.salt = securityConfig.salt || (crypto.randomUUID ? crypto.randomUUID() : ('salt_' + Math.random()));
+      const old = { seniorPin: ['seniorPinHash', '1234'], caregiverPass: ['caregiverHash', 'caregiver2026'] };
+      for (const [field, [hashField, dflt]] of Object.entries(old)) {
+        const v = securityConfig[field];
+        if (v && v !== dflt) securityConfig[hashField] = await hashSecret(v, securityConfig.salt);
+        delete securityConfig[field];
+      }
+      persistSecurity();
     }
 
     // 1. Dynamic Prescriptions / Pills Data (Pristine Clinical Sample Records)
@@ -7789,14 +7526,24 @@
 
     let pillsData = JSON.parse(JSON.stringify(defaultPillsData));
 
-    // 2. Dynamic Bills Data (Pristine Sample Records)
+    // 2. Dynamic Bills Data (Pristine Sample Records in ₹ INR & Whole Paise)
     const defaultBillsData = [
       {
         id: "bill_1",
         title: "Electric Utility Bill",
-        payee: "ConEd",
-        dueDate: "October 23",
-        amount: 142.50,
+        payee: "BESCOM / TNEB",
+        dueDate: "2026-11-28",
+        amountPaise: 185000,
+        amount: 1850.00,
+        isPaid: false
+      },
+      {
+        id: "bill_2",
+        title: "Broadband & Fiber",
+        payee: "Airtel Xstream",
+        dueDate: "2026-11-30",
+        amountPaise: 99900,
+        amount: 999.00,
         isPaid: false
       }
     ];
@@ -7814,17 +7561,112 @@
 
     // 3. Dynamic Expenses Data (Categorized by Utility, Food, Travel, Household, Medical, Other)
     const defaultExpensesData = [
-      { id: "exp_1", name: "💡 ConEd Electric & Gas", amount: 142.50, category: "Utility", date: "Oct 2" },
-      { id: "exp_2", name: "🍔 Whole Foods Groceries", amount: 68.20, category: "Food", date: "Oct 4" },
-      { id: "exp_3", name: "🚗 MetroCard & Transit Refill", amount: 45.00, category: "Travel", date: "Oct 5" },
-      { id: "exp_4", name: "🏠 Home Supplies & Cleaning", amount: 52.40, category: "Household", date: "Oct 5" },
-      { id: "exp_5", name: "💊 CVS Pharmacy Rx Refill", amount: 25.00, category: "Medical", date: "Oct 6" }
+      { id: "exp_1", name: "💡 Electric Utility Bill (Auto-Linked)", amount: 1850.00, amountPaise: 185000, category: "Utility", date: "2026-11-20" },
+      { id: "exp_2", name: "🍔 DMart Weekly Groceries", amount: 3260.00, amountPaise: 326000, category: "Food", date: "2026-11-21" },
+      { id: "exp_3", name: "🚗 Metro Smart Card Refill", amount: 500.00, amountPaise: 50000, category: "Travel", date: "2026-11-22" },
+      { id: "exp_4", name: "🏠 Home Supplies & Cleaning", amount: 1200.00, amountPaise: 120000, category: "Household", date: "2026-11-22" },
+      { id: "exp_5", name: "💊 Apollo Pharmacy Rx Refill", amount: 640.00, amountPaise: 64000, category: "Medical", date: "2026-11-23" }
     ];
 
     let expensesData = JSON.parse(JSON.stringify(defaultExpensesData));
 
-    let monthlySalary = 5000.00;
+    let monthlyIncomePaise = 5000000; // ₹50,000
+    let monthlyBudgetPaise = 2500000; // ₹25,000
+    let monthlySalary = 50000.00;
     let activeExpenseCategoryFilter = 'All';
+
+    function migrateMoney() {
+      expensesData.forEach(e => {
+        if (e.amountPaise == null) e.amountPaise = e.amount_cents ?? toPaise(e.amount || 0);
+        e.date = toIsoDate(e.date);
+      });
+      billsData.forEach(b => {
+        if (b.amountPaise == null) b.amountPaise = toPaise(b.amount || 0);
+        b.dueDate = toIsoDate(b.dueDate);
+      });
+      const sal = localStorage.getItem('omnitask_monthly_salary');
+      const inc = localStorage.getItem('omnitask_income');
+      const bud = localStorage.getItem('omnitask_budget');
+      if (inc) monthlyIncomePaise = parseInt(inc, 10) || 5000000;
+      else if (sal) monthlyIncomePaise = toPaise(parseFloat(sal) || 50000);
+
+      if (bud) monthlyBudgetPaise = parseInt(bud, 10) || 2500000;
+      else monthlyBudgetPaise = Math.round(monthlyIncomePaise * 0.8);
+
+      persistAllData();
+    }
+
+    function financeSummary(now = new Date()) {
+      const y = now.getFullYear(), m = now.getMonth(), today = localIso(now);
+      const inMonth = expensesData.filter(e => { const d = new Date(e.date); return d.getFullYear() === y && d.getMonth() === m; });
+      const sum = list => list.reduce((s, e) => s + (e.amountPaise || 0), 0);
+      const spent = sum(inMonth);
+      const byCategory = {};
+      inMonth.forEach(e => { byCategory[e.category] = (byCategory[e.category] || 0) + (e.amountPaise || 0); });
+      const unpaid = billsData.filter(b => !b.isPaid).sort((a, b) => (a.dueDate || '').localeCompare(b.dueDate || ''));
+      return {
+        spent, byCategory,
+        todaySpend: sum(expensesData.filter(e => e.date === today)),
+        budget: monthlyBudgetPaise,
+        income: monthlyIncomePaise,
+        remaining: monthlyBudgetPaise - spent,
+        pct: monthlyBudgetPaise ? Math.round(spent / monthlyBudgetPaise * 100) : 0,
+        daysLeft: new Date(y, m + 1, 0).getDate() - now.getDate(),
+        unpaid, unpaidTotal: unpaid.reduce((s, b) => s + (b.amountPaise || 0), 0),
+        recent: [...expensesData].sort((a, b) => (b.date || '').localeCompare(a.date || '')).slice(0, 5)
+      };
+    }
+
+    function renderHomeFinance() {
+      const f = financeSummary();
+      const set = (id, text) => { const el = document.getElementById(id); if (el) el.textContent = text; };
+      set('homeBudgetPct', `${f.pct}% spent`);
+      set('homeBudgetAmount', `${fmtINR(f.spent)} of ${fmtINR(f.budget)}`);
+      set('homeBudgetNote', `${fmtINR(f.remaining)} remaining • ${f.daysLeft} days left`);
+      const fillEl = document.getElementById('homeBudgetFill');
+      if (fillEl) fillEl.style.width = Math.min(f.pct, 100) + '%';
+
+      set('bentoBillsTotalAmount', fmtINR(f.unpaidTotal));
+      set('bentoBillsPendingCount', `${f.unpaid.length} payment${f.unpaid.length === 1 ? '' : 's'} due`);
+      set('bentoBillsNext', f.unpaid[0]
+        ? `Next: ${f.unpaid[0].title || f.unpaid[0].payee}, due ${new Date(f.unpaid[0].dueDate).toLocaleDateString('en-IN', { day: 'numeric', month: 'short' })}`
+        : 'Nothing due');
+      set('calDailySpend', fmtINR(f.todaySpend));
+
+      const todaySpendVal = document.getElementById('bentoTodaySpendVal');
+      if (todaySpendVal) todaySpendVal.textContent = fmtINR(f.todaySpend);
+
+      const catContainer = document.getElementById('todaySpendCategoryContainer');
+      if (catContainer) {
+        catContainer.replaceChildren();
+        const todayEntries = expensesData.filter(e => e.date === localIso());
+        const todayByCat = {};
+        todayEntries.forEach(e => {
+          todayByCat[e.category] = (todayByCat[e.category] || 0) + (e.amountPaise || 0);
+        });
+        const catEntries = Object.entries(todayByCat);
+        if (catEntries.length === 0) {
+          const empty = document.createElement('div');
+          empty.style.cssText = 'font-size:0.75rem; color:var(--text-muted); padding:0.35rem 0;';
+          empty.textContent = 'No expenses logged today.';
+          catContainer.appendChild(empty);
+        } else {
+          catEntries.forEach(([cat, amt]) => {
+            const row = document.createElement('div');
+            row.style.cssText = 'display:flex; justify-content:space-between; align-items:center; font-size:0.75rem; padding:0.2rem 0;';
+            const catName = document.createElement('span');
+            catName.style.color = 'var(--text-muted)';
+            catName.textContent = cat;
+            const catAmt = document.createElement('span');
+            catAmt.style.fontWeight = '700';
+            catAmt.style.fontFamily = "'JetBrains Mono', monospace";
+            catAmt.textContent = fmtINR(amt);
+            row.append(catName, catAmt);
+            catContainer.appendChild(row);
+          });
+        }
+      }
+    }
 
     // Reset Demo Data Function (Clears out local test entries like 'hgdgt', 'citrizen')
     function resetDemoData() {
@@ -7864,6 +7706,7 @@
         ]
       }
     ];
+    const defaultWorkoutsData = clone(workoutsData);
 
     // 5. Dynamic Habits Data
     const defaultHabitsData = [
@@ -7886,25 +7729,19 @@
 
     let habitsData = JSON.parse(JSON.stringify(defaultHabitsData));
 
-    // 6. Dynamic Appointments Data (Relative to Live Date)
-    const _initNowApt = new Date();
-    const _aptPast = new Date(_initNowApt); _aptPast.setDate(_initNowApt.getDate() - 7);
-    const _aptFut = new Date(_initNowApt); _aptFut.setDate(_initNowApt.getDate() + 5);
-    const _fmtApt = (d, time) => `${d.toLocaleDateString('en-US', { month: 'short' })} ${d.getDate()} &bull; ${time}`;
-    const defaultAppointmentsData = [
-      {
-        id: "apt_1",
-        title: "Cardiology Routine Checkup",
-        sub: "Dr. Sarah Lin &bull; City Health Center Room 402",
-        date: _fmtApt(_aptPast, "10:00 AM")
-      },
-      {
-        id: "apt_2",
-        title: "Blood Panel & Glucose Fasting Lab",
-        sub: "Quest Diagnostics &bull; 120 Broadway Ave",
-        date: _fmtApt(_aptFut, "08:00 AM")
-      }
-    ];
+    // 6. Dynamic Appointments Data (Relative to Live Date & ISO Timestamps - Fix Guide Section 5.3)
+    const fmtDateTime = iso => new Date(iso).toLocaleString('en-IN', {
+      day: 'numeric', month: 'short', hour: 'numeric', minute: '2-digit'
+    });
+
+    function sampleAppointments() {
+      const at = (days, h, m) => { const d = new Date(); d.setDate(d.getDate() + days); d.setHours(h, m, 0, 0); return d.toISOString(); };
+      return [
+        { id: 'apt_1', title: 'Cardiology Routine Checkup', sub: 'Dr. Sarah Lin • City Health Center Room 402', startsAt: at(-7, 10, 0), date: fmtDateTime(at(-7, 10, 0)) },
+        { id: 'apt_2', title: 'Blood Panel & Glucose Fasting Lab', sub: 'Diagnostic Lab • 120 Broadway Ave', startsAt: at(5, 8, 0), date: fmtDateTime(at(5, 8, 0)) }
+      ];
+    }
+    const defaultAppointmentsData = sampleAppointments();
 
     let appointmentsData = JSON.parse(JSON.stringify(defaultAppointmentsData));
 
@@ -7951,18 +7788,18 @@
       const heroGreeting = document.getElementById('heroGreetingTitle');
       if (heroGreeting) heroGreeting.textContent = `Good morning, ${activeObj.name}`;
       const seniorGreeting = document.getElementById('seniorGreetingTitle');
-      if (seniorGreeting) seniorGreeting.innerHTML = `Good Morning, ${householdProfiles.senior.name}! ☀️`;
+      if (seniorGreeting) seniorGreeting.innerHTML = `Good Morning, ${escapeHTML(householdProfiles.senior.name)}! ☀️`;
 
       // 4. Senior & Caregiver Bars
       const seniorBar = document.getElementById('seniorDignityBar');
       if (seniorBar) {
         const span = seniorBar.querySelector('span');
-        if (span) span.innerHTML = `🛡️ Monitored by Caregiver <strong>${householdProfiles.caregiver.name}</strong>`;
+        if (span) span.innerHTML = `🛡️ Monitored by Caregiver <strong>${escapeHTML(householdProfiles.caregiver.name)}</strong>`;
       }
       const cgBar = document.getElementById('caregiverBar');
       if (cgBar) {
         const strong = cgBar.querySelector('div');
-        if (strong) strong.innerHTML = `<strong>🛡️ Caregiver Telemetry Active:</strong> Monitored Patient: <em>${householdProfiles.senior.name} (Senior Profile)</em>`;
+        if (strong) strong.innerHTML = `<strong>🛡️ Caregiver Telemetry Active:</strong> Monitored Patient: <em>${escapeHTML(householdProfiles.senior.name)} (Senior Profile)</em>`;
       }
 
       // 5. SOS Quick Dials
@@ -7994,7 +7831,7 @@
 
       // 7. Scenic Chip & Oversight Header
       const chipSnName = document.getElementById('scenicChipSeniorName');
-      if (chipSnName) chipSnName.innerHTML = `${householdProfiles.senior.name} <span class="online-indicator" style="box-shadow:0 0 8px #22c55e;"></span>`;
+      if (chipSnName) chipSnName.innerHTML = `${escapeHTML(householdProfiles.senior.name)} <span class="online-indicator" style="box-shadow:0 0 8px #22c55e;"></span>`;
       const chipSnAv = document.getElementById('scenicChipSeniorAvatar');
       if (chipSnAv) chipSnAv.textContent = householdProfiles.senior.initials || getInitials(householdProfiles.senior.name);
 
@@ -8017,79 +7854,175 @@
     }
 
     /* ==========================================================================
-       LOCALSTORAGE PERSISTENCE ENGINE
+       STORAGE & PERSISTENCE ROBUSTNESS ENGINE (Fix Guide Section 8)
        ========================================================================== */
-    function loadPersistedData() {
-      try {
-        const hp = localStorage.getItem('omnitask_household_profiles');
-        if (hp) {
-          try {
-            householdProfiles = Object.assign(householdProfiles, JSON.parse(hp));
-          } catch(e) {}
-        }
-        const p = localStorage.getItem('omnitask_pills');
-        if (p) {
-          const parsedP = JSON.parse(p);
-          const sanitizedP = parsedP.filter(item => !['dolo', 'citrizen', 'levo cltr', 'hgdgt', 'test'].includes((item.name || '').toLowerCase().trim()));
-          if (sanitizedP.length > 0) {
-            const met = sanitizedP.find(item => item.id === 'pill_1' || (item.name && item.name.toLowerCase() === 'metformin'));
-            if (met && met.day < 22) {
-              met.day = 22;
-              met.totalDays = 30;
-              met.dosage = "500mg • Twice Daily";
-            }
-            pillsData = sanitizedP;
-          } else {
-            pillsData = JSON.parse(JSON.stringify(defaultPillsData));
-          }
-        }
-        const b = localStorage.getItem('omnitask_bills');
-        if (b) billsData = JSON.parse(b);
-        const e = localStorage.getItem('omnitask_expenses');
-        if (e) expensesData = JSON.parse(e);
-        const sal = localStorage.getItem('omnitask_monthly_salary');
-        if (sal) monthlySalary = parseFloat(sal) || 5000.00;
+    let focusItems = [
+      { id: 'f_1', date: localIso(), title: 'Morning Workout', time: '07:00 AM', done: true },
+      { id: 'f_2', date: localIso(), title: 'Take Vitamins', time: '08:30 AM', done: false },
+      { id: 'f_3', date: localIso(), title: 'Edit Portfolio Photos', time: '02:00 PM', done: false }
+    ];
 
-        const ht = localStorage.getItem('omnitask_household_tasks');
-        if (ht) {
-          try { householdTasks = JSON.parse(ht); } catch(e){}
+    function renderFocus() {
+      const box = document.getElementById('focusList');
+      if (!box) return;
+      box.replaceChildren();
+      const todays = focusItems.filter(f => f.date === localIso());
+      const countEl = document.getElementById('focusCount');
+      if (countEl) countEl.textContent = `${todays.filter(f => !f.done).length} left`;
+
+      todays.forEach(f => {
+        const label = document.createElement('label');
+        label.style.cssText = 'display:flex; align-items:center; gap:0.5rem; font-size:0.75rem; color:#f1f5f9; cursor:pointer;';
+        const cb = document.createElement('input');
+        cb.type = 'checkbox';
+        cb.checked = f.done;
+        cb.style.cssText = 'accent-color:#10b981; width:16px; height:16px; cursor:pointer;';
+        cb.addEventListener('change', () => {
+          f.done = cb.checked;
+          safeSave('omnitask_focus', focusItems);
+          renderFocus();
+          showToast(`Focus item: ${f.title} ${f.done ? 'completed' : 'pending'}`);
+        });
+        const span = document.createElement('span');
+        span.textContent = f.time ? `${f.title} (${f.time})` : f.title;
+        if (f.done) {
+          span.style.textDecoration = 'line-through';
+          span.style.opacity = '0.75';
+          label.style.color = '#86efac';
         }
-        const w = localStorage.getItem('omnitask_workouts');
-        if (w) workoutsData = JSON.parse(w);
-        const h = localStorage.getItem('omnitask_habits');
-        if (h) habitsData = JSON.parse(h);
-        const a = localStorage.getItem('omnitask_appointments');
-        if (a) {
-          const parsedA = JSON.parse(a);
-          const sanitizedA = parsedA.filter(item => !['dr reddy', 'dr snethil', 'test'].includes((item.title || '').toLowerCase().trim()));
-          appointmentsData = (sanitizedA.length > 0) ? sanitizedA : JSON.parse(JSON.stringify(defaultAppointmentsData));
+        label.append(cb, span);
+        box.appendChild(label);
+      });
+    }
+
+    let hydration = { date: localIso(), glasses: 0, goal: 6 };
+
+    function logWater() {
+      if (hydration.date !== localIso()) hydration = { date: localIso(), glasses: 0, goal: hydration.goal || 6 };
+      hydration.glasses = Math.min((hydration.glasses || 0) + 1, 20);
+      safeSave('omnitask_hydration', hydration);
+      const countEl = document.getElementById('waterCount');
+      if (countEl) countEl.textContent = `${hydration.glasses} of ${hydration.goal} glasses`;
+      showToast(hydration.glasses >= hydration.goal ? 'Goal reached. Well done!' : `Logged. ${hydration.goal - hydration.glasses} to go.`);
+    }
+
+    function confirmDialog(message, okLabel) {
+      return new Promise(resolve => {
+        const d = document.getElementById('confirmDlg');
+        if (!d || typeof d.showModal !== 'function') {
+          resolve(confirm(message));
+          return;
         }
-        const s = localStorage.getItem('omnitask_security');
-        if (s) securityConfig = JSON.parse(s);
-        const st = localStorage.getItem('omnitask_streak');
-        if (st) streakCount = Math.max(7, parseInt(st, 10) || 7);
-        else streakCount = 7;
-      } catch (err) {
-        console.warn("Storage load error:", err);
+        document.getElementById('confirmMsg').textContent = message;
+        document.getElementById('confirmOk').textContent = okLabel || 'OK';
+        d.addEventListener('close', () => resolve(d.returnValue === 'ok'), { once: true });
+        d.showModal();
+      });
+    }
+
+    // IndexedDB for Receipts (Fix Guide Section 8.5)
+    function receiptsTx(mode, work) {
+      return new Promise((resolve, reject) => {
+        const open = indexedDB.open('omnitask', 1);
+        open.onupgradeneeded = () => open.result.createObjectStore('receipts');
+        open.onerror = () => reject(open.error);
+        open.onsuccess = () => {
+          const db = open.result;
+          const tx = db.transaction('receipts', mode);
+          const req = work(tx.objectStore('receipts'));
+          tx.oncomplete = () => { db.close(); resolve(req && req.result); };
+          tx.onerror = tx.onabort = () => { db.close(); reject(tx.error); };
+        };
+      });
+    }
+    const putReceipt    = (id, dataUrl) => receiptsTx('readwrite', s => s.put(dataUrl, id));
+    const getReceipt    = id           => receiptsTx('readonly',  s => s.get(id));
+    const deleteReceipt = id           => receiptsTx('readwrite', s => s.delete(id));
+
+    async function migrateReceipts() {
+      for (const e of expensesData) {
+        if (e.receiptImage) {
+          try {
+            await putReceipt(e.id, e.receiptImage);
+            e.receiptId = e.id;
+            delete e.receiptImage;
+          } catch(err) {}
+        }
       }
     }
 
+    // Per-Key Loading (Fix Guide Section 8.2)
+    function loadPersistedData() {
+      householdProfiles = Object.assign(householdProfiles, safeLoad('omnitask_household_profiles', {}, isObj));
+      pillsData         = safeLoad('omnitask_pills',   defaultPillsData,   arrOf(p => isObj(p) && typeof p.id === 'string' && typeof p.name === 'string'));
+      billsData         = safeLoad('omnitask_bills',   defaultBillsData,   arrOf(b => isObj(b) && typeof b.id === 'string'));
+      expensesData      = safeLoad('omnitask_expenses', defaultExpensesData, arrOf(e => isObj(e) && typeof e.id === 'string'));
+      householdTasks    = safeLoad('omnitask_household_tasks', defaultHouseholdTasks, isArr);
+      workoutsData      = safeLoad('omnitask_workouts', defaultWorkoutsData, isArr);
+      habitsData        = safeLoad('omnitask_habits',   defaultHabitsData,   isArr);
+      appointmentsData  = safeLoad('omnitask_appointments', defaultAppointmentsData, isArr);
+      securityConfig    = Object.assign(securityConfig, safeLoad('omnitask_security', {}, isObj));
+      monthlySalary     = safeLoad('omnitask_monthly_salary', monthlySalary, Number.isFinite);
+      monthlyIncomePaise = safeLoad('omnitask_income', monthlyIncomePaise, Number.isFinite);
+      monthlyBudgetPaise = safeLoad('omnitask_budget', monthlyBudgetPaise, Number.isFinite);
+      focusItems        = safeLoad('omnitask_focus', focusItems, isArr);
+      hydration         = safeLoad('omnitask_hydration', hydration, isObj);
+      if (corruptKeys.length) showToast('Some saved data was unreadable and was reset: ' + corruptKeys.join(', '));
+    }
+
+    const STORES = {
+      omnitask_household_profiles:  () => householdProfiles,
+      omnitask_household_tasks:     () => householdTasks,
+      omnitask_pills:               () => pillsData,
+      omnitask_bills:               () => billsData,
+      omnitask_expenses:            () => expensesData,
+      omnitask_monthly_salary:      () => monthlySalary,
+      omnitask_income:              () => monthlyIncomePaise,
+      omnitask_budget:              () => monthlyBudgetPaise,
+      omnitask_workouts:            () => workoutsData,
+      omnitask_habits:              () => habitsData,
+      omnitask_appointments:        () => appointmentsData,
+      omnitask_security:            () => securityConfig,
+      omnitask_focus:               () => focusItems,
+      omnitask_hydration:           () => hydration
+    };
+
+    const lastSaved = {};
     function persistAllData() {
-      try {
-        localStorage.setItem('omnitask_household_profiles', JSON.stringify(householdProfiles));
-        localStorage.setItem('omnitask_household_tasks', JSON.stringify(householdTasks));
-        localStorage.setItem('omnitask_pills', JSON.stringify(pillsData));
-        localStorage.setItem('omnitask_bills', JSON.stringify(billsData));
-        localStorage.setItem('omnitask_expenses', JSON.stringify(expensesData));
-        localStorage.setItem('omnitask_monthly_salary', monthlySalary.toString());
-        localStorage.setItem('omnitask_workouts', JSON.stringify(workoutsData));
-        localStorage.setItem('omnitask_habits', JSON.stringify(habitsData));
-        localStorage.setItem('omnitask_appointments', JSON.stringify(appointmentsData));
-        localStorage.setItem('omnitask_security', JSON.stringify(securityConfig));
-        localStorage.setItem('omnitask_streak', streakCount.toString());
-      } catch (err) {
-        console.warn("Storage save error:", err);
+      for (const [key, get] of Object.entries(STORES)) {
+        try {
+          const json = JSON.stringify(get());
+          if (lastSaved[key] === json) continue;
+          localStorage.setItem(key, json);
+          lastSaved[key] = json;
+        } catch (e) {
+          reportStorageFailure(e);
+          return false;
+        }
       }
+      return true;
+    }
+
+    const SCHEMA_VERSION = 2;
+    async function runMigrations() {
+      const v = safeLoad('omnitask_schema', 1, Number.isFinite);
+      try {
+        if (v < 2) { migrateMoney(); await migrateReceipts(); }
+        await migrateSecurity();
+        safeSave('omnitask_schema', SCHEMA_VERSION);
+        persistAllData();
+      } catch (e) {
+        console.error('Migration failed, will retry on next load', e);
+      }
+    }
+
+    async function resetDemoData() {
+      if (!(await confirmDialog('Reset to sample data? Everything you added in this browser will be removed. Your PIN and passwords are kept.', 'Reset'))) return;
+      const extra = ['omnitask_privacy_pause_until', 'omnitask_hydration', 'omnitask_schema', 'omnitask_last_backup', 'omnitask_medical_id'];
+      Object.keys(STORES).filter(k => k !== 'omnitask_security').concat(extra)
+        .forEach(k => { try { localStorage.removeItem(k); } catch (e) {} });
+      await new Promise(r => { const q = indexedDB.deleteDatabase('omnitask'); q.onsuccess = q.onerror = q.onblocked = r; });
+      location.reload();
     }
 
     /* Landing Gateway Functions */
@@ -8146,30 +8079,27 @@
       }
     }
 
-    async function enterDashboard() {
-      const passInp = document.getElementById('landPass');
-      const passVal = passInp ? passInp.value.trim() : '';
+    let failCount = 0, lockUntil = 0;
 
-      if (landingPersonaRole === 'senior') {
-        // Verify against SHA-256 hash if set, else fall back to plaintext default
-        const ok = await verifySecret(passVal, securityConfig.seniorPinHash);
-        if (!ok) {
-          // also allow plaintext default on first run (no hash stored yet)
-          if (passVal !== (securityConfig.seniorPin || '1234')) {
-            showToast('❌ Incorrect Senior PIN. Please try again or reset in Family Hub.');
-            return;
-          }
-        }
+    async function enterDashboard() {
+      if (Date.now() < lockUntil) { showToast('Too many attempts. Wait a few seconds.'); return; }
+      const role = landingPersonaRole;
+      const entered = (document.getElementById('landPass')?.value || '').trim();
+      const key = { power: 'adminHash', senior: 'seniorPinHash', caregiver: 'caregiverHash' }[role];
+
+      if (role === 'senior' && !/^\d{4}$/.test(entered)) { showToast('Enter your 4-digit PIN.'); return; }
+      if (role !== 'senior' && entered.length < 6) { showToast('Password must be at least 6 characters.'); return; }
+
+      const h = await hashSecret(entered, securityConfig.salt);
+      if (!securityConfig[key]) {
+        securityConfig[key] = h; persistSecurity();
+        showToast('Passcode created. Use it next time you sign in.');
+      } else if (securityConfig[key] !== h) {
+        if (++failCount >= 5) { lockUntil = Date.now() + 30000; failCount = 0; }
+        showToast('Incorrect PIN or password.');
+        return;
       }
-      if (landingPersonaRole === 'caregiver') {
-        const ok = await verifySecret(passVal, securityConfig.caregiverPassHash);
-        if (!ok) {
-          if (passVal !== (securityConfig.caregiverPass || 'caregiver2026')) {
-            showToast('❌ Incorrect Caregiver Password. Please try again or reset in Family Hub.');
-            return;
-          }
-        }
-      }
+      failCount = 0;
 
       const customName = document.getElementById('landDisplayName')?.value?.trim();
       if (customName && householdProfiles[landingPersonaRole]) {
@@ -8185,6 +8115,7 @@
       
       const activeObj = householdProfiles[landingPersonaRole] || householdProfiles.power;
       saveSessionState(true, landingPersonaRole, activeObj.name, activeObj.email);
+      patchSession({ homeRole: landingPersonaRole });
       updateHouseholdProfileUI();
       renderAllViews();
       showToast(`🔑 Signed in as ${activeObj.name} (${activeObj.role}) - Workspace Recalibrated`);
@@ -8195,21 +8126,46 @@
       setMode('power');
       document.getElementById('activeUserName').textContent = 'Guest User';
       saveSessionState(true, 'power', 'Guest User', 'guest@omnitask.app');
+      patchSession({ homeRole: 'guest' });
       showToast("🚀 Logged in as Guest (Offline Demo Mode)");
       renderAllViews();
     }
 
+    function patchSession(patch) {
+      try {
+        const cur = JSON.parse(localStorage.getItem('omnitask_session') || sessionStorage.getItem('omnitask_session') || '{}');
+        const updated = { ...cur, ...patch };
+        const store = document.getElementById('chkRememberMe')?.checked === false ? sessionStorage : localStorage;
+        store.setItem('omnitask_session', JSON.stringify(updated));
+      } catch (e) {}
+    }
+
+    function requestMode(mode) {
+      let home = 'power';
+      try {
+        const cur = JSON.parse(localStorage.getItem('omnitask_session') || sessionStorage.getItem('omnitask_session') || '{}');
+        home = cur.homeRole || cur.role || 'power';
+      } catch (e) {}
+      if (home !== 'power' && mode !== home) {
+        showToast('Sign out to switch to a different account.');
+        return;
+      }
+      setMode(mode);
+    }
+
     function saveSessionState(isLoggedIn, role, userName, userEmail) {
       try {
-        const cur = JSON.parse(localStorage.getItem('omnitask_session') || '{}');
+        const cur = JSON.parse(localStorage.getItem('omnitask_session') || sessionStorage.getItem('omnitask_session') || '{}');
         const session = {
           isLoggedIn: isLoggedIn,
           role: role || cur.role || currentRole || 'power',
+          homeRole: cur.homeRole || role || 'power',
           userName: userName || cur.userName || document.getElementById('activeUserName')?.textContent || 'Aswin',
           userEmail: userEmail || cur.userEmail || 'aswin@omnitask.app',
           activeTab: activePrimaryTab || cur.activeTab || 'home'
         };
-        localStorage.setItem('omnitask_session', JSON.stringify(session));
+        const store = document.getElementById('chkRememberMe')?.checked === false ? sessionStorage : localStorage;
+        store.setItem('omnitask_session', JSON.stringify(session));
       } catch (err) {
         console.warn("Session save error:", err);
       }
@@ -8419,6 +8375,625 @@
       }
     }
 
+    // ==========================================================================
+    // MEDICATION LOGIC (Fix Guide Section 9)
+    // ==========================================================================
+    const pillById = id => (pillsData || []).find(p => p.id === id);
+    const fmtClock = iso => new Date(iso).toLocaleTimeString('en-IN', { hour: 'numeric', minute: '2-digit' });
+    const pillSlots = p => (p.times && p.times.length) ? p.times : [p.time || '08:30 AM'];
+    const loggedAt = (p, slot, date = localIso()) => (doseLog || []).find(l => l.pillId === p.id && l.date === date && l.slot === slot);
+    const nextOpenSlot = p => pillSlots(p).find(s => !loggedAt(p, s));
+
+    function courseDay(p, now = new Date()) {
+      if (!p) return 1;
+      const start = new Date((p.startDate || localIso(now)) + 'T00:00');
+      const today = new Date(localIso(now) + 'T00:00');
+      const diff = Math.round((today - start) / 86400000) + 1;
+      return Math.max(1, diff);
+    }
+    const courseDone = p => p ? courseDay(p) > (p.totalDays || 30) : false;
+    const daysLeft = p => p ? Math.max(0, (p.totalDays || 30) - courseDay(p) + 1) : 0;
+
+    async function takePillDose(pillId, slot) {
+      const p = pillById(pillId) || (pillsData || [])[0];
+      if (!p) return;
+      if (courseDone(p)) {
+        showToast(${p.name} course is complete. Ask your doctor about a refill.);
+        return;
+      }
+      slot = slot || nextOpenSlot(p);
+      if (!slot) {
+        showToast(Today's  doses are all logged.);
+        return;
+      }
+      const prior = loggedAt(p, slot);
+      if (prior) {
+        showToast(${p.name}  was already logged at .);
+        return;
+      }
+
+      const now = new Date();
+      const dueMin = clockToMinutes(slot);
+      if (dueMin !== null) {
+        const early = dueMin - (now.getHours() * 60 + now.getMinutes());
+        if (early > 90 && !(await confirmDialog(${slot} is over  hours away. Log it now?, 'Log now'))) {
+          return;
+        }
+      }
+
+      const entry = { id: 'dose_' + Date.now(), pillId: p.id, date: localIso(), slot, at: now.toISOString() };
+      doseLog.push(entry);
+      lastActionUndo = { type: 'dose', id: entry.id };
+      persistAllData();
+      renderAllViews();
+      showToast(Logged , , { undo: true });
+    }
+
+    function snoozePillReminder(pillId, minutes = 15) {
+      const p = (pillsData || []).find(x => x.id === pillId) || (pillsData || [])[0];
+      if (!p) return;
+      p.snoozedUntil = Date.now() + minutes * 60000;
+      persistAllData();
+      renderAllViews();
+      const timeStr = new Date(p.snoozedUntil).toLocaleTimeString('en-IN', { hour: 'numeric', minute: '2-digit' });
+      showToast(${p.name} reminder snoozed until );
+    }
+
+    function adherence(days = 7) {
+      let due = 0, taken = 0;
+      const now = new Date(), nowMin = now.getHours() * 60 + now.getMinutes();
+      for (let i = 0; i < days; i++) {
+        const d = new Date(now.getFullYear(), now.getMonth(), now.getDate() - i);
+        const iso = localIso(d);
+        (pillsData || []).forEach(p => {
+          const cd = courseDay(p, d);
+          if (cd < 1 || cd > (p.totalDays || 30)) return;
+          pillSlots(p).forEach(s => {
+            if (i === 0 && (clockToMinutes(s) || 0) > nowMin) return;
+            due++;
+            if (loggedAt(p, s, iso)) taken++;
+          });
+        });
+      }
+      return due ? Math.round(taken / due * 100) : null;
+    }
+
+    // ==========================================================================
+    // PRIVACY PAUSE (Fix Guide Section 9.6)
+    // ==========================================================================
+    function getPause() {
+      try {
+        const p = JSON.parse(localStorage.getItem('omnitask_privacy_pause') || 'null');
+        return p && p.until > Date.now() ? p : null;
+      } catch (e) {
+        return null;
+      }
+    }
+    const isPrivacyPaused = () => !!getPause();
+    const PAUSE_CHOICES = [1, 4, 8];
+
+    function applyPrivacyPause(hours) {
+      if (!PAUSE_CHOICES.includes(hours)) return;
+      const startedAt = Date.now();
+      safeSave('omnitask_privacy_pause', { until: startedAt + hours * 3600000, startedAt, by: (householdProfiles.senior && householdProfiles.senior.name) || 'Eleanor' });
+      careNotes.unshift({ at: new Date().toISOString(), by: (householdProfiles.senior && householdProfiles.senior.name) || 'Eleanor', text: Paused sensor sharing for h });
+      safeSave('omnitask_care_notes', careNotes);
+      closePrivacyPauseModal();
+      updatePrivacyPauseUI();
+      renderAuditLog();
+      showToast(Sensor sharing paused for h. The SOS button still works.);
+    }
+
+    function cancelPrivacyPause() {
+      if (currentRole === 'caregiver') {
+        showToast(Only  can end a privacy pause.);
+        return;
+      }
+      localStorage.removeItem('omnitask_privacy_pause');
+      careNotes.unshift({ at: new Date().toISOString(), by: 'System', text: 'Sensor sharing resumed' });
+      safeSave('omnitask_care_notes', careNotes);
+      closePrivacyPauseModal();
+      updatePrivacyPauseUI();
+      renderAuditLog();
+      showToast('Sensor sharing resumed.');
+    }
+
+    // ==========================================================================
+    // FITNESS ENGINE & DERIVED STREAK (Fix Guide Section 7)
+    // ==========================================================================
+    function computeStreak(log, today = new Date()) {
+      const days = new Set((log || []).filter(l => l.type === 'workout').map(l => l.date));
+      const d = new Date(today.getFullYear(), today.getMonth(), today.getDate());
+      if (!days.has(localIso(d))) d.setDate(d.getDate() - 1);
+      let n = 0;
+      while (days.has(localIso(d))) { n++; d.setDate(d.getDate() - 1); }
+      return n;
+    }
+
+    function completeWorkout(workoutId) {
+      const date = localIso();
+      const wid = workoutId || (workoutsData[0] ? workoutsData[0].id : 'fit_1');
+      if (activityLog.some(l => l.type === 'workout' && l.refId === wid && l.date === date)) {
+        showToast('Workout already logged for today.');
+        return;
+      }
+      const w = workoutsData.find(x => x.id === wid) || workoutsData[0] || { minutes: 45, kcal: 300 };
+      activityLog.push({ date, type: 'workout', refId: wid, minutes: w.minutes || 45, kcal: w.kcal || 300 });
+      safeSave('omnitask_activity', activityLog);
+      renderFitness();
+      renderWorkouts();
+      showToast(Workout logged! 🔥 -day streak.);
+    }
+
+    function renderWeekChart() {
+      const host = document.getElementById('weekChart');
+      if (!host) return;
+      host.replaceChildren();
+      const start = weekStart(new Date());
+      const days = [...Array(7)].map((_, i) => new Date(start.getFullYear(), start.getMonth(), start.getDate() + i));
+      const mins = days.map(d => activityLog
+        .filter(l => l.type === 'workout' && l.date === localIso(d))
+        .reduce((s, l) => s + (l.minutes || 0), 0));
+      const max = Math.max(60, ...mins);
+      const ns = 'http://www.w3.org/2000/svg';
+      const svg = document.createElementNS(ns, 'svg');
+      svg.setAttribute('viewBox', '0 0 280 120');
+      svg.setAttribute('role', 'img');
+      svg.setAttribute('aria-label', 'Minutes exercised this week: ' + mins.join(', '));
+      svg.style.width = '100%';
+      svg.style.height = '110px';
+
+      const barW = 24, gap = 16, startX = 10, groundY = 95;
+      const dayNames = ['M', 'T', 'W', 'T', 'F', 'S', 'S'];
+
+      days.forEach((d, i) => {
+        const x = startX + i * (barW + gap);
+        const m = mins[i];
+        const h = Math.round((m / max) * 70);
+        const y = groundY - h;
+        const isToday = localIso(d) === localIso();
+
+        const bgRect = document.createElementNS(ns, 'rect');
+        bgRect.setAttribute('x', x);
+        bgRect.setAttribute('y', groundY - 70);
+        bgRect.setAttribute('width', barW);
+        bgRect.setAttribute('height', 70);
+        bgRect.setAttribute('rx', 4);
+        bgRect.setAttribute('fill', 'rgba(100, 116, 139, 0.12)');
+        svg.appendChild(bgRect);
+
+        if (h > 0) {
+          const bar = document.createElementNS(ns, 'rect');
+          bar.setAttribute('x', x);
+          bar.setAttribute('y', y);
+          bar.setAttribute('width', barW);
+          bar.setAttribute('height', h);
+          bar.setAttribute('rx', 4);
+          bar.setAttribute('fill', isToday ? '#6366f1' : '#10b981');
+          svg.appendChild(bar);
+        }
+
+        const txt = document.createElementNS(ns, 'text');
+        txt.setAttribute('x', x + barW / 2);
+        txt.setAttribute('y', groundY + 16);
+        txt.setAttribute('text-anchor', 'middle');
+        txt.setAttribute('font-size', '11');
+        txt.setAttribute('font-weight', isToday ? '800' : '600');
+        txt.setAttribute('fill', isToday ? 'var(--accent)' : 'var(--text-muted)');
+        txt.textContent = dayNames[i];
+        svg.appendChild(txt);
+      });
+
+      host.appendChild(svg);
+    }
+
+    function renderFitness() {
+      renderWeekChart();
+      const currentStreak = computeStreak(activityLog);
+      const strkNum = document.getElementById('streakNumber');
+      if (strkNum) strkNum.textContent = ${currentStreak} Days;
+      const badge = document.getElementById('streakBadgeText');
+      if (badge) badge.textContent = ${currentStreak}-Day Streak;
+      const bentoStreak = document.getElementById('bentoStreakText');
+      if (bentoStreak) bentoStreak.textContent = 🔥 -Day Streak;
+
+      const dotsContainer = document.getElementById('streakDots');
+      if (dotsContainer) {
+        dotsContainer.replaceChildren();
+        const start = weekStart(new Date());
+        for (let i = 0; i < 7; i++) {
+          const d = new Date(start.getFullYear(), start.getMonth(), start.getDate() + i);
+          const has = activityLog.some(l => l.type === 'workout' && l.date === localIso(d));
+          const dot = document.createElement('span');
+          dot.style.width = '14px';
+          dot.style.height = '14px';
+          dot.style.borderRadius = '50%';
+          dot.style.background = has ? '#10b981' : 'var(--surface-border)';
+          dot.style.display = 'inline-block';
+          dot.title = localIso(d);
+          dotsContainer.appendChild(dot);
+        }
+      }
+
+      const todaySum = document.getElementById('todaySummary');
+      if (todaySum) {
+        const todayLogs = activityLog.filter(l => l.type === 'workout' && l.date === localIso());
+        const mins = todayLogs.reduce((s, l) => s + (l.minutes || 0), 0);
+        const kcal = todayLogs.reduce((s, l) => s + (l.kcal || 0), 0);
+        todaySum.innerHTML = todayLogs.length > 0
+          ? 🎉 Completed <strong> mins</strong> today (~ kcal). Keep going!
+          : No workouts logged today yet. Click <strong>"Mark Workout Complete"</strong> below.;
+      }
+    }
+
+    // ==========================================================================
+    // NOTIFICATIONS & REMINDERS (Fix Guide Section 6.5 & 6.7)
+    // ==========================================================================
+    function buildNotifications() {
+      const out = [], now = Date.now();
+      (billsData || []).filter(b => !b.isPaid).forEach(b => {
+        const lbl = dueLabel(b.dueDate);
+        if (/Overdue|today|in [123] day/i.test(lbl)) {
+          out.push({ icon: '💳', title: b.title, sub: ${fmtINR(b.amountPaise != null ? b.amountPaise : toPaise(b.amount || 0))} • , tab: 'expense' });
+        }
+      });
+      (appointmentsData || []).forEach(a => {
+        if (a.startsAt) {
+          const t = new Date(a.startsAt).getTime();
+          if (t > now && t - now <= 48 * 3600000) {
+            out.push({ icon: '📅', title: a.title, sub: fmtDateTime(a.startsAt), tab: 'calendar' });
+          }
+        }
+      });
+      (pillsData || []).forEach(p => {
+        const left = daysLeft(p);
+        if (left <= (p.refillWarningDays || 5)) {
+          out.push({ icon: '💊', title: ${p.name} Refill Alert, sub: ${left} day remaining in course, tab: 'reminders' });
+        }
+      });
+      return out;
+    }
+
+    function renderNotifications() {
+      const notifs = buildNotifications();
+      const badge = document.getElementById('notifBadge');
+      const countLabel = document.getElementById('notifCountLabel');
+      const list = document.getElementById('notifList');
+      if (badge) {
+        badge.textContent = notifs.length;
+        badge.style.display = notifs.length > 0 ? 'inline-flex' : 'none';
+      }
+      if (countLabel) countLabel.textContent = ${notifs.length} pending;
+      if (!list) return;
+      list.replaceChildren();
+      if (notifs.length === 0) {
+        list.innerHTML = '<div style="font-size:0.78rem; color:var(--text-muted); padding:0.5rem; text-align:center;">No pending alerts. Everything is up to date! 🎉</div>';
+        return;
+      }
+      notifs.forEach(n => {
+        const item = document.createElement('div');
+        item.style.padding = '0.5rem';
+        item.style.borderRadius = '8px';
+        item.style.background = 'var(--surface-hover)';
+        item.style.cursor = 'pointer';
+        item.style.display = 'flex';
+        item.style.gap = '0.5rem';
+        item.style.alignItems = 'center';
+        item.innerHTML = 
+          <span style="font-size:1.1rem;"></span>
+          <div style="flex:1; min-width:0;">
+            <div style="font-weight:700; font-size:0.8rem; color:var(--text);"></div>
+            <div style="font-size:0.7rem; color:var(--text-muted);"></div>
+          </div>
+        ;
+        item.addEventListener('click', () => {
+          switchPrimaryTab(n.tab);
+          const drop = document.getElementById('notifDropdown');
+          if (drop) drop.hidden = true;
+        });
+        list.appendChild(item);
+      });
+    }
+
+    function toggleNotificationsDropdown() {
+      const drop = document.getElementById('notifDropdown');
+      const btn = document.getElementById('notifBtn');
+      if (!drop) return;
+      const willOpen = drop.hidden;
+      drop.hidden = !willOpen;
+      if (btn) btn.setAttribute('aria-expanded', willOpen ? 'true' : 'false');
+      if (willOpen) renderNotifications();
+    }
+
+    async function enableReminders() {
+      if (!('Notification' in window)) {
+        showToast('This browser cannot show notifications.');
+        return;
+      }
+      const r = await Notification.requestPermission();
+      showToast(r === 'granted' ? '🔔 Reminders active while this tab is open.' : 'Notifications are blocked in browser settings.');
+    }
+
+    function clockToMinutes(s) {
+      const m = /^(\d{1,2}):(\d{2})\s*(AM|PM)$/i.exec(s || '');
+      if (!m) return null;
+      return ((+m[1] % 12) + (m[3].toUpperCase() === 'PM' ? 12 : 0)) * 60 + +m[2];
+    }
+
+    const firedRemindersToday = new Set();
+    function checkDueReminders() {
+      if (!('Notification' in window) || Notification.permission !== 'granted') return;
+      const n = new Date(), mins = n.getHours() * 60 + n.getMinutes();
+      (pillsData || []).forEach(p => {
+        (p.times || [p.time || '08:30 AM']).forEach(t => {
+          const due = clockToMinutes(t);
+          const key = ${localIso()}||;
+          if (due === null || firedRemindersToday.has(key) || Date.now() < (p.snoozedUntil || 0)) return;
+          if (mins >= due && mins < due + 30) {
+            firedRemindersToday.add(key);
+            try {
+              new Notification(⏰ Time for , { body: ${p.dosage || 'Take prescribed dose'} () });
+            } catch (e) {}
+          }
+        });
+      });
+    }
+
+    // ==========================================================================
+    // CAREGIVER AUDIT NOTES (Fix Guide Section 6.3)
+    // ==========================================================================
+    function toggleNoteRow() {
+      const row = document.getElementById('noteRow');
+      if (!row) return;
+      row.hidden = !row.hidden;
+      if (!row.hidden) {
+        const inp = document.getElementById('noteInput');
+        if (inp) inp.focus();
+      }
+    }
+
+    function saveCaregiverNote() {
+      const input = document.getElementById('noteInput');
+      if (!input) return;
+      const text = input.value.trim();
+      if (!text) return;
+      const by = (householdProfiles && householdProfiles[currentRole] && householdProfiles[currentRole].name) || 'Caregiver';
+      careNotes.unshift({ at: new Date().toISOString(), by, text });
+      safeSave('omnitask_care_notes', careNotes);
+      input.value = '';
+      const row = document.getElementById('noteRow');
+      if (row) row.hidden = true;
+      renderAuditLog();
+      showToast('Note saved to care log.');
+    }
+
+    function renderAuditLog() {
+      const host = document.getElementById('caregiverLiveStream');
+      if (!host) return;
+      host.replaceChildren();
+      if (careNotes.length === 0) {
+        host.innerHTML = '<div style="color:var(--text-muted); font-size:0.78rem; padding:0.4rem;">No caregiver notes logged yet.</div>';
+        return;
+      }
+      careNotes.slice(0, 10).forEach(n => {
+        const row = document.createElement('div');
+        row.style.display = 'flex';
+        row.style.justifyContent = 'space-between';
+        row.style.alignItems = 'center';
+        row.style.padding = '0.45rem 0.65rem';
+        row.style.background = 'var(--surface)';
+        row.style.border = '1px solid var(--surface-border)';
+        row.style.borderRadius = '8px';
+        row.style.fontSize = '0.78rem';
+        row.style.margin = '2px 0';
+        const timeStr = new Date(n.at).toLocaleTimeString('en-IN', { hour: 'numeric', minute: '2-digit' });
+        row.innerHTML = 
+          <div>
+            <strong style="color:var(--text);">:</strong>
+            <span style="color:var(--text); margin-left:0.3rem;"></span>
+          </div>
+          <span style="color:var(--text-muted); font-size:0.7rem; flex-shrink:0; margin-left:0.5rem;"></span>
+        ;
+        host.appendChild(row);
+      });
+    }
+
+    // ==========================================================================
+    // UNIFIED SEARCH (Fix Guide Section 6.6)
+    // ==========================================================================
+    function searchAll(q) {
+      q = (q || '').trim().toLowerCase();
+      if (q.length < 2) return [];
+      const has = (...fields) => fields.some(f => (f || '').toString().toLowerCase().includes(q));
+      const out = [];
+
+      (pillsData || []).forEach(p => {
+        if (has(p.name, p.doctor, p.dosage)) {
+          out.push({ type: 'Medicine', label: p.name, sub: p.dosage, tab: 'reminders' });
+        }
+      });
+      (billsData || []).forEach(b => {
+        if (has(b.title, b.payee)) {
+          out.push({ type: 'Bill', label: b.title, sub: fmtINR(b.amountPaise != null ? b.amountPaise : toPaise(b.amount || 0)), tab: 'expense' });
+        }
+      });
+      (expensesData || []).forEach(e => {
+        if (has(e.name, e.category)) {
+          out.push({ type: 'Expense', label: e.name, sub: fmtINR(e.amountPaise != null ? e.amountPaise : toPaise(e.amount || 0)), tab: 'expense' });
+        }
+      });
+      (appointmentsData || []).forEach(a => {
+        if (has(a.title, a.sub)) {
+          out.push({ type: 'Appointment', label: a.title, sub: a.startsAt ? fmtDateTime(a.startsAt) : a.date, tab: 'calendar' });
+        }
+      });
+      (householdTasks || []).forEach(t => {
+        if (has(t.title, t.priority, t.due)) {
+          out.push({ type: 'Task', label: t.title, sub: t.due, tab: 'oversight' });
+        }
+      });
+      (workoutsData || []).forEach(w => {
+        if (has(w.title, w.sub)) {
+          out.push({ type: 'Workout', label: w.title, sub: w.sub, tab: 'fitness' });
+        }
+      });
+      (habitsData || []).forEach(h => {
+        if (has(h.title, h.frequency)) {
+          out.push({ type: 'Habit', label: h.title, sub: h.frequency, tab: 'fitness' });
+        }
+      });
+
+      return out.slice(0, 10);
+    }
+
+    function setupGlobalSearch() {
+      const searchInput = document.getElementById('globalOmniSearchInput');
+      const resultsBox = document.getElementById('searchResults');
+      const kbdHint = document.getElementById('kbdHint');
+      if (kbdHint) {
+        const isMac = /Mac/i.test(navigator.platform || navigator.userAgent);
+        kbdHint.textContent = isMac ? '⌘K' : 'Ctrl K';
+        if (window.matchMedia && window.matchMedia('(pointer: coarse)').matches) {
+          kbdHint.hidden = true;
+        }
+      }
+      if (!searchInput || !resultsBox) return;
+
+      searchInput.addEventListener('input', () => {
+        const hits = searchAll(searchInput.value);
+        resultsBox.replaceChildren();
+        if (hits.length === 0) {
+          if (searchInput.value.trim().length >= 2) {
+            const empty = document.createElement('div');
+            empty.style.padding = '0.5rem';
+            empty.style.fontSize = '0.78rem';
+            empty.style.color = 'var(--text-muted)';
+            empty.textContent = No matches found for "";
+            resultsBox.appendChild(empty);
+            resultsBox.hidden = false;
+          } else {
+            resultsBox.hidden = true;
+          }
+          return;
+        }
+        resultsBox.hidden = false;
+        hits.forEach(h => {
+          const item = document.createElement('button');
+          item.type = 'button';
+          item.setAttribute('role', 'option');
+          item.className = 'btn-secondary';
+          item.style.width = '100%';
+          item.style.textAlign = 'left';
+          item.style.padding = '0.45rem 0.65rem';
+          item.style.display = 'flex';
+          item.style.justifyContent = 'space-between';
+          item.style.alignItems = 'center';
+          item.style.border = 'none';
+          item.style.borderBottom = '1px solid var(--surface-border)';
+          item.style.borderRadius = '6px';
+          item.style.cursor = 'pointer';
+          item.style.margin = '2px 0';
+          item.innerHTML = 
+            <div>
+              <span style="font-size:0.68rem; font-weight:800; text-transform:uppercase; color:var(--accent); margin-right:0.35rem;">[]</span>
+              <strong style="font-size:0.82rem; color:var(--text);"></strong>
+            </div>
+            <span style="font-size:0.72rem; color:var(--text-muted);"></span>
+          ;
+          item.addEventListener('click', () => {
+            switchPrimaryTab(h.tab);
+            resultsBox.hidden = true;
+            searchInput.value = '';
+          });
+          resultsBox.appendChild(item);
+        });
+      });
+
+      searchInput.addEventListener('keydown', e => {
+        if (e.key === 'Escape') {
+          searchInput.value = '';
+          resultsBox.hidden = true;
+          searchInput.blur();
+        }
+      });
+
+      document.addEventListener('click', e => {
+        if (!searchInput.contains(e.target) && !resultsBox.contains(e.target)) {
+          resultsBox.hidden = true;
+        }
+      });
+    }
+
+    // ==========================================================================
+    // UX & DELETION WITH UNDO (Fix Guide Section 10)
+    // ==========================================================================
+    function deleteWithUndo(list, id, label, after) {
+      const i = list.findIndex(x => x.id === id);
+      if (i < 0) return;
+      lastDeleted = { list, item: list[i], index: i, after };
+      list.splice(i, 1);
+      persistAllData();
+      renderAllViews();
+      showToast(label + ' deleted', { undo: true, ms: 8000 });
+    }
+
+    function undoDelete() {
+      if (!lastDeleted) return;
+      lastDeleted.list.splice(lastDeleted.index, 0, lastDeleted.item);
+      if (typeof lastDeleted.after === 'function') lastDeleted.after();
+      lastDeleted = null;
+      persistAllData();
+      renderAllViews();
+      showToast('Action undone');
+    }
+
+    function emptyState(el, text, actionLabel, action) {
+      if (!el) return;
+      el.replaceChildren();
+      const p = document.createElement('p');
+      p.className = 'empty';
+      p.style.color = 'var(--text-muted)';
+      p.style.fontSize = '0.85rem';
+      p.style.padding = '0.75rem';
+      p.style.textAlign = 'center';
+      p.textContent = text;
+      el.append(p);
+      if (actionLabel && action) {
+        const b = document.createElement('button');
+        b.type = 'button';
+        b.className = 'btn btn-secondary';
+        b.textContent = actionLabel;
+        b.style.fontSize = '0.78rem';
+        b.style.margin = '0 auto';
+        b.style.display = 'block';
+        b.onclick = action;
+        el.append(b);
+      }
+    }
+
+    function fieldError(input, msg) {
+      if (!input) return true;
+      let hint = input.parentNode ? input.parentNode.querySelector('.field-error') : null;
+      if (!msg) {
+        if (hint) hint.remove();
+        input.removeAttribute('aria-invalid');
+        return true;
+      }
+      if (!hint) {
+        hint = document.createElement('div');
+        hint.className = 'field-error';
+        hint.id = (input.id || 'f' + Math.random().toString(36).slice(2)) + '-err';
+        hint.style.color = 'var(--rose)';
+        hint.style.fontSize = '0.75rem';
+        hint.style.marginTop = '2px';
+        input.after(hint);
+      }
+      hint.textContent = msg;
+      input.setAttribute('aria-invalid', 'true');
+      input.setAttribute('aria-describedby', hint.id);
+      return false;
+    }
+
     function renderAllViews() {
       renderCalendarEngine();
       updateDedicatedWeekHeaders();
@@ -8428,10 +9003,15 @@
       renderSeniorTabletPills();
       renderBills();
       renderExpenses();
+      renderHomeFinance();
+      renderFocus();
       renderWorkouts();
       renderHabits();
       renderAppointments();
       renderTimeline();
+      renderFitness();
+      renderNotifications();
+      renderAuditLog();
       updateSeniorClock();
     }
 
@@ -8447,9 +9027,9 @@
       }
 
       pillsData.forEach((p, idx) => {
-        const pct = Math.min(100, Math.round((p.day / p.totalDays) * 100));
+        const pct = Math.min(100, Math.round((courseDay(p) / (p.totalDays || 30)) * 100));
         const daysLeft = Math.max(0, p.totalDays - p.day);
-        const isDone = p.day >= p.totalDays;
+        const isDone = courseDone(p);
 
         let rawName = p.name || 'Prescription';
         let rawDosage = p.dosage || '500mg • Twice Daily';
@@ -8651,7 +9231,7 @@
                   <line x1="8" y1="2" x2="8" y2="6"></line>
                   <line x1="3" y1="10" x2="21" y2="10"></line>
                 </svg>
-                <span>Course Progress: <strong>Day ${p.day} of ${p.totalDays} (${pct}%)</strong></span>
+                <span>Course Progress: <strong>Day ${courseDay(p)} of ${p.totalDays} (${pct}%)</strong></span>
               </div>
               <div style="display:flex; align-items:center;">
                 <div class="regimen-stat-divider"></div>
@@ -8812,8 +9392,8 @@
       }
 
       pillsData.forEach((p, idx) => {
-        const pct = Math.min(100, Math.round((p.day / p.totalDays) * 100));
-        const isCompleted = p.day >= p.totalDays;
+        const pct = Math.min(100, Math.round((courseDay(p) / (p.totalDays || 30)) * 100));
+        const isCompleted = courseDone(p);
 
         let rawName = p.name || 'Prescription';
         let rawDosage = p.dosage || 'Standard Dose';
@@ -8844,7 +9424,7 @@
                   ${status.label}
                 </span>
                 <span style="font-size:0.7rem; font-family:'JetBrains Mono',monospace; color:${isCompleted ? 'var(--emerald)' : '#cbd5e1'}; font-weight:700;">
-                  ${isCompleted ? 'Done ✓' : `Day ${p.day}/${p.totalDays}`}
+                  ${isCompleted ? 'Done ✓' : `Day ${courseDay(p)}/${p.totalDays}`}
                 </span>
               </div>
               <div style="display:flex; align-items:center; gap:0.5rem; margin-top:6px;">
@@ -8879,7 +9459,7 @@
       }
 
       pillsData.forEach((p, idx) => {
-        const isCompleted = p.day >= p.totalDays;
+        const isCompleted = courseDone(p);
         const daysLeft = Math.max(0, p.totalDays - p.day);
         
         let rawName = p.name || 'Prescription';
@@ -8904,7 +9484,7 @@
                   ${escapeHTML(rawName)} <span style="font-size:1.35rem; font-weight:800; color:var(--emerald);">${escapeHTML(rawDosage)}</span>
                 </div>
                 <div style="font-size:1.1rem; color:var(--text-muted); margin-top:4px;">
-                  Take with breakfast • <strong style="color:var(--text);">Day ${p.day} of ${p.totalDays}</strong> • Scheduled for <strong>${scheduleTime}</strong>
+                  Take with breakfast • <strong style="color:var(--text);">Day ${courseDay(p)} of ${p.totalDays}</strong> • Scheduled for <strong>${scheduleTime}</strong>
                 </div>
               </div>
             </div>
@@ -8935,7 +9515,7 @@
               </div>
             ` : `
               <button class="btn-senior-giant" onclick="takePillDoseDynamic('${p.id}')">
-                ✓ TAKE DOSE (DAY ${p.day})
+                ✓ TAKE DOSE (DAY ${courseDay(p)})
               </button>
             `}
           </div>
@@ -8964,18 +9544,18 @@
         greeting = 'Good evening';
       }
 
-      // 2. Localized Dates
-      const dayNameFull = now.toLocaleDateString('en-US', { weekday: 'long' });
-      const dayNameShort = now.toLocaleDateString('en-US', { weekday: 'short' });
-      const monthFull = now.toLocaleDateString('en-US', { month: 'long' });
-      const monthShort = now.toLocaleDateString('en-US', { month: 'short' });
+      // 2. Localized Dates (Fix Guide Section 5.4 en-IN)
+      const dayNameFull = now.toLocaleDateString('en-IN', { weekday: 'long' });
+      const dayNameShort = now.toLocaleDateString('en-IN', { weekday: 'short' });
+      const monthFull = now.toLocaleDateString('en-IN', { month: 'long' });
+      const monthShort = now.toLocaleDateString('en-IN', { month: 'short' });
       const dateNum = now.getDate();
       const yearNum = now.getFullYear();
 
       // Topbar date
       const topbarDateElem = document.getElementById('topbarDateStr');
       if (topbarDateElem) {
-        topbarDateElem.textContent = `${dayNameShort}, ${monthShort} ${dateNum}, ${yearNum}`;
+        topbarDateElem.textContent = `${dayNameShort}, ${dateNum} ${monthShort} ${yearNum}`;
       }
 
       // Hero Greeting & Subtitle Date
@@ -8987,18 +9567,19 @@
       }
       const heroDateSubElem = document.getElementById('heroDateSubtitle');
       if (heroDateSubElem) {
-        heroDateSubElem.textContent = `"A calmer, more organised life together." • ${dayNameFull}, ${monthFull} ${dateNum}`;
+        heroDateSubElem.textContent = `"A calmer, more organised life together." • ${dayNameFull}, ${dateNum} ${monthFull}`;
       }
 
-      // Senior Banner Greeting & Subtitle Date
+      // Senior Banner Greeting & Subtitle Date (Dynamic Senior & Caregiver names)
       const seniorGreetingElem = document.getElementById('seniorGreetingTitle');
+      const sName = (typeof householdProfiles !== 'undefined' && householdProfiles.senior && householdProfiles.senior.name) ? householdProfiles.senior.name : 'Eleanor';
       if (seniorGreetingElem) {
-        seniorGreetingElem.textContent = `${greeting}, Eleanor! 🌸`;
+        seniorGreetingElem.textContent = `${greeting}, ${sName}! 🌸`;
       }
       const seniorDateSubElem = document.getElementById('seniorDateSubtitle');
       if (seniorDateSubElem) {
         const cgName = (typeof householdProfiles !== 'undefined' && householdProfiles.caregiver && householdProfiles.caregiver.name) ? householdProfiles.caregiver.name : 'John Vance';
-        seniorDateSubElem.innerHTML = `Today is <strong>${dayNameFull}, ${monthFull} ${dateNum}, ${yearNum}</strong> &bull; Your caregiver <strong>${cgName}</strong> is online.`;
+        seniorDateSubElem.innerHTML = `Today is <strong>${dayNameFull}, ${dateNum} ${monthFull} ${yearNum}</strong> &bull; Your caregiver <strong>${escapeHTML(cgName)}</strong> is online.`;
       }
 
       // Clinical Insights Next Lab Date
@@ -9006,10 +9587,10 @@
       if (labElem) {
         const nextLab = new Date(now);
         nextLab.setDate(now.getDate() + 5);
-        const labMonth = nextLab.toLocaleDateString('en-US', { month: 'short' });
+        const labMonth = nextLab.toLocaleDateString('en-IN', { month: 'short' });
         const labDay = nextLab.getDate();
         const labYear = nextLab.getFullYear();
-        labElem.innerHTML = `Date: ${labMonth} ${labDay}, ${labYear} &bull; Quest Diagnostics Comprehensive Metabolic Panel (CMP)`;
+        labElem.innerHTML = `Date: ${labDay} ${labMonth} ${labYear} &bull; Diagnostic Fasting Metabolic Panel (CMP)`;
       }
 
       // Sync dedicated week calendar headers dynamically
@@ -9065,10 +9646,10 @@
       showToast("🛡️ Caregiver Acknowledged: Morning dose verified and recorded.");
     }
 
-    function takePillDoseDynamic(pillId) {
+    function takePillDoseDynamic(pillId) { takePillDose(pillId); return;
       const p = pillsData.find(x => x.id === pillId) || pillsData[0];
       if (p.day >= p.totalDays) {
-        alert(`🎉 Congratulations! You have completed the ${p.totalDays}-day course of ${p.name}.`);
+        showToast(`🎉 Congratulations! You have completed the ${p.totalDays}-day course of ${p.name}.`);
         return;
       }
       lastActionUndo = { type: 'pill', id: p.id, prevDay: p.day };
@@ -9078,7 +9659,7 @@
       renderCockpitMedications();
       renderSeniorTabletPills();
       renderTimeline();
-      showToast(`💊 Logged Dose: ${p.name} • Day ${p.day}/${p.totalDays}`);
+      showToast(`💊 Logged Dose: ${p.name} • Day ${courseDay(p)}/${p.totalDays}`);
     }
 
     // 2. Render Bills Cards
@@ -9092,33 +9673,42 @@
         return;
       }
 
-      billsData.forEach(b => {
+      // Sort overdue bills first, then by due date
+      const sorted = [...billsData].sort((a, b) => {
+        if (a.isPaid !== b.isPaid) return a.isPaid ? 1 : -1;
+        return (a.dueDate || '').localeCompare(b.dueDate || '');
+      });
+
+      sorted.forEach(b => {
         const title = escapeHTML(b.title || 'Bill');
         const payee = escapeHTML(b.payee || 'Provider');
-        const dueDate = escapeHTML(b.dueDate || 'Soon');
+        const dueStr = dueLabel(b.dueDate);
+        const amtPaise = b.amountPaise != null ? b.amountPaise : toPaise(b.amount || 0);
+        const isOverdue = !b.isPaid && dueStr.toLowerCase().includes('overdue');
 
         const card = document.createElement('div');
         card.className = 'module-card';
+        if (isOverdue) card.style.borderColor = 'var(--rose)';
         card.innerHTML = `
           <div class="card-top">
             <div>
-              <div class="card-title" style="font-size:1.1rem;">${title}</div>
-              <div class="card-sub">${payee} • Due ${dueDate}</div>
+              <div class="card-title" style="font-size:1.1rem; ${isOverdue ? 'color:var(--rose);' : ''}">${title}</div>
+              <div class="card-sub">${payee} • <strong style="${isOverdue ? 'color:var(--rose); font-weight:800;' : ''}">${dueStr}</strong></div>
             </div>
             <div style="display:flex; gap:0.3rem;">
               <button class="btn btn-secondary senior-hide" style="padding:0.25rem 0.5rem; font-size:0.72rem;" onclick="openEditModal('bill', '${b.id}')">✏️ Edit</button>
               <button class="btn btn-secondary senior-hide" style="padding:0.25rem 0.5rem; font-size:0.72rem; color:var(--rose);" onclick="deleteItem('bill', '${b.id}')">🗑️</button>
             </div>
           </div>
-          <div style="font-size:1.6rem; font-weight:800; font-family:'JetBrains Mono',monospace;">₹${parseFloat(b.amount || 0).toFixed(2)}</div>
-          <div class="card-sub">⚡ Status: ${b.isPaid ? '<strong style="color:var(--emerald);">✅ Paid & Logged to Expense</strong>' : '<strong style="color:var(--amber);">Pending Payment</strong>'}</div>
+          <div style="font-size:1.6rem; font-weight:800; font-family:'JetBrains Mono',monospace;">${fmtINR(amtPaise)}</div>
+          <div class="card-sub">⚡ Status: ${b.isPaid ? '<strong style="color:var(--emerald);">✅ Paid & Logged to Expense</strong>' : (isOverdue ? '<strong style="color:var(--rose);">🚨 Overdue Payment</strong>' : '<strong style="color:var(--amber);">Pending Payment</strong>')}</div>
           ${!b.isPaid ? `
-            <button class="btn" style="background:var(--accent); padding:0.65rem 1.25rem; font-size:0.9rem;" onclick="payBillDynamic('${b.id}')">
+            <button class="btn" style="background:${isOverdue ? 'var(--rose)' : 'var(--accent)'}; padding:0.65rem 1.25rem; font-size:0.9rem;" onclick="payBillDynamic('${b.id}')">
               💳 Pay Bill & Auto-Link to Expense
             </button>
           ` : `
             <button class="btn btn-emerald" style="padding:0.65rem 1.25rem; font-size:0.9rem;" disabled>
-              ✅ Paid (₹${parseFloat(b.amount || 0).toFixed(2)})
+              ✅ Paid (${fmtINR(amtPaise)})
             </button>
           `}
         `;
@@ -9132,6 +9722,7 @@
         showToast("Bill is already marked as paid.");
         return;
       }
+      const amtPaise = b.amountPaise != null ? b.amountPaise : toPaise(b.amount || 0);
       lastActionUndo = { type: 'bill', id: b.id, wasPaid: false };
       b.isPaid = true;
 
@@ -9139,17 +9730,19 @@
       expensesData.unshift({
         id: "exp_" + Date.now(),
         name: `💡 ${b.title} (Auto-Linked)`,
-        amount: b.amount,
+        amount: amtPaise / 100,
+        amountPaise: amtPaise,
         category: "Utility",
-        date: "Today"
+        date: localIso()
       });
 
       persistAllData();
       renderBills();
       renderExpenses();
+      renderHomeFinance();
       renderTimeline();
 
-      showToast(`💳 Paid ${b.title} (₹${b.amount.toFixed(2)}) • Auto-linked to Expense Ledger!`);
+      showToast(`💳 Paid ${b.title} (${fmtINR(amtPaise)}) • Auto-linked to Expense Ledger!`, { undo: true });
     }
 
     // Category Normalization Helper (Supports Utility, Food, Travel, Household, Medical, Other)
@@ -9164,10 +9757,12 @@
       return 'Other';
     }
 
-    // Salary Modal Handlers
+    // Salary & Budget Modal Handlers (Fix Guide Section 4.4)
     function openSalaryModal() {
       const inp = document.getElementById('inpMonthlySalary');
-      if (inp) inp.value = monthlySalary;
+      if (inp) inp.value = monthlyIncomePaise ? (monthlyIncomePaise / 100) : 50000;
+      const inpBud = document.getElementById('inpMonthlyBudget');
+      if (inpBud) inpBud.value = monthlyBudgetPaise ? (monthlyBudgetPaise / 100) : 25000;
       document.getElementById('salaryModal').style.display = 'flex';
       setTimeout(() => { if (inp) inp.focus(); }, 50);
     }
@@ -9179,20 +9774,32 @@
     function setSalaryPreset(amount) {
       const inp = document.getElementById('inpMonthlySalary');
       if (inp) inp.value = amount;
+      const inpBud = document.getElementById('inpMonthlyBudget');
+      if (inpBud) inpBud.value = Math.round(amount * 0.8);
     }
 
     function saveMonthlySalary() {
       const inp = document.getElementById('inpMonthlySalary');
-      const val = parseFloat(inp ? inp.value : 0);
-      if (isNaN(val) || val <= 0) {
-        alert("Please enter a valid monthly salary amount (greater than ₹0).");
+      const inpBud = document.getElementById('inpMonthlyBudget');
+      const valSal = parseFloat(inp ? inp.value : 0);
+      const valBud = parseFloat(inpBud ? inpBud.value : 0);
+      if (isNaN(valSal) || valSal <= 0) {
+        showToast("Please enter a valid monthly income amount (greater than ₹0).");
         return;
       }
-      monthlySalary = val;
+      monthlyIncomePaise = toPaise(valSal);
+      monthlySalary = valSal;
+      monthlyBudgetPaise = (valBud > 0) ? toPaise(valBud) : Math.round(monthlyIncomePaise * 0.8);
+
+      localStorage.setItem('omnitask_income', monthlyIncomePaise.toString());
+      localStorage.setItem('omnitask_budget', monthlyBudgetPaise.toString());
+      localStorage.setItem('omnitask_monthly_salary', monthlySalary.toString());
+
       persistAllData();
       renderExpenses();
+      renderHomeFinance();
       closeSalaryModal();
-      showToast(`💰 Monthly salary updated to ₹${monthlySalary.toLocaleString('en-IN', { minimumFractionDigits: 2, maximumFractionDigits: 2 })}!`);
+      showToast(`💰 Income updated to ${fmtINR(monthlyIncomePaise)}, Budget ${fmtINR(monthlyBudgetPaise)}`);
     }
 
     function filterExpenseLedger(category) {
@@ -9226,35 +9833,39 @@
         Other: 0
       };
 
+      let totalPaise = 0;
       expensesData.forEach(e => {
-        const amt = parseFloat(e.amount || 0);
-        total += amt;
+        const amtPaise = e.amountPaise != null ? e.amountPaise : toPaise(e.amount || 0);
+        totalPaise += amtPaise;
         const normCat = normalizeExpenseCategory(e.category);
-        categoryTotals[normCat] = (categoryTotals[normCat] || 0) + amt;
+        categoryTotals[normCat] = (categoryTotals[normCat] || 0) + amtPaise;
         categoryCounts[normCat] = (categoryCounts[normCat] || 0) + 1;
       });
 
-      // Update Monthly Salary & Cashflow Cockpit Metrics
+      // Update Monthly Salary & Cashflow Cockpit Metrics (Fix Guide Section 4)
+      const curIncome = monthlyIncomePaise || toPaise(monthlySalary);
+      const curBudget = monthlyBudgetPaise || Math.round(curIncome * 0.8);
+
       const dispSal = document.getElementById('dispMonthlySalary');
-      if (dispSal) dispSal.textContent = `₹${monthlySalary.toLocaleString('en-IN', { minimumFractionDigits: 2, maximumFractionDigits: 2 })}`;
+      if (dispSal) dispSal.textContent = fmtINR(curIncome);
 
       const dispTot = document.getElementById('dispTotalSpentMonth');
-      if (dispTot) dispTot.textContent = `₹${total.toLocaleString('en-IN', { minimumFractionDigits: 2, maximumFractionDigits: 2 })}`;
+      if (dispTot) dispTot.textContent = fmtINR(totalPaise);
 
-      const netSavings = monthlySalary - total;
+      const netSavingsPaise = curIncome - totalPaise;
       const dispSav = document.getElementById('dispNetSavings');
       if (dispSav) {
-        const sign = netSavings >= 0 ? '+' : '-';
-        dispSav.textContent = `${sign}₹${Math.abs(netSavings).toLocaleString('en-IN', { minimumFractionDigits: 2, maximumFractionDigits: 2 })}`;
-        dispSav.style.color = netSavings >= 0 ? 'var(--emerald)' : 'var(--rose)';
+        const sign = netSavingsPaise >= 0 ? '+' : '-';
+        dispSav.textContent = `${sign}${fmtINR(Math.abs(netSavingsPaise))}`;
+        dispSav.style.color = netSavingsPaise >= 0 ? 'var(--emerald)' : 'var(--rose)';
       }
 
-      const burnPct = monthlySalary > 0 ? (total / monthlySalary) * 100 : 0;
-      const savingsPct = Math.max(0, 100 - burnPct);
+      const burnPct = curBudget > 0 ? (totalPaise / curBudget) * 100 : 0;
+      const savingsPct = curIncome > 0 ? Math.max(0, 100 - (totalPaise / curIncome) * 100) : 0;
 
       const dispBurnBadge = document.getElementById('dispSpendPctBadge');
       if (dispBurnBadge) {
-        dispBurnBadge.textContent = `${burnPct.toFixed(1)}% of Salary`;
+        dispBurnBadge.textContent = `${burnPct.toFixed(1)}% of Budget`;
         if (burnPct > 90) {
           dispBurnBadge.style.background = 'var(--rose-bg)';
           dispBurnBadge.style.color = 'var(--rose)';
@@ -9291,14 +9902,14 @@
 
       const dispSavPctText = document.getElementById('dispSavingsPctText');
       if (dispSavPctText) {
-        dispSavPctText.textContent = netSavings >= 0 
+        dispSavPctText.textContent = netSavingsPaise >= 0 
           ? `${savingsPct.toFixed(1)}% of income retained in savings`
-          : `Deficit of ₹${Math.abs(netSavings).toFixed(2)} beyond monthly salary`;
+          : `Deficit of ${fmtINR(Math.abs(netSavingsPaise))} beyond monthly income`;
       }
 
       const dispCapRatio = document.getElementById('dispCapacityRatio');
       if (dispCapRatio) {
-        dispCapRatio.textContent = `${burnPct.toFixed(1)}% Burned (₹${total.toFixed(2)} of ₹${monthlySalary.toFixed(2)})`;
+        dispCapRatio.textContent = `${burnPct.toFixed(1)}% of Budget (${fmtINR(totalPaise)} of ${fmtINR(curBudget)})`;
       }
 
       const dispBurnFill = document.getElementById('dispSalaryBurnFill');
@@ -9328,8 +9939,8 @@
         displayCategories.forEach(cat => {
           const catSpent = categoryTotals[cat.key] || 0;
           const catCount = categoryCounts[cat.key] || 0;
-          const catShareOfTotal = total > 0 ? ((catSpent / total) * 100).toFixed(0) : 0;
-          const catShareOfSalary = monthlySalary > 0 ? ((catSpent / monthlySalary) * 100).toFixed(1) : 0;
+          const catShareOfTotal = totalPaise > 0 ? ((catSpent / totalPaise) * 100).toFixed(0) : 0;
+          const catShareOfSalary = curIncome > 0 ? ((catSpent / curIncome) * 100).toFixed(1) : 0;
           const isFilterActive = activeExpenseCategoryFilter === cat.key;
 
           const card = document.createElement('div');
@@ -9347,10 +9958,10 @@
                 </span>
               </div>
               <div style="font-size:1.35rem; font-weight:900; font-family:'JetBrains Mono',monospace; margin-top:0.4rem; color:var(--text);">
-                ₹${catSpent.toFixed(2)}
+                ${fmtINR(catSpent)}
               </div>
               <div style="font-size:0.7rem; color:var(--text-muted); margin-top:2px;">
-                ${catShareOfTotal}% of total spend • ${catShareOfSalary}% of salary
+                ${catShareOfTotal}% of total spend • ${catShareOfSalary}% of income
               </div>
             </div>
 
@@ -9409,7 +10020,8 @@
         const name = escapeHTML(e.name || 'Expense');
         const normCat = normalizeExpenseCategory(e.category);
         const meta = catBadges[normCat] || catBadges.Other;
-        const date = escapeHTML(e.date || 'Oct 6');
+        const date = escapeHTML(e.date || localIso());
+        const amtPaise = e.amountPaise != null ? e.amountPaise : toPaise(e.amount || 0);
 
         const row = document.createElement('div');
         row.className = 'module-card';
@@ -9424,17 +10036,17 @@
               <span class="pill-badge" style="background:${meta.bg}; color:${meta.color}; border:1px solid ${meta.color}40; font-size:0.68rem; padding:0.12rem 0.45rem;">
                 ${meta.icon} ${meta.label}
               </span>
-              ${e.receiptImage ? `
+              ${(e.receiptId || e.receiptImage) ? `
                 <button class="sample-pill-btn" style="padding:0.12rem 0.4rem; font-size:0.68rem; color:var(--accent); border-color:var(--accent);" onclick="openReceiptViewer('${e.id}')">🧾 Receipt</button>
               ` : ''}
               ${e.confidence ? `
                 <span class="pill-badge" style="background:var(--emerald-bg); color:var(--emerald); font-size:0.65rem; padding:0.1rem 0.35rem;">AI ${Math.round(e.confidence * 100)}%</span>
               ` : ''}
             </div>
-            <div class="card-sub" style="font-size:0.72rem; margin-top:2px;">Date: ${date} ${e.tax ? `• Tax: ₹${parseFloat(e.tax).toFixed(2)}` : ''}</div>
+            <div class="card-sub" style="font-size:0.72rem; margin-top:2px;">Date: ${date} ${e.tax ? `• Tax: ${fmtINR(toPaise(e.tax))}` : ''}</div>
           </div>
           <div style="display:flex; align-items:center; gap:0.6rem;">
-            <strong style="font-family:'JetBrains Mono',monospace; font-size:0.98rem; color:var(--text);">₹${parseFloat(e.amount || 0).toFixed(2)}</strong>
+            <strong style="font-family:'JetBrains Mono',monospace; font-size:0.98rem; color:var(--text);">${fmtINR(amtPaise)}</strong>
             <button class="btn btn-secondary" style="padding:0.2rem 0.4rem; font-size:0.7rem; color:var(--rose);" onclick="deleteItem('expense', '${e.id}')" title="Delete Expense">🗑️</button>
           </div>
         `;
@@ -9442,24 +10054,24 @@
       });
 
       // Preserve compatibility for existing meter elements
-      const budgetTotal = 850.00;
-      const utilitySpend = categoryTotals.Utility || 0;
-      const remaining = Math.max(0, budgetTotal - utilitySpend);
-      const pct = Math.min(100, Math.round((utilitySpend / budgetTotal) * 100));
+      const budgetTotalPaise = 300000; // ₹3,000 monthly utility allowance
+      const utilitySpendPaise = categoryTotals.Utility || 0;
+      const remainingPaise = Math.max(0, budgetTotalPaise - utilitySpendPaise);
+      const pct = Math.min(100, Math.round((utilitySpendPaise / budgetTotalPaise) * 100));
 
       const badge = document.getElementById('budgetRemainingBadge');
-      if (badge) badge.textContent = `₹${remaining.toFixed(2)} Remaining`;
+      if (badge) badge.textContent = `${fmtINR(remainingPaise)} Remaining`;
       const sub = document.getElementById('budgetSubtitleText');
-      if (sub) sub.textContent = `₹${utilitySpend.toFixed(2)} spent of ₹${budgetTotal.toFixed(2)} monthly allowance.`;
+      if (sub) sub.textContent = `${fmtINR(utilitySpendPaise)} spent of ${fmtINR(budgetTotalPaise)} monthly allowance.`;
       const fill = document.getElementById('budgetProgressFill');
       if (fill) fill.style.width = `${pct}%`;
 
       const spend = document.getElementById('calDailySpend');
-      if (spend) spend.textContent = `₹${total.toFixed(2)}`;
+      if (spend) spend.textContent = fmtINR(totalPaise);
 
       // 6. Synchronize Single Source of Truth to Insights & Home Bento Tile 1
       const insTotal = document.getElementById('insightsTotalSpendBadge');
-      if (insTotal) insTotal.textContent = `₹${total.toFixed(2)} Total`;
+      if (insTotal) insTotal.textContent = `${fmtINR(totalPaise)} Total`;
 
       const insUtil = document.getElementById('insightsCatUtilityAmt');
       if (insUtil) insUtil.textContent = `₹${(categoryTotals['Utility'] || 0).toFixed(2)}`;
@@ -9686,7 +10298,7 @@
       }
     }
 
-    // 6. Render Appointments
+    // 6. Render Appointments (Fix Guide Section 5.3)
     function renderAppointments() {
       const container = document.getElementById('appointmentsListContainer');
       if (!container) return;
@@ -9694,13 +10306,35 @@
 
       if (appointmentsData.length === 0) {
         container.innerHTML = '<div style="color:var(--text-muted); font-size:0.85rem; padding:0.5rem;">No medical appointments. Click "➕ Add Appt" to schedule one.</div>';
+        const nextBadge = document.getElementById('nextApptBadge');
+        if (nextBadge) nextBadge.style.display = 'none';
         return;
       }
 
-      appointmentsData.forEach(a => {
+      // Sort by start timestamp if available
+      const sorted = [...appointmentsData].sort((a, b) => {
+        if (a.startsAt && b.startsAt) return a.startsAt.localeCompare(b.startsAt);
+        return 0;
+      });
+
+      // Find next future appointment
+      const nowMs = Date.now();
+      const nextFut = sorted.find(a => a.startsAt && new Date(a.startsAt).getTime() > nowMs);
+      const nextBadge = document.getElementById('nextApptBadge');
+      if (nextBadge) {
+        if (nextFut) {
+          nextBadge.style.display = 'inline-block';
+          const dt = new Date(nextFut.startsAt);
+          nextBadge.textContent = `Next: ${dt.toLocaleDateString('en-IN', { day: 'numeric', month: 'short' })}`;
+        } else {
+          nextBadge.textContent = 'No upcoming appt';
+        }
+      }
+
+      sorted.forEach(a => {
         const title = escapeHTML(a.title || 'Appointment');
         const sub = escapeHTML(a.sub || 'Medical Clinic');
-        const date = escapeHTML(a.date || 'Upcoming');
+        const dateStr = escapeHTML(a.startsAt ? fmtDateTime(a.startsAt) : (a.date || 'Upcoming'));
 
         const card = document.createElement('div');
         card.className = 'module-card';
@@ -9711,7 +10345,7 @@
               <div class="card-sub">${sub}</div>
             </div>
             <div style="display:flex; align-items:center; gap:0.3rem;">
-              <span class="pill-badge" style="background:var(--surface-hover); color:var(--text);">${date}</span>
+              <span class="pill-badge" style="background:var(--surface-hover); color:var(--text);">${dateStr}</span>
               <button class="btn btn-secondary" style="padding:0.2rem 0.4rem; font-size:0.7rem; color:var(--rose);" onclick="deleteItem('appointment', '${a.id}')">🗑️</button>
             </div>
           </div>
@@ -9771,26 +10405,22 @@
       if (calBadge) calBadge.textContent = `${dayEvents.length} Events on Focused Day`;
     }
 
-    // Generic Delete function
+    // Generic Delete function with Undo (Fix Guide Section 10.2)
     function deleteItem(type, id) {
       if (type === 'pill') {
-        pillsData = pillsData.filter(x => x.id !== id);
+        deleteWithUndo(pillsData, id, 'Medicine');
       } else if (type === 'bill') {
-        billsData = billsData.filter(x => x.id !== id);
+        deleteWithUndo(billsData, id, 'Bill');
       } else if (type === 'expense') {
-        expensesData = expensesData.filter(x => x.id !== id);
+        deleteWithUndo(expensesData, id, 'Expense');
       } else if (type === 'fitness') {
-        workoutsData = workoutsData.filter(x => x.id !== id);
+        deleteWithUndo(workoutsData, id, 'Workout');
       } else if (type === 'habit') {
-        habitsData = habitsData.filter(x => x.id !== id);
+        deleteWithUndo(habitsData, id, 'Habit');
       } else if (type === 'appointment') {
-        appointmentsData = appointmentsData.filter(x => x.id !== id);
+        deleteWithUndo(appointmentsData, id, 'Appointment');
       }
-      persistAllData();
-      renderAllViews();
-      showToast("🗑️ Item deleted successfully.");
     }
-
     /* ==========================================================================
        SPEED-DIAL QUICK INGESTION (All 6 Domains)
        ========================================================================== */
@@ -10050,7 +10680,7 @@
       const domain = document.getElementById('addDomainSelect').value;
 
       if (!title) {
-        alert("Please enter a title for the entry.");
+        showToast("Please enter a title for the entry.");
         return;
       }
 
@@ -10071,19 +10701,28 @@
         destinationName = "Reminders & Pills";
         switchPrimaryTab('reminders');
       } else if (domain === 'bill') {
-        const num = parseFloat(amount.replace(/[^0-9.]/g, '')) || 850.00;
+        const num = parseFloat(amount.replace(/[^0-9.]/g, ''));
+        if (!isFinite(num) || num <= 0) {
+          showToast('Enter an amount greater than 0.');
+          return;
+        }
         billsData.push({
           id: "bill_" + Date.now(),
           title: title,
           payee: "Utility Provider",
-          dueDate: "October 15",
+          dueDate: localIso(),
           amount: num,
+          amountPaise: toPaise(num),
           isPaid: false
         });
         destinationName = "Bills Hub";
         switchPrimaryTab('expense');
       } else if (domain === 'expense') {
-        const num = parseFloat(amount.replace(/[^0-9.]/g, '')) || 250.00;
+        const num = parseFloat(amount.replace(/[^0-9.]/g, ''));
+        if (!isFinite(num) || num <= 0) {
+          showToast('Enter an amount greater than 0.');
+          return;
+        }
         const catSelect = document.getElementById('addExpenseCategorySelect');
         const selectedCat = catSelect ? catSelect.value : "Food";
         const catIcons = { Utility: "💡", Food: "🍔", Travel: "🚗", Household: "🏠", Medical: "💊", Other: "🛍️" };
@@ -10093,8 +10732,9 @@
           id: "exp_" + Date.now(),
           name: title.startsWith(icon) ? title : `${icon} ${title}`,
           amount: num,
+          amountPaise: toPaise(num),
           category: selectedCat,
-          date: "Today"
+          date: localIso()
         });
         destinationName = "Expense Ledger";
         switchPrimaryTab('expense');
@@ -10134,7 +10774,7 @@
         // Single-use validation rule: Ensure emoji is unique and not already assigned
         const isAlreadyUsed = habitsData.some(h => (h.emoji || '').trim() === selectedEmoji.trim());
         if (isAlreadyUsed) {
-          alert(`⚠️ The emoji '${selectedEmoji}' is already assigned to an existing habit! Each emoji can only be used once.`);
+          showToast(`⚠️ The emoji '${selectedEmoji}' is already assigned to an existing habit! Each emoji can only be used once.`);
           return;
         }
 
@@ -10149,11 +10789,13 @@
         switchPrimaryTab('fitness');
       } else if (domain === 'appointment') {
         const clinicVal = document.getElementById('addDoctorInput')?.value?.trim() || "Medical Clinic Consultation";
+        const aptStartsAt = new Date().toISOString();
         appointmentsData.push({
           id: "apt_" + Date.now(),
           title: title,
           sub: clinicVal,
-          date: amount || "Oct 28 • 11:00 AM"
+          startsAt: aptStartsAt,
+          date: amount || fmtDateTime(aptStartsAt)
         });
         destinationName = "Appointments Hub";
         switchPrimaryTab('reminders');
@@ -10162,7 +10804,7 @@
       persistAllData();
       renderAllViews();
       closeQuickAddModal();
-      showToast(`➕ Saved "<b>${title}</b>" to <b>${destinationName}</b>!`);
+      showToast(`➕ Saved "${title}" to ${destinationName}!`);
     }
 
     /* Universal Edit & Cascade Sync */
@@ -10356,31 +10998,26 @@
       renderTimeline();
       renderCalendarEngine();
       closeEditDoseModal();
-      showToast(`💊 Updated Dose: <b>${p.name}</b> • <b>${p.dosage}</b> (Day ${p.day}/${p.totalDays})`);
+      showToast(`💊 Updated Dose: <b>${p.name}</b> • <b>${p.dosage}</b> (Day ${courseDay(p)}/${p.totalDays})`);
     }
 
     function undoLastAction() {
-      if (lastActionUndo && lastActionUndo.type === 'pill') {
-        const p = pillsData.find(x => x.id === lastActionUndo.id) || pillsData[0];
-        p.day = lastActionUndo.prevDay;
-        persistAllData();
-        renderPills();
-        renderCockpitMedications();
-        renderSeniorTabletPills();
-        renderTimeline();
-        showToast("↩️ Undone: Reverted pill dose log.");
-      } else if (lastActionUndo && lastActionUndo.type === 'bill') {
-        const b = billsData.find(x => x.id === lastActionUndo.id) || billsData[0];
-        b.isPaid = false;
+      const u = lastActionUndo;
+      if (!u) return;
+      if (u.type === 'pill') {
+        const p = pillsData.find(x => x.id === u.id);
+        if (!p) return;
+        p.day = u.prevDay;
+      } else if (u.type === 'bill') {
+        const b = billsData.find(x => x.id === u.id);
+        if (!b) return;
+        b.isPaid = u.wasPaid;
         expensesData.shift();
-        persistAllData();
-        renderBills();
-        renderExpenses();
-        renderTimeline();
-        showToast("↩️ Undone: Reverted bill payment.");
-      } else {
-        showToast("↩️ Action reverted.");
       }
+      lastActionUndo = null;
+      persistAllData();
+      renderAllViews();
+      showToast('Undone');
     }
 
     /* Master Family Hub Settings */
@@ -10391,8 +11028,8 @@
       if (document.getElementById('cfgSeniorPhone')) document.getElementById('cfgSeniorPhone').value = householdProfiles.senior.phone || '+91 98765 43211';
       if (document.getElementById('cfgCaregiverName')) document.getElementById('cfgCaregiverName').value = householdProfiles.caregiver.name || 'John Vance';
       if (document.getElementById('cfgCaregiverPhone')) document.getElementById('cfgCaregiverPhone').value = householdProfiles.caregiver.phone || '+91 98765 43212';
-      document.getElementById('cfgSeniorPin').value = securityConfig.seniorPin;
-      document.getElementById('cfgCaregiverPass').value = securityConfig.caregiverPass;
+      document.getElementById('cfgSeniorPin').value = '';
+      document.getElementById('cfgCaregiverPass').value = '';
       document.getElementById('cfgEscalationDelay').value = securityConfig.escalationDelay;
       document.getElementById('familySettingsModal').style.display = 'flex';
     }
@@ -10401,19 +11038,17 @@
       document.getElementById('familySettingsModal').style.display = 'none';
     }
 
-    function saveFamilySettings() {
+    async function saveFamilySettings() {
       const pinVal = document.getElementById('cfgSeniorPin').value.trim();
       const passVal = document.getElementById('cfgCaregiverPass').value.trim();
       const delayVal = document.getElementById('cfgEscalationDelay').value;
 
-      if (pinVal.length !== 4 || isNaN(pinVal)) {
-        alert("⚠️ Please enter a valid 4-digit numeric PIN for the Senior profile (e.g. 1234).");
-        return;
-      }
-
-      securityConfig.seniorPin = pinVal;
-      securityConfig.caregiverPass = passVal || 'caregiver2026';
+      if (pinVal && !/^\d{4}$/.test(pinVal)) { showToast('PIN must be exactly 4 digits.'); return; }
+      if (passVal && passVal.length < 8)     { showToast('Caregiver password needs 8+ characters.'); return; }
+      if (pinVal)  securityConfig.seniorPinHash = await hashSecret(pinVal, securityConfig.salt);
+      if (passVal) securityConfig.caregiverHash = await hashSecret(passVal, securityConfig.salt);
       securityConfig.escalationDelay = delayVal;
+      persistSecurity();
 
       const adminName = document.getElementById('cfgAdminName') ? document.getElementById('cfgAdminName').value.trim() : '';
       const adminPhone = document.getElementById('cfgAdminPhone') ? document.getElementById('cfgAdminPhone').value.trim() : '';
@@ -10440,12 +11075,13 @@
       }
       if (caregiverPhone) householdProfiles.caregiver.phone = caregiverPhone;
 
-      document.getElementById('dropdownSeniorPinVal').textContent = pinVal;
+      const pinDisp = document.getElementById('dropdownSeniorPinVal');
+      if (pinDisp) pinDisp.textContent = '••••';
       persistAllData();
       updateHouseholdProfileUI();
 
       closeFamilySettingsModal();
-      showToast(`👨‍👩‍👧 Master Governance: Household profiles & 4-digit PIN [${pinVal}] updated and synced across devices!`);
+      showToast('Household profiles saved.');
     }
 
     /* Senior Voice Readout */
@@ -10458,7 +11094,7 @@
         window.speechSynthesis.speak(utterance);
         showToast("🗣️ Reading daily schedule out loud via Web Speech API...");
       } else {
-        alert(`🗣️ Voice Readout:\nGood morning ${sName}. You have taken your scheduled medication. Have a wonderful day!`);
+        showToast(`🗣️ Voice: Good morning ${sName}. You have taken your scheduled medication.`);
       }
     }
 
@@ -10573,6 +11209,63 @@
     }
 
     /* Emergency SOS Functions */
+    const DEFAULT_MEDICAL_ID = {
+      name: 'Eleanor Vance',
+      dob: '1948-03-12',
+      blood: 'O+',
+      allergy: 'Penicillin (anaphylaxis risk)',
+      regimen: 'Metformin 500mg, Rx #89421',
+      physician: 'Dr. Sarah Lin',
+      physicianPhone: '+91 98765 43220',
+      hospital: 'St. Jude Memorial Hospital'
+    };
+    let medicalId = (function() {
+      try {
+        const raw = localStorage.getItem('omnitask_medical_id');
+        return raw ? JSON.parse(raw) : DEFAULT_MEDICAL_ID;
+      } catch(e) { return DEFAULT_MEDICAL_ID; }
+    })();
+
+    function ageFromDob(iso) {
+      const d = new Date(iso), t = new Date();
+      let a = t.getFullYear() - d.getFullYear();
+      if (t < new Date(t.getFullYear(), d.getMonth(), d.getDate())) a--;
+      return a;
+    }
+
+    function renderMedicalId() {
+      const m = medicalId, box = document.getElementById('sosMedicalId');
+      if (!box) return;
+      box.replaceChildren();
+
+      const header = document.createElement('div');
+      header.style.cssText = "font-size:0.85rem; font-weight:800; color:var(--accent); display:flex; justify-content:space-between; margin-bottom:4px;";
+      header.innerHTML = `<span>📋 ${escapeHTML(m.name.toUpperCase())} (MEDICAL ID)</span><span>BLOOD: ${escapeHTML(m.blood)}</span>`;
+      box.appendChild(header);
+
+      const rows = [
+        ['DOB', `${new Date(m.dob).toLocaleDateString('en-IN', {day:'numeric', month:'long', year:'numeric'})} (age ${ageFromDob(m.dob)})`],
+        ['Blood group', m.blood],
+        ['Allergy', m.allergy],
+        ['Regimen', m.regimen],
+        ['Physician', `${m.physician} (${m.physicianPhone})`],
+        ['Hospital', m.hospital]
+      ];
+      rows.forEach(([k, v]) => {
+        const p = document.createElement('div');
+        p.style.fontSize = "0.85rem";
+        p.style.color = "var(--text)";
+        const b = document.createElement('strong');
+        b.textContent = '• ' + k + ': ';
+        p.append(b, document.createTextNode(v));
+        if (k === 'Allergy') {
+          p.style.color = 'var(--rose)';
+          b.style.color = 'var(--rose)';
+        }
+        box.appendChild(p);
+      });
+    }
+
     function openSosModal() {
       if (typeof householdProfiles !== 'undefined') {
         const cg = householdProfiles.caregiver;
@@ -10583,19 +11276,20 @@
         const adminName = (admin && admin.name) ? admin.name : 'Aswin';
 
         const cgPhoneElem = document.getElementById('sosCaregiverPhone');
-        if (cgPhoneElem) cgPhoneElem.innerHTML = `Caregiver &bull; ${cgPhone}`;
+        if (cgPhoneElem) cgPhoneElem.textContent = `Caregiver • ${cgPhone}`;
         const cgNameElem = document.getElementById('sosCaregiverName');
         if (cgNameElem) cgNameElem.textContent = cgName;
         const cgLinkElem = document.getElementById('sosCaregiverLink');
         if (cgLinkElem) cgLinkElem.href = `tel:${cgPhone.replace(/\s+/g, '')}`;
 
         const adminPhoneElem = document.getElementById('sosAdminPhone');
-        if (adminPhoneElem) adminPhoneElem.innerHTML = `Family Admin &bull; ${adminPhone}`;
+        if (adminPhoneElem) adminPhoneElem.textContent = `Family Admin • ${adminPhone}`;
         const adminNameElem = document.getElementById('sosAdminName');
         if (adminNameElem) adminNameElem.textContent = adminName;
         const adminLinkElem = document.getElementById('sosAdminLink');
         if (adminLinkElem) adminLinkElem.href = `tel:${adminPhone.replace(/\s+/g, '')}`;
       }
+      renderMedicalId();
       document.getElementById('sosModal').style.display = 'flex';
       if (navigator.vibrate) navigator.vibrate([100, 50, 100]);
     }
@@ -10604,45 +11298,38 @@
       document.getElementById('sosModal').style.display = 'none';
     }
 
+    document.addEventListener('keydown', e => {
+      if (e.key === 'Escape') closeSosModal();
+    });
+
     function markIAmSafe() {
       showToast('✅ You are marked as Safe. Emergency alert cancelled.');
       document.getElementById('sosModal').style.display = 'none';
     }
 
     function trackEmergencyDial(contact) {
-      showToast(`🚨 Initiated direct emergency call to ${contact}`);
+      showToast(`Opening dialer for ${contact}...`);
     }
 
     function broadcastSosEmergency() {
       if (navigator.vibrate) navigator.vibrate([200, 100, 200, 100, 400]);
+      const cg = (householdProfiles && householdProfiles.caregiver) || {};
+      const senior = (householdProfiles && householdProfiles.senior) || { name: 'Eleanor' };
+      const phone = (cg.phone || '').replace(/[^\d+]/g, '');
+      if (!phone) { showToast('No caregiver phone saved. Dial 112 instead.'); return; }
 
-      // Real SMS intent with Medical ID body (Section 1 Fix Guide)
-      const caregiverPhone = (document.getElementById('sosCaregiverPhone') || {}).textContent || '+91 98765 43212';
-      const phone = caregiverPhone.replace(/[^+\d]/g, '');
-      let geoDesc = 'Location unavailable';
-      try {
-        if (navigator.geolocation) {
-          navigator.geolocation.getCurrentPosition(
-            pos => {
-              const lat = pos.coords.latitude.toFixed(5);
-              const lon = pos.coords.longitude.toFixed(5);
-              const smsBody = encodeURIComponent(`URGENT SOS from Eleanor Vance (OmniTask). GPS: ${lat},${lon}. Medical ID: Metformin 500mg, Allergy: Penicillin (Anaphylaxis). Dr. Sarah Lin +91 98765 43220. PLEASE RESPOND.`);
-              const smsLink = document.createElement('a');
-              smsLink.href = `sms:${phone}?&body=${smsBody}`;
-              smsLink.click();
-            },
-            () => {
-              const smsBody = encodeURIComponent('URGENT SOS from Eleanor Vance (OmniTask). Medical ID: Metformin 500mg, Allergy: Penicillin (Anaphylaxis). Dr. Sarah Lin +91 98765 43220. PLEASE RESPOND.');
-              const smsLink = document.createElement('a');
-              smsLink.href = `sms:${phone}?&body=${smsBody}`;
-              smsLink.click();
-            }
-          );
-        }
-      } catch(e) {}
+      const openSms = (mapLink) => {
+        const text = `EMERGENCY: ${senior.name} needs help now.` + (mapLink ? ` Location: ${mapLink}` : '');
+        window.location.href = `sms:${phone}?&body=${encodeURIComponent(text)}`;
+        closeSosModal();
+      };
 
-      showToast('🚨 SOS Broadcast: SMS dispatch initiated to Caregiver.');
-      closeSosModal();
+      if (!navigator.geolocation) { openSms(''); return; }
+      navigator.geolocation.getCurrentPosition(
+        p => openSms(`https://maps.google.com/?q=${p.coords.latitude},${p.coords.longitude}`),
+        () => openSms(''),
+        { timeout: 4000, maximumAge: 60000 }
+      );
     }
 
     /* Missed Dose Escalation Simulator (Caregiver Safety Protocol - 3 Tiers) */
@@ -10727,8 +11414,8 @@
       }
     }
 
-    function callSeniorPatient() {
-      alert("📞 INITIATING SECURE CAREGIVER CALL:\n• Dialing Patient: Eleanor Vance (+91 98765 43211)\n• Fallback Contact: Master Admin Aswin (+91 98765 43210)\n• Medical Summary & Rx #89421 queued on screen.");
+    function callSeniorPatient() { const ph = ((householdProfiles && householdProfiles.senior && householdProfiles.senior.phone) || "").replace(/[^\d+]/g, ""); if (ph) { window.location.href = "tel:" + ph; showToast("Opening dialer..."); } else { showToast("No phone number saved for senior patient."); } return;
+      showToast("📞 INITIATING SECURE CAREGIVER CALL:\n• Dialing Patient: Eleanor Vance (+91 98765 43211)\n• Fallback Contact: Master Admin Aswin (+91 98765 43210)\n• Medical Summary & Rx #89421 queued on screen.");
     }
 
     function showMedicalId() {
@@ -10883,7 +11570,7 @@
     async function handleBillFileSelected(file) {
       if (!file) return;
       if (!file.type.startsWith('image/')) {
-        alert("Please select a valid image file (JPEG, PNG, WEBP).");
+        showToast("Please select a valid image file (JPEG, PNG, WEBP).");
         return;
       }
 
@@ -10904,8 +11591,8 @@
         const simulatedData = {
           is_bill: true,
           vendor: guessedVendor,
-          date: new Date().toISOString().split('T')[0],
-          currency: "USD",
+          date: localIso(),
+          currency: "INR",
           subtotal: 28.50,
           tax: 2.28,
           total: 30.78,
@@ -10922,7 +11609,7 @@
       } catch (err) {
         console.error("Image processing error:", err);
         stopScanLaserAnimation();
-        alert("Failed to process image. Please try again.");
+        showToast("Failed to process image. Please try again.");
       }
     }
 
@@ -10981,7 +11668,7 @@
     }
 
     function loadSampleBill(type) {
-      const today = new Date().toISOString().split('T')[0];
+      const today = localIso();
       let sampleData = null;
       let svgDataUrl = '';
 
@@ -11171,7 +11858,7 @@
       const totalInput = document.getElementById('scanTotalInput');
 
       if (vendorInput) vendorInput.value = data.vendor || '';
-      if (dateInput) dateInput.value = data.date || new Date().toISOString().split('T')[0];
+      if (dateInput) dateInput.value = data.date || localIso();
 
       // Auto-assign category from memory or prediction
       const rememberedCat = guessCategoryFromVendor(data.vendor);
@@ -11364,21 +12051,21 @@
 
     function confirmAndSaveScannedBill() {
       const vendor = (document.getElementById('scanVendorInput')?.value || '').trim() || 'Scanned Bill';
-      const dateVal = document.getElementById('scanDateInput')?.value || new Date().toISOString().split('T')[0];
+      const dateVal = document.getElementById('scanDateInput')?.value || localIso();
       const category = document.getElementById('scanCategorySelect')?.value || 'Other';
       const currency = document.getElementById('scanCurrencySelect')?.value || 'INR';
       const subtotal = parseFloat(document.getElementById('scanSubtotalInput')?.value || 0);
       const tax = parseFloat(document.getElementById('scanTaxInput')?.value || 0);
       const total = parseFloat(document.getElementById('scanTotalInput')?.value || 0);
 
-      if (total <= 0) {
-        alert("Please enter a valid bill total greater than 0.00.");
+      if (!isFinite(total) || total <= 0) {
+        showToast("Enter an amount greater than 0.");
         return;
       }
 
-      // Store monetary values in integer cents to eliminate float rounding errors
-      const amountCents = Math.round(total * 100);
-      const taxCents = Math.round(tax * 100);
+      // Store monetary values in whole paise (Fix Guide Section 4.1)
+      const amountPaise = Math.round(total * 100);
+      const taxPaise = Math.round(tax * 100);
 
       rememberVendorCategoryMapping();
 
@@ -11398,9 +12085,10 @@
           name: `🧾 ${vendor}`,
           vendor: vendor,
           amount: total,
-          amount_cents: amountCents,
+          amountPaise: amountPaise,
+          amount_cents: amountPaise,
           tax: tax,
-          tax_cents: taxCents,
+          tax_cents: taxPaise,
           category: category,
           currency: currency,
           date: dateVal,
@@ -11483,20 +12171,22 @@
     function exportExpenseCSV() {
       let csv = "Item Title,Vendor,Amount (₹),Amount (Paise),Tax (₹),Category,Date,Has Receipt,Confidence\n";
       expensesData.forEach(e => {
-        const amt = parseFloat(e.amount || 0).toFixed(2);
-        const cents = e.amount_cents || Math.round(parseFloat(amt) * 100);
-        const tax = parseFloat(e.tax || 0).toFixed(2);
+        const amt = (e.amountPaise != null ? (e.amountPaise / 100) : Number(e.amount || 0)).toFixed(2);
+        const paise = e.amountPaise != null ? e.amountPaise : Math.round(Number(amt) * 100);
+        const tax = Number(e.tax || 0).toFixed(2);
         const conf = e.confidence ? `${Math.round(e.confidence * 100)}%` : 'Manual';
-        const hasRec = e.receiptImage ? 'Yes' : 'No';
-        const dateVal = e.date || new Date().toLocaleDateString('sv-SE');
-        csv += `${csvCell(e.name)},${csvCell(e.vendor || e.name)},${amt},${cents},${tax},${csvCell(e.category || 'Utilities')},${csvCell(dateVal)},${hasRec},${conf}\n`;
+        const hasRec = (e.receiptId || e.receiptImage) ? 'Yes' : 'No';
+        const dateVal = e.date || localIso();
+        const row = [e.name, e.vendor || e.name, amt, paise, tax, e.category || 'Utilities', dateVal, hasRec, conf];
+        csv += row.map(csvCell).join(',') + '\n';
       });
-      const blob = new Blob([csv], { type: 'text/csv' });
+      const blob = new Blob(['\uFEFF' + csv], { type: 'text/csv;charset=utf-8' });
       const url = window.URL.createObjectURL(blob);
       const a = document.createElement('a');
       a.href = url;
       a.download = `omnitask_expense_statement_${calCurrentYear}_${calCurrentMonth + 1}.csv`;
       a.click();
+      setTimeout(() => URL.revokeObjectURL(url), 1000);
       showToast("💾 Downloaded Expense Ledger Statement (₹ INR)!");
     }
 
@@ -11532,6 +12222,8 @@
         calCurrentYear--;
       }
       calSelectedDay = Math.min(calSelectedDay, new Date(calCurrentYear, calCurrentMonth + 1, 0).getDate());
+      setupGlobalSearch();
+      renderNotifications();
       syncCalendarControls();
       renderCalendarEngine();
       updateFocusedDateDisplay();
@@ -11544,6 +12236,8 @@
         calCurrentYear++;
       }
       calSelectedDay = Math.min(calSelectedDay, new Date(calCurrentYear, calCurrentMonth + 1, 0).getDate());
+      setupGlobalSearch();
+      renderNotifications();
       syncCalendarControls();
       renderCalendarEngine();
       updateFocusedDateDisplay();
@@ -11552,6 +12246,8 @@
     function changeCalMonth(val) {
       calCurrentMonth = parseInt(val, 10);
       calSelectedDay = Math.min(calSelectedDay, new Date(calCurrentYear, calCurrentMonth + 1, 0).getDate());
+      setupGlobalSearch();
+      renderNotifications();
       syncCalendarControls();
       renderCalendarEngine();
       updateFocusedDateDisplay();
@@ -11560,6 +12256,8 @@
     function changeCalYear(val) {
       calCurrentYear = parseInt(val, 10);
       calSelectedDay = Math.min(calSelectedDay, new Date(calCurrentYear, calCurrentMonth + 1, 0).getDate());
+      setupGlobalSearch();
+      renderNotifications();
       syncCalendarControls();
       renderCalendarEngine();
       updateFocusedDateDisplay();
@@ -11570,6 +12268,8 @@
       calCurrentYear = now.getFullYear();
       calCurrentMonth = now.getMonth();
       calSelectedDay = now.getDate();
+      setupGlobalSearch();
+      renderNotifications();
       syncCalendarControls();
       updateDedicatedWeekHeaders();
       selectCalendarDay(now.getDate(), now.getMonth(), now.getFullYear());
@@ -11617,6 +12317,8 @@
       calSelectedDay = day;
       
       hideCalTooltip();
+      setupGlobalSearch();
+      renderNotifications();
       syncCalendarControls();
       updateFocusedDateDisplay();
       renderCalendarEngine();
@@ -12153,19 +12855,29 @@
       container.appendChild(daySchedule);
     }
 
-    function showToast(msg) {
+    function showToast(msg, opts = {}) {
       const t = document.getElementById('toast');
-      document.getElementById('toastMsg').innerHTML = msg;
+      if (!t) return;
+      const msgEl = document.getElementById('toastMsg');
+      if (msgEl) msgEl.textContent = msg;
+      const undoBtn = document.getElementById('toastUndoBtn');
+      if (undoBtn) undoBtn.style.display = opts.undo ? 'inline-block' : 'none';
       t.style.display = 'flex';
-      setTimeout(() => { t.style.display = 'none'; }, 4000);
+      clearTimeout(showToast._t);
+      showToast._t = setTimeout(() => {
+        t.style.display = 'none';
+        if (!opts.undo) lastActionUndo = null;
+      }, opts.undo ? 7000 : 4000);
     }
 
     // Initial Render & Load
-    window.addEventListener('DOMContentLoaded', () => {
+    window.addEventListener('DOMContentLoaded', async () => {
+      updateLiveDateTime();
       loadPersistedData();
+      await runMigrations();
 
       // Check for active session
-      let savedSession = localStorage.getItem('omnitask_session');
+      let savedSession = localStorage.getItem('omnitask_session') || sessionStorage.getItem('omnitask_session');
       if (savedSession) {
         try {
           const s = JSON.parse(savedSession);
@@ -12190,23 +12902,49 @@
             toggleLoginScreen(true);
           }
         } catch (e) {
-          toggleLoginScreen(false);
-          setMode('power');
+          toggleLoginScreen(true);
         }
       } else {
-        // Default to logged-in as Aswin
-        toggleLoginScreen(false);
-        setMode('power');
-        saveSessionState(true, 'power', 'Aswin', 'aswin@omnitask.app');
+        toggleLoginScreen(true);
       }
 
+      setupGlobalSearch();
+      renderNotifications();
       syncCalendarControls();
       updateFocusedDateDisplay();
       updatePrivacyPauseUI();
-      updateLiveDateTime();
       renderAllViews();
       setInterval(updatePrivacyPauseUI, 30000);
       setInterval(updateLiveDateTime, 30000);
+
+      // Fix Guide Section 5.5: Midnight & Visibility refresh
+      function refreshClockViews() {
+        const t = new Date();
+        const onToday = calCurrentYear === t.getFullYear() && calCurrentMonth === t.getMonth();
+        if (onToday) calSelectedDay = t.getDate();
+        updateLiveDateTime();
+        renderAllViews();
+      }
+
+      function scheduleMidnightRefresh() {
+        const n = new Date();
+        const ms = new Date(n.getFullYear(), n.getMonth(), n.getDate() + 1, 0, 0, 5) - n;
+        setTimeout(() => { refreshClockViews(); scheduleMidnightRefresh(); }, ms);
+      }
+
+      scheduleMidnightRefresh();
+      document.addEventListener('visibilitychange', () => { if (!document.hidden) refreshClockViews(); });
+
+      // Cross-tab synchronization (Fix Guide Section 8.7)
+      window.addEventListener('storage', e => {
+        if (!e.key || !e.key.startsWith('omnitask_') || e.key === 'omnitask_session') return;
+        loadPersistedData();
+        renderAllViews();
+        showToast('Updated from another tab');
+      });
+
+      // Request persistent client-side storage (Fix Guide Section 8.8)
+      if (navigator.storage && navigator.storage.persist) navigator.storage.persist();
 
       // Keyboard Shortcut: Cmd+K / Ctrl+K to focus omni-search
       window.addEventListener('keydown', (e) => {
