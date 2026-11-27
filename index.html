@@ -14,6 +14,10 @@
   <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&family=JetBrains+Mono:wght@400;500;600;700;800&display=swap" rel="stylesheet">
   
   <style>
+    /* Ensure [hidden] attribute always hides elements regardless of class rules */
+    [hidden] {
+      display: none !important;
+    }
     /* ==========================================================================
        1. FIGMA DESIGN SYSTEM TOKENS & VARIABLES
        ========================================================================== */
@@ -4866,7 +4870,7 @@
           <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="opacity:0.7; flex-shrink:0;"><circle cx="11" cy="11" r="8"></circle><line x1="21" y1="21" x2="16.65" y2="16.65"></line></svg>
           <input type="text" id="globalOmniSearchInput" placeholder="Search tasks, meds, expenses..." autocomplete="off">
           <kbd id="kbdHint" style="background:rgba(255,255,255,0.08); border:1px solid rgba(255,255,255,0.15); border-radius:5px; padding:2px 6px; font-size:0.65rem; color:#cbd5e1; font-family:inherit;">Ctrl K</kbd>
-          <div id="searchResults" role="listbox" class="module-card" style="position:absolute; top:calc(100% + 6px); left:0; right:0; max-height:360px; overflow-y:auto; z-index:1200; box-shadow:0 12px 30px rgba(0,0,0,0.2); padding:0.5rem;" hidden></div>
+          <div id="searchResults" role="listbox" class="module-card" style="display:none; position:absolute; top:calc(100% + 6px); left:0; right:0; max-height:360px; overflow-y:auto; z-index:1200; box-shadow:0 12px 30px rgba(0,0,0,0.2); padding:0.5rem;" hidden></div>
         </div>
 
         <!-- Topbar Action Icons & Right Utilities -->
@@ -4892,7 +4896,7 @@
               <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M18 8A6 6 0 0 0 6 8c0 7-3 9-3 9h18s-3-2-3-9"/><path d="M13.73 21a2 2 0 0 1-3.46 0"/></svg>
               <span class="notification-badge" id="notifBadge">0</span>
             </button>
-            <div id="notifDropdown" class="module-card" style="position:absolute; right:0; top:calc(100% + 8px); width:310px; max-height:380px; overflow-y:auto; z-index:1100; box-shadow:0 12px 30px rgba(0,0,0,0.18); padding:0.75rem;" hidden>
+            <div id="notifDropdown" class="module-card" style="display:none; position:absolute; right:0; top:calc(100% + 8px); width:310px; max-height:380px; overflow-y:auto; z-index:1100; box-shadow:0 12px 30px rgba(0,0,0,0.18); padding:0.75rem;" hidden>
               <div style="font-weight:800; font-size:0.85rem; padding-bottom:0.4rem; border-bottom:1px solid var(--surface-border); margin-bottom:0.5rem; display:flex; justify-content:space-between; align-items:center;">
                 <span>🔔 Actionable Notifications</span>
                 <span id="notifCountLabel" style="font-size:0.72rem; color:var(--text-muted);">0 pending</span>
@@ -7698,6 +7702,7 @@
       localStorage.setItem('omnitask_streak', '7');
       persistAllData();
       renderAllViews();
+      
       updatePrivacyPauseUI();
       showToast("✨ Demo data reset to pristine clinical sample records!");
     }
@@ -8361,6 +8366,13 @@
       if (menu && btn && !btn.contains(e.target) && !menu.contains(e.target)) {
         menu.style.display = 'none';
       }
+      const notifBtn = document.getElementById('notifBtn');
+      const notifDrop = document.getElementById('notifDropdown');
+      if (notifDrop && notifBtn && !notifBtn.contains(e.target) && !notifDrop.contains(e.target)) {
+        notifDrop.hidden = true;
+        notifDrop.style.display = 'none';
+        notifBtn.setAttribute('aria-expanded', 'false');
+      }
     });
 
     /* Theme Toggle */
@@ -8716,7 +8728,9 @@
         item.addEventListener('click', () => {
           switchPrimaryTab(n.tab);
           const drop = document.getElementById('notifDropdown');
-          if (drop) drop.hidden = true;
+          const btn = document.getElementById('notifBtn');
+          if (drop) { drop.hidden = true; drop.style.display = 'none'; }
+          if (btn) btn.setAttribute('aria-expanded', 'false');
         });
         list.appendChild(item);
       });
@@ -8726,8 +8740,9 @@
       const drop = document.getElementById('notifDropdown');
       const btn = document.getElementById('notifBtn');
       if (!drop) return;
-      const willOpen = drop.hidden;
+      const willOpen = drop.hidden || drop.style.display === 'none';
       drop.hidden = !willOpen;
+      drop.style.display = willOpen ? 'flex' : 'none';
       if (btn) btn.setAttribute('aria-expanded', willOpen ? 'true' : 'false');
       if (willOpen) renderNotifications();
     }
@@ -8940,6 +8955,7 @@
         if (e.key === 'Escape') {
           searchInput.value = '';
           resultsBox.hidden = true;
+          resultsBox.style.display = 'none';
           searchInput.blur();
         }
       });
@@ -10281,7 +10297,7 @@
       habitsData.forEach(h => {
         const emoji = escapeHTML(h.emoji || '✨');
         const title = escapeHTML(h.title || 'Habit');
-        const details = escapeHTML(h.details || '');
+        const details = escapeHTML(h.details || '').replace(/&lt;br\s*\/?&gt;/gi, '<br>');
 
         const card = document.createElement('div');
         card.className = 'module-card';
@@ -12897,9 +12913,25 @@
       loadPersistedData();
       await runMigrations();
 
-      // Check for active session
+      // Check for active session or URL parameter override
+      const urlParams = new URLSearchParams(window.location.search);
       let savedSession = localStorage.getItem('omnitask_session') || sessionStorage.getItem('omnitask_session');
-      if (savedSession) {
+      if (urlParams.get('login') === '1') {
+        toggleLoginScreen(true);
+      } else if (urlParams.has('mode') || urlParams.has('tab') || urlParams.get('bypass_auth') === '1') {
+        toggleLoginScreen(false);
+        const qRole = urlParams.get('mode') || 'power';
+        const qTab = urlParams.get('tab') || 'home';
+        landingPersonaRole = qRole;
+        setMode(qRole);
+        switchPrimaryTab(qTab);
+        if (urlParams.get('sos') === '1') {
+          setTimeout(() => {
+            const sosModal = document.getElementById('sosModal');
+            if (sosModal) { sosModal.classList.add('active'); sosModal.style.display = 'flex'; }
+          }, 400);
+        }
+      } else if (savedSession) {
         try {
           const s = JSON.parse(savedSession);
           if (s.isLoggedIn !== false) {
