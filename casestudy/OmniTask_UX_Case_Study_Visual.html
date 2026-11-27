@@ -1,0 +1,1548 @@
+﻿<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>OmniTask OS — UX Case Study</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500;600;700&family=Plus+Jakarta+Sans:wght@500;600;700;800&display=swap" rel="stylesheet">
+  <style>
+    :root {
+      --primary: #4f46e5;
+      --primary-light: #e0e7ff;
+      --primary-dark: #3730a3;
+      --accent: #06b6d4;
+      --accent-light: #cffafe;
+      --emerald: #10b981;
+      --emerald-light: #d1fae5;
+      --amber: #f59e0b;
+      --amber-light: #fef3c7;
+      --rose: #f43f5e;
+      --rose-light: #ffe4e6;
+      --purple: #8b5cf6;
+      --purple-light: #ede9fe;
+      --slate-900: #0f172a;
+      --slate-800: #1e293b;
+      --slate-700: #334155;
+      --slate-600: #475569;
+      --slate-500: #64748b;
+      --slate-400: #94a3b8;
+      --slate-200: #e2e8f0;
+      --slate-100: #f1f5f9;
+      --slate-50: #f8fafc;
+      --surface: #ffffff;
+      --radius-sm: 8px;
+      --radius-md: 14px;
+      --radius-lg: 20px;
+      --radius-xl: 28px;
+      --shadow-sm: 0 2px 4px rgba(15, 23, 42, 0.04);
+      --shadow-md: 0 8px 24px -4px rgba(15, 23, 42, 0.06), 0 2px 6px -1px rgba(15, 23, 42, 0.02);
+      --shadow-lg: 0 16px 36px -6px rgba(15, 23, 42, 0.08), 0 4px 12px -2px rgba(15, 23, 42, 0.03);
+      --shadow-xl: 0 24px 50px -12px rgba(15, 23, 42, 0.12);
+    }
+
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+    }
+
+    body {
+      font-family: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
+      background-color: #f8fafc;
+      background-image: 
+        radial-gradient(at 0% 0%, rgba(99, 102, 241, 0.08) 0px, transparent 50%),
+        radial-gradient(at 100% 0%, rgba(6, 182, 212, 0.07) 0px, transparent 50%),
+        radial-gradient(at 100% 100%, rgba(244, 63, 94, 0.06) 0px, transparent 50%),
+        radial-gradient(at 0% 100%, rgba(139, 92, 246, 0.07) 0px, transparent 50%);
+      background-attachment: fixed;
+      color: var(--slate-800);
+      line-height: 1.6;
+      -webkit-font-smoothing: antialiased;
+      padding: 0;
+      margin: 0;
+    }
+
+    .container {
+      max-width: 1240px;
+      margin: 0 auto;
+      padding: 0 2rem;
+    }
+
+    /* TYPOGRAPHY */
+    h1, h2, h3, h4, .font-heading {
+      font-family: 'Plus Jakarta Sans', sans-serif;
+      letter-spacing: -0.025em;
+      font-weight: 800;
+      color: var(--slate-900);
+    }
+
+    .mono {
+      font-family: 'JetBrains Mono', monospace;
+    }
+
+    .badge-label {
+      font-family: 'Plus Jakarta Sans', sans-serif;
+      font-size: 0.75rem;
+      font-weight: 700;
+      text-transform: uppercase;
+      letter-spacing: 0.12em;
+      color: var(--primary);
+      display: inline-flex;
+      align-items: center;
+      gap: 0.5rem;
+      margin-bottom: 0.75rem;
+    }
+
+    .section-title {
+      font-size: 2.25rem;
+      line-height: 1.2;
+      margin-bottom: 1rem;
+    }
+
+    .section-sub {
+      font-size: 1.1rem;
+      color: var(--slate-600);
+      max-width: 760px;
+      margin-bottom: 2.5rem;
+    }
+
+    /* CARD SYSTEM */
+    .bento-card {
+      background: var(--surface);
+      border: 1px solid var(--slate-200);
+      border-radius: var(--radius-lg);
+      padding: 2rem;
+      box-shadow: var(--shadow-md);
+      transition: transform 0.2s ease, box-shadow 0.2s ease;
+      position: relative;
+      overflow: hidden;
+    }
+
+    .bento-card:hover {
+      box-shadow: var(--shadow-lg);
+    }
+
+    .bento-grid-2 {
+      display: grid;
+      grid-template-columns: repeat(2, 1fr);
+      gap: 1.75rem;
+    }
+
+    .bento-grid-3 {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 1.75rem;
+    }
+
+    .bento-grid-4 {
+      display: grid;
+      grid-template-columns: repeat(4, 1fr);
+      gap: 1.5rem;
+    }
+
+    /* HERO SECTION */
+    .hero {
+      padding: 4.5rem 0 3.5rem 0;
+      position: relative;
+    }
+
+    .hero-header {
+      margin-bottom: 3rem;
+    }
+
+    .hero-title {
+      font-size: 4rem;
+      line-height: 1.05;
+      font-weight: 800;
+      margin-bottom: 1.25rem;
+      background: linear-gradient(135deg, #0f172a 0%, #312e81 50%, #4338ca 100%);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+    }
+
+    .hero-tagline {
+      font-size: 1.35rem;
+      font-weight: 500;
+      color: var(--slate-600);
+      max-width: 820px;
+      line-height: 1.5;
+      margin-bottom: 2.5rem;
+    }
+
+    .metadata-strip {
+      display: grid;
+      grid-template-columns: repeat(4, 1fr);
+      gap: 1.5rem;
+      background: rgba(255, 255, 255, 0.85);
+      backdrop-filter: blur(12px);
+      border: 1px solid var(--slate-200);
+      border-radius: var(--radius-md);
+      padding: 1.25rem 1.75rem;
+      margin-bottom: 3.5rem;
+      box-shadow: var(--shadow-sm);
+    }
+
+    .meta-item .meta-label {
+      font-size: 0.72rem;
+      font-weight: 700;
+      text-transform: uppercase;
+      letter-spacing: 0.08em;
+      color: var(--slate-500);
+      margin-bottom: 0.25rem;
+    }
+
+    .meta-item .meta-value {
+      font-size: 0.95rem;
+      font-weight: 700;
+      color: var(--slate-900);
+    }
+
+    /* DEVICE FRAME & SHOWCASE */
+    .showcase-frame {
+      background: #ffffff;
+      border: 1px solid var(--slate-200);
+      border-radius: var(--radius-xl);
+      padding: 0.85rem;
+      box-shadow: var(--shadow-xl);
+      margin-bottom: 4rem;
+    }
+
+    .browser-bar {
+      display: flex;
+      align-items: center;
+      gap: 0.5rem;
+      padding: 0.6rem 1rem 0.85rem 1rem;
+      border-bottom: 1px solid var(--slate-100);
+      margin-bottom: 0.75rem;
+    }
+
+    .browser-dots {
+      display: flex;
+      gap: 0.4rem;
+    }
+
+    .dot {
+      width: 11px;
+      height: 11px;
+      border-radius: 50%;
+    }
+
+    .dot-red { background: #ff5f56; }
+    .dot-yellow { background: #ffbd2e; }
+    .dot-green { background: #27c93f; }
+
+    .browser-url {
+      background: var(--slate-100);
+      border-radius: 20px;
+      padding: 0.25rem 1rem;
+      font-size: 0.8rem;
+      color: var(--slate-500);
+      margin-left: 1rem;
+      flex: 1;
+      max-width: 420px;
+      text-align: center;
+    }
+
+    .showcase-img {
+      width: 100%;
+      height: auto;
+      border-radius: var(--radius-md);
+      display: block;
+      border: 1px solid rgba(0,0,0,0.06);
+    }
+
+    /* CALLOUT PIN & BREAKDOWN */
+    .callout-box {
+      background: rgba(248, 250, 252, 0.85);
+      border: 1px solid var(--slate-200);
+      border-radius: var(--radius-md);
+      padding: 1.25rem;
+      margin-top: 1.25rem;
+    }
+
+    .callout-title {
+      font-size: 0.95rem;
+      font-weight: 700;
+      display: flex;
+      align-items: center;
+      gap: 0.5rem;
+      margin-bottom: 0.5rem;
+      color: var(--slate-900);
+    }
+
+    .button-table {
+      width: 100%;
+      border-collapse: separate;
+      border-spacing: 0;
+      font-size: 0.88rem;
+      margin-top: 1.5rem;
+      background: var(--surface);
+      border: 1px solid var(--slate-200);
+      border-radius: var(--radius-md);
+      overflow: hidden;
+    }
+
+    .button-table th {
+      background: var(--slate-50);
+      padding: 0.85rem 1.15rem;
+      text-align: left;
+      font-weight: 700;
+      color: var(--slate-700);
+      border-bottom: 1px solid var(--slate-200);
+      font-size: 0.78rem;
+      text-transform: uppercase;
+      letter-spacing: 0.05em;
+    }
+
+    .button-table td {
+      padding: 0.9rem 1.15rem;
+      border-bottom: 1px solid var(--slate-100);
+      color: var(--slate-700);
+      vertical-align: top;
+    }
+
+    .button-table tr:last-child td {
+      border-bottom: none;
+    }
+
+    .button-table tr:hover td {
+      background: rgba(248, 250, 252, 0.5);
+    }
+
+    .tag-action {
+      background: var(--primary-light);
+      color: var(--primary-dark);
+      font-weight: 600;
+      font-size: 0.75rem;
+      padding: 0.2rem 0.55rem;
+      border-radius: 6px;
+      display: inline-block;
+      font-family: 'JetBrains Mono', monospace;
+    }
+
+    /* STAT CARD INFOGRAPHICS */
+    .stat-hero {
+      font-size: 3.25rem;
+      font-weight: 800;
+      line-height: 1;
+      margin-bottom: 0.5rem;
+      font-family: 'Plus Jakarta Sans', sans-serif;
+    }
+
+    .stat-hero.blue { color: var(--primary); }
+    .stat-hero.green { color: var(--emerald); }
+    .stat-hero.amber { color: var(--amber); }
+    .stat-hero.rose { color: var(--rose); }
+
+    .bar-meter {
+      height: 10px;
+      background: var(--slate-100);
+      border-radius: 6px;
+      overflow: hidden;
+      margin: 0.85rem 0 0.5rem 0;
+      position: relative;
+    }
+
+    .bar-fill {
+      height: 100%;
+      border-radius: 6px;
+      background: linear-gradient(90deg, var(--primary) 0%, var(--accent) 100%);
+    }
+
+    /* PERSONA CARDS */
+    .persona-card {
+      border-top: 4px solid var(--primary);
+    }
+
+    .persona-card.senior {
+      border-top: 4px solid var(--emerald);
+    }
+
+    .persona-card.caregiver {
+      border-top: 4px solid var(--rose);
+    }
+
+    .persona-header {
+      display: flex;
+      align-items: center;
+      gap: 1rem;
+      margin-bottom: 1.25rem;
+    }
+
+    .avatar-circle {
+      width: 52px;
+      height: 52px;
+      border-radius: 50%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-weight: 800;
+      font-size: 1.2rem;
+      color: white;
+    }
+
+    .avatar-aswin { background: linear-gradient(135deg, #6366f1, #3b82f6); }
+    .avatar-eleanor { background: linear-gradient(135deg, #10b981, #059669); }
+    .avatar-caregiver { background: linear-gradient(135deg, #f43f5e, #e11d48); }
+
+    /* LADDER & SEQUENCE */
+    .ladder-step {
+      display: flex;
+      gap: 1.5rem;
+      position: relative;
+      padding-bottom: 2rem;
+    }
+
+    .ladder-step:last-child {
+      padding-bottom: 0;
+    }
+
+    .ladder-step::before {
+      content: '';
+      position: absolute;
+      left: 20px;
+      top: 40px;
+      bottom: 0;
+      width: 2px;
+      background: var(--slate-200);
+    }
+
+    .ladder-step:last-child::before {
+      display: none;
+    }
+
+    .step-badge {
+      width: 42px;
+      height: 42px;
+      border-radius: 50%;
+      background: var(--surface);
+      border: 2px solid var(--primary);
+      color: var(--primary);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-weight: 800;
+      font-size: 0.95rem;
+      z-index: 2;
+      flex-shrink: 0;
+    }
+
+    .step-badge.warning {
+      border-color: var(--amber);
+      color: var(--amber);
+    }
+
+    .step-badge.alert {
+      border-color: var(--rose);
+      color: var(--rose);
+      background: var(--rose-light);
+    }
+
+    /* COLOR SWATCH */
+    .swatch-grid {
+      display: grid;
+      grid-template-columns: repeat(6, 1fr);
+      gap: 1.25rem;
+      margin-top: 1.5rem;
+    }
+
+    .swatch-card {
+      background: var(--surface);
+      border: 1px solid var(--slate-200);
+      border-radius: var(--radius-md);
+      overflow: hidden;
+      box-shadow: var(--shadow-sm);
+    }
+
+    .swatch-color {
+      height: 72px;
+      width: 100%;
+    }
+
+    .swatch-info {
+      padding: 0.85rem;
+    }
+
+    .swatch-name {
+      font-weight: 700;
+      font-size: 0.9rem;
+      color: var(--slate-900);
+    }
+
+    .swatch-hex {
+      font-family: 'JetBrains Mono', monospace;
+      font-size: 0.78rem;
+      color: var(--slate-500);
+      margin-top: 2px;
+    }
+
+    .swatch-usage {
+      font-size: 0.75rem;
+      color: var(--slate-600);
+      margin-top: 6px;
+      line-height: 1.35;
+    }
+
+    /* BEFORE / AFTER COMPARISON */
+    .comparison-grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 1.75rem;
+      margin-top: 1.5rem;
+    }
+
+    .comp-col-before {
+      background: #fff5f5;
+      border: 1px solid #fed7d7;
+      border-radius: var(--radius-lg);
+      padding: 1.75rem;
+    }
+
+    .comp-col-after {
+      background: #f0fdf4;
+      border: 1px solid #bbf7d0;
+      border-radius: var(--radius-lg);
+      padding: 1.75rem;
+    }
+
+    .comp-header {
+      display: flex;
+      align-items: center;
+      gap: 0.5rem;
+      font-weight: 800;
+      font-size: 1.15rem;
+      margin-bottom: 1rem;
+    }
+
+    .comp-col-before .comp-header { color: #c53030; }
+    .comp-col-after .comp-header { color: #22543d; }
+
+    /* FOOTER */
+    .case-footer {
+      background: var(--slate-900);
+      color: white;
+      padding: 5rem 0;
+      margin-top: 6rem;
+      position: relative;
+      overflow: hidden;
+    }
+
+    .case-footer::before {
+      content: '';
+      position: absolute;
+      top: -100px;
+      right: -100px;
+      width: 300px;
+      height: 300px;
+      border-radius: 50%;
+      background: radial-gradient(circle, rgba(99, 102, 241, 0.25) 0%, transparent 70%);
+      filter: blur(40px);
+    }
+
+    .footer-title {
+      font-size: 3rem;
+      font-weight: 800;
+      margin-bottom: 1rem;
+      color: white;
+    }
+
+    .footer-sub {
+      font-size: 1.15rem;
+      color: var(--slate-400);
+      max-width: 680px;
+      margin-bottom: 2.5rem;
+    }
+
+    .footer-links {
+      display: flex;
+      gap: 1.25rem;
+      flex-wrap: wrap;
+    }
+
+    .btn-proto {
+      background: var(--primary);
+      color: white;
+      text-decoration: none;
+      padding: 0.85rem 1.75rem;
+      border-radius: 10px;
+      font-weight: 700;
+      font-size: 0.95rem;
+      display: inline-flex;
+      align-items: center;
+      gap: 0.5rem;
+      transition: background 0.2s ease, transform 0.2s ease;
+    }
+
+    .btn-proto:hover {
+      background: var(--primary-dark);
+      transform: translateY(-2px);
+    }
+
+    .btn-gh {
+      background: rgba(255, 255, 255, 0.1);
+      color: white;
+      text-decoration: none;
+      padding: 0.85rem 1.75rem;
+      border-radius: 10px;
+      font-weight: 700;
+      font-size: 0.95rem;
+      display: inline-flex;
+      align-items: center;
+      gap: 0.5rem;
+      border: 1px solid rgba(255, 255, 255, 0.2);
+      transition: background 0.2s ease;
+    }
+
+    .btn-gh:hover {
+      background: rgba(255, 255, 255, 0.18);
+    }
+
+    @media print {
+      body {
+        background: white !important;
+        color: black !important;
+      }
+      .bento-card {
+        box-shadow: none !important;
+        border: 1px solid #cbd5e1 !important;
+        page-break-inside: avoid;
+      }
+      .showcase-frame {
+        box-shadow: none !important;
+        page-break-inside: avoid;
+      }
+    }
+
+    @media (max-width: 900px) {
+      .bento-grid-2, .bento-grid-3, .bento-grid-4, .metadata-strip, .swatch-grid, .comparison-grid {
+        grid-template-columns: 1fr;
+      }
+      .hero-title {
+        font-size: 2.75rem;
+      }
+    }
+  </style>
+</head>
+<body>
+
+  <!-- HERO SECTION -->
+  <section class="hero">
+    <div class="container">
+      <div class="badge-label">
+        <span>✨ UX Systems & Product Design Case Study</span>
+        <span>•</span>
+        <span>October 2026</span>
+      </div>
+
+      <h1 class="hero-title">OmniTask OS</h1>
+      <p class="hero-tagline">
+        One unified calendar for the person who plans, the person who is looked after, and the person who looks after them. A calendar-centric Life Operating System reconciling clinical adherence, budget velocity, and multi-generational dignity.
+      </p>
+
+      <div class="metadata-strip">
+        <div class="meta-item">
+          <div class="meta-label">Author & Role</div>
+          <div class="meta-value">Aswin S (Lead Designer & Architect)</div>
+        </div>
+        <div class="meta-item">
+          <div class="meta-label">Institution / Context</div>
+          <div class="meta-value">NIFT, Department of Design</div>
+        </div>
+        <div class="meta-item">
+          <div class="meta-label">Core Target</div>
+          <div class="meta-value">Multi-Generational Households</div>
+        </div>
+        <div class="meta-item">
+          <div class="meta-label">Engineering Stack</div>
+          <div class="meta-value">Vanilla HTML5, CSS Bento, WebCrypto</div>
+        </div>
+      </div>
+
+      <!-- MASTER SHOWCASE HERO MOCKUP -->
+      <div class="showcase-frame">
+        <div class="browser-bar">
+          <div class="browser-dots">
+            <div class="dot dot-red"></div>
+            <div class="dot dot-yellow"></div>
+            <div class="dot dot-green"></div>
+          </div>
+          <div class="browser-url">https://aswin1237.github.io/task-manager-app-beta/ (Live Bento Cockpit)</div>
+        </div>
+        <img src="OmniTask_UX_Case_Study/case_study_assets/02_power_dashboard.png" alt="OmniTask Bento Cockpit Master Dashboard" class="showcase-img">
+      </div>
+    </div>
+  </section>
+
+  <!-- 01 EXECUTIVE OVERVIEW -->
+  <section class="container" style="margin-bottom: 5rem;">
+    <div class="badge-label">01 // Architectural Overview</div>
+    <h2 class="section-title">A calendar that owns nothing and shows everything.</h2>
+    <p class="section-sub">
+      OmniTask is a calendar-centric personal operating system. The home calendar is an intelligent aggregation and preview engine, never the siloed owner of data. It synthesizes inputs across four specialized domains: Reminders (prescriptions, payments, appointments), Financial Ledgers, Habits & Fitness, and Caregiver Telemetry.
+    </p>
+
+    <div class="bento-grid-3">
+      <div class="bento-card">
+        <div style="font-size: 2rem; margin-bottom: 0.75rem;">⚡</div>
+        <h3 style="font-size: 1.25rem; margin-bottom: 0.5rem;">Power User Cockpit</h3>
+        <p style="color: var(--slate-600); font-size: 0.95rem;">
+          Designed for the ambitious family administrator. Delivers ultra-high data throughput, multi-calendar synchronization, real-time salary burn tracking, and fast keyboard-first omni-search (<span class="mono">Ctrl+K</span>).
+        </p>
+      </div>
+
+      <div class="bento-card">
+        <div style="font-size: 2rem; margin-bottom: 0.75rem;">👵</div>
+        <h3 style="font-size: 1.25rem; margin-bottom: 0.5rem;">Senior Dignity Mode</h3>
+        <p style="color: var(--slate-600); font-size: 0.95rem;">
+          Transforms the app into an autonomous tablet appliance. Features 24pt+ high-contrast typography, massive 56dp touch targets, daylight audio readouts, and sovereign privacy pause controls.
+        </p>
+      </div>
+
+      <div class="bento-card">
+        <div style="font-size: 2rem; margin-bottom: 0.75rem;">🛡️</div>
+        <h3 style="font-size: 1.25rem; margin-bottom: 0.5rem;">Caregiver Command</h3>
+        <p style="color: var(--slate-600); font-size: 0.95rem;">
+          Provides clinical guardians with high-signal, zero-noise adherence telemetry. Only escalates alerts when chronic medications are missed beyond a calibrated safety threshold.
+        </p>
+      </div>
+    </div>
+  </section>
+
+  <!-- 02 PROBLEM & FRAGMENTATION -->
+  <section class="container" style="margin-bottom: 5rem;">
+    <div class="badge-label">02 // The Problem Space</div>
+    <h2 class="section-title">Daily life is fractured across apps that refuse to speak.</h2>
+    <p class="section-sub">
+      Working adults in the "sandwich generation" manage their life through an exhausting maze of 5+ disconnected applications, leading to notification fatigue, dropped prescriptions, and surprise financial liabilities.
+    </p>
+
+    <div class="bento-grid-3" style="margin-bottom: 2.5rem;">
+      <div class="bento-card" style="border-left: 4px solid var(--primary);">
+        <div style="font-size: 0.78rem; font-weight: 700; color: var(--primary); text-transform: uppercase; margin-bottom: 0.5rem;">Calendar Apps</div>
+        <h3 style="font-size: 1.2rem; margin-bottom: 0.5rem;">Great at meetings. Blind to medicine.</h3>
+        <p style="color: var(--slate-600); font-size: 0.92rem;">
+          Google Calendar and Apple Calendar treat days as arbitrary blocks of time, completely detached from recurring medical regimens, emergency contacts, or workout routines.
+        </p>
+      </div>
+
+      <div class="bento-card" style="border-left: 4px solid var(--rose);">
+        <div style="font-size: 0.78rem; font-weight: 700; color: var(--rose); text-transform: uppercase; margin-bottom: 0.5rem;">Health Apps</div>
+        <h3 style="font-size: 1.2rem; margin-bottom: 0.5rem;">Clinical, isolated, and undignified.</h3>
+        <p style="color: var(--slate-600); font-size: 0.92rem;">
+          Specialized reminder apps treat seniors with cold clinical austerity or intrusive camera surveillance, stripping elderly individuals of their independence and agency.
+        </p>
+      </div>
+
+      <div class="bento-card" style="border-left: 4px solid var(--amber);">
+        <div style="font-size: 0.78rem; font-weight: 700; color: var(--amber); text-transform: uppercase; margin-bottom: 0.5rem;">Budget Apps</div>
+        <h3 style="font-size: 1.2rem; margin-bottom: 0.5rem;">Looking backward, not at what is due.</h3>
+        <p style="color: var(--slate-600); font-size: 0.92rem;">
+          Walnut and Splitwise record expenses after the money has already left the account, failing to bridge upcoming utility bills on the calendar with real-time monthly salary burn.
+        </p>
+      </div>
+    </div>
+
+    <!-- HOW MIGHT WE BANNER -->
+    <div class="bento-card" style="background: linear-gradient(135deg, #0f172a 0%, #1e1b4b 100%); color: white; padding: 2.5rem;">
+      <div style="font-size: 0.8rem; font-weight: 700; text-transform: uppercase; letter-spacing: 0.15em; color: var(--accent); margin-bottom: 0.75rem;">Core Design Challenge (HMW)</div>
+      <div style="font-size: 1.45rem; font-weight: 700; line-height: 1.4; color: white;">
+        "How might we design a calendar-centric personal operating system that serves an ambitious power user, an aging senior, and a remote caregiver simultaneously—without overwhelming the power user or surveilling the senior?"
+      </div>
+    </div>
+  </section>
+
+  <!-- 03 RESEARCH & QUANTITATIVE INFOGRAPHICS -->
+  <section class="container" style="margin-bottom: 5rem;">
+    <div class="badge-label">03 // Empirical Research</div>
+    <h2 class="section-title">What 45 households revealed, and how 20 people grouped the app.</h2>
+    <p class="section-sub">
+      Pre-design mixed-methods research conducted across three distinct user cohorts: young working professionals (n=20), independent seniors aged 68-84 (n=15), and professional/family caregivers (n=10).
+    </p>
+
+    <!-- SURVEY STATS INFOGRAPHIC GRID -->
+    <div class="bento-grid-3" style="margin-bottom: 2.5rem;">
+      <div class="bento-card">
+        <div class="stat-hero blue">85%</div>
+        <div style="font-weight: 700; font-size: 1.05rem; margin-bottom: 0.35rem;">Notification Fatigue</div>
+        <p style="color: var(--slate-600); font-size: 0.9rem;">
+          Of young professionals report missing critical payments or workout sessions due to competing alert noise across 5+ disconnected apps.
+        </p>
+        <div class="bar-meter"><div class="bar-fill" style="width: 85%;"></div></div>
+        <span style="font-size: 0.75rem; color: var(--slate-500); font-weight: 600;">Cohort A: Working Adults (22–38)</span>
+      </div>
+
+      <div class="bento-card">
+        <div class="stat-hero green">93%</div>
+        <div style="font-weight: 700; font-size: 1.05rem; margin-bottom: 0.35rem;">Touch Target Failures</div>
+        <p style="color: var(--slate-600); font-size: 0.9rem;">
+          Of elderly seniors make accidental mis-taps on buttons smaller than 48px, while 73% experience intense anxiety from non-emergency red badges.
+        </p>
+        <div class="bar-meter"><div class="bar-fill" style="width: 93%; background: var(--emerald);"></div></div>
+        <span style="font-size: 0.75rem; color: var(--slate-500); font-weight: 600;">Cohort B: Independent Seniors (68–84)</span>
+      </div>
+
+      <div class="bento-card">
+        <div class="stat-hero rose">100%</div>
+        <div style="font-weight: 700; font-size: 1.05rem; margin-bottom: 0.35rem;">Sovereign Privacy Demand</div>
+        <p style="color: var(--slate-600); font-size: 0.9rem;">
+          Of surveyed seniors insisted on an explicit privacy pause switch, while 90% of caregivers demanded an unmasked Medical ID for crisis dispatch.
+        </p>
+        <div class="bar-meter"><div class="bar-fill" style="width: 100%; background: var(--rose);"></div></div>
+        <span style="font-size: 0.75rem; color: var(--slate-500); font-weight: 600;">Cohort C: Caregivers & Nurses (32–55)</span>
+      </div>
+    </div>
+
+    <!-- CARD SORTING HORIZONTAL BARS INFOGRAPHIC -->
+    <div class="bento-card">
+      <div style="display: flex; justify-content: space-between; align-items: baseline; margin-bottom: 1.5rem; flex-wrap: wrap; gap: 0.5rem;">
+        <div>
+          <h3 style="font-size: 1.3rem;">Card Sorting Study: Conceptual Affinity (N = 20)</h3>
+          <p style="color: var(--slate-600); font-size: 0.92rem;">Frequency of feature pairs grouped into the same operational mental bucket.</p>
+        </div>
+        <span class="tag-action">Open & Closed Card Sort</span>
+      </div>
+
+      <div style="display: flex; flex-direction: column; gap: 1.25rem;">
+        <div>
+          <div style="display: flex; justify-content: space-between; font-weight: 600; font-size: 0.92rem; margin-bottom: 0.35rem;">
+            <span>💊 Morning Pill Schedule & Emergency Medical ID</span>
+            <span class="mono" style="color: var(--primary);">95%</span>
+          </div>
+          <div class="bar-meter" style="height: 12px; margin: 0;"><div class="bar-fill" style="width: 95%;"></div></div>
+        </div>
+
+        <div>
+          <div style="display: flex; justify-content: space-between; font-weight: 600; font-size: 0.92rem; margin-bottom: 0.35rem;">
+            <span>⚡ Utility Bills & Rent Payment Liabilities</span>
+            <span class="mono" style="color: var(--primary);">95%</span>
+          </div>
+          <div class="bar-meter" style="height: 12px; margin: 0;"><div class="bar-fill" style="width: 95%;"></div></div>
+        </div>
+
+        <div>
+          <div style="display: flex; justify-content: space-between; font-weight: 600; font-size: 0.92rem; margin-bottom: 0.35rem;">
+            <span>🧾 Utility Bill Payment & Grocery Expense Ledger</span>
+            <span class="mono" style="color: var(--emerald);">85%</span>
+          </div>
+          <div class="bar-meter" style="height: 12px; margin: 0;"><div class="bar-fill" style="width: 85%; background: var(--emerald);"></div></div>
+        </div>
+
+        <div>
+          <div style="display: flex; justify-content: space-between; font-weight: 600; font-size: 0.92rem; margin-bottom: 0.35rem;">
+            <span>🎸 Morning Medication & Skill Practice Habit</span>
+            <span class="mono" style="color: var(--amber);">75%</span>
+          </div>
+          <div class="bar-meter" style="height: 12px; margin: 0;"><div class="bar-fill" style="width: 75%; background: var(--amber);"></div></div>
+        </div>
+      </div>
+
+      <div class="bento-grid-2" style="margin-top: 2rem;">
+        <div class="callout-box" style="margin: 0;">
+          <div class="callout-title" style="color: var(--primary);">💡 Finding 1: Pills & Bills Sit Together</div>
+          <p style="font-size: 0.88rem; color: var(--slate-600);">
+            85% of participants consider both medication and recurring bills as "things I must remember on a specific calendar day." Decision: Pills, payments, and appointments live under one synchronized Reminders hub.
+          </p>
+        </div>
+
+        <div class="callout-box" style="margin: 0;">
+          <div class="callout-title" style="color: var(--emerald);">💡 Finding 2: 1-Click Auto-Linking Bridge</div>
+          <p style="font-size: 0.88rem; color: var(--slate-600);">
+            85% grouped paying a utility bill directly with daily expenses. Decision: Marking a scheduled bill "Paid" automatically creates an expense entry in the budget ledger, eliminating duplicate manual data entry.
+          </p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- 04 PERSONAS -->
+  <section class="container" style="margin-bottom: 5rem;">
+    <div class="badge-label">04 // User Personas</div>
+    <h2 class="section-title">Three generations, three definitions of "good design".</h2>
+    <p class="section-sub">
+      OmniTask reconciles the conflicting psychological and ergonomic requirements of three household roles without forcing them into a one-size-fits-all compromise.
+    </p>
+
+    <div class="bento-grid-3">
+      <!-- PERSONA 1: ASWIN -->
+      <div class="bento-card persona-card">
+        <div class="persona-header">
+          <div class="avatar-circle avatar-aswin">AS</div>
+          <div>
+            <h3 style="font-size: 1.25rem;">Aswin S, 24</h3>
+            <div style="font-size: 0.82rem; color: var(--slate-500); font-weight: 600;">Product Designer & Family Admin</div>
+          </div>
+        </div>
+
+        <div style="margin-bottom: 1rem;">
+          <div style="font-size: 0.75rem; font-weight: 700; color: var(--primary); text-transform: uppercase;">Primary Goal</div>
+          <p style="font-size: 0.9rem; color: var(--slate-700);">A dense, keyboard-driven cockpit to manage design sprints, workout PRs, and ensure his grandmother takes medication without intrusive calls.</p>
+        </div>
+
+        <div style="margin-bottom: 1rem;">
+          <div style="font-size: 0.75rem; font-weight: 700; color: var(--rose); text-transform: uppercase;">Core Frustration</div>
+          <p style="font-size: 0.9rem; color: var(--slate-700);">Constant background anxiety about his mother; overwhelmed by switching between Splitwise, Google Calendar, and Medisafe.</p>
+        </div>
+
+        <div>
+          <div style="font-size: 0.75rem; font-weight: 700; color: var(--slate-500); text-transform: uppercase;">Technical Context</div>
+          <p style="font-size: 0.9rem; color: var(--slate-700);">MacBook Pro, high digital literacy, shortcut-oriented (Ctrl+K), multi-display workspace.</p>
+        </div>
+      </div>
+
+      <!-- PERSONA 2: ELEANOR -->
+      <div class="bento-card persona-card senior">
+        <div class="persona-header">
+          <div class="avatar-circle avatar-eleanor">EV</div>
+          <div>
+            <h3 style="font-size: 1.25rem;">Eleanor Vance, 74</h3>
+            <div style="font-size: 0.82rem; color: var(--slate-500); font-weight: 600;">Retired Educator • Independent Senior</div>
+          </div>
+        </div>
+
+        <div style="margin-bottom: 1rem;">
+          <div style="font-size: 0.75rem; font-weight: 700; color: var(--emerald); text-transform: uppercase;">Primary Goal</div>
+          <p style="font-size: 0.9rem; color: var(--slate-700);">Live autonomously in her apartment, take heart pills on schedule, and maintain dignity without feeling infantilized or surveilled.</p>
+        </div>
+
+        <div style="margin-bottom: 1rem;">
+          <div style="font-size: 0.75rem; font-weight: 700; color: var(--rose); text-transform: uppercase;">Core Frustration</div>
+          <p style="font-size: 0.9rem; color: var(--slate-700);">Tiny smartphone text, nested settings menus, and cameras installed by family that feel like a loss of privacy.</p>
+        </div>
+
+        <div>
+          <div style="font-size: 0.75rem; font-weight: 700; color: var(--slate-500); text-transform: uppercase;">Technical Context</div>
+          <p style="font-size: 0.9rem; color: var(--slate-700);">iPad on kitchen counter, mild arthritis tremor, macular degeneration requiring 24pt+ text.</p>
+        </div>
+      </div>
+
+      <!-- PERSONA 3: JOHN / DR. ELENA -->
+      <div class="bento-card persona-card caregiver">
+        <div class="persona-header">
+          <div class="avatar-circle avatar-caregiver">JV</div>
+          <div>
+            <h3 style="font-size: 1.25rem;">John Vance, 48</h3>
+            <div style="font-size: 0.82rem; color: var(--slate-500); font-weight: 600;">Clinical Caregiver & Visiting Nurse</div>
+          </div>
+        </div>
+
+        <div style="margin-bottom: 1rem;">
+          <div style="font-size: 0.75rem; font-weight: 700; color: var(--rose); text-transform: uppercase;">Primary Goal</div>
+          <p style="font-size: 0.9rem; color: var(--slate-700);">Monitor patient adherence in real-time, receive high-signal alerts only when doses are missed, and print clinical reports for physicians.</p>
+        </div>
+
+        <div style="margin-bottom: 1rem;">
+          <div style="font-size: 0.75rem; font-weight: 700; color: var(--rose); text-transform: uppercase;">Core Frustration</div>
+          <p style="font-size: 0.9rem; color: var(--slate-700);">False alarm fatigue, ambiguous liability when patients self-report, and time-consuming manual charts.</p>
+        </div>
+
+        <div>
+          <div style="font-size: 0.75rem; font-weight: 700; color: var(--slate-500); text-transform: uppercase;">Technical Context</div>
+          <p style="font-size: 0.9rem; color: var(--slate-700);">iPhone on hospital shifts, requires 1-tap dialer and zero-noise escalation protocols.</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- 05 FIVE DESIGN TENSIONS -->
+  <section class="container" style="margin-bottom: 5rem;">
+    <div class="badge-label">05 // Architectural Resolution</div>
+    <h2 class="section-title">Five fundamental conflicts the system had to resolve.</h2>
+    <p class="section-sub">
+      Designing across generations requires solving deep trade-offs between information density, accessibility, surveillance ethics, and emergency safety.
+    </p>
+
+    <div style="display: flex; flex-direction: column; gap: 1.5rem;">
+      <div class="bento-card">
+        <div style="display: flex; justify-content: space-between; align-items: baseline; margin-bottom: 0.75rem; flex-wrap: wrap;">
+          <h3 style="font-size: 1.2rem; color: var(--slate-900);">Tension 1: High Density vs. Senior Cognitive Load</h3>
+          <span class="tag-action">Resolved: Adaptive Persona Switcher</span>
+        </div>
+        <p style="color: var(--slate-600); font-size: 0.92rem; margin-bottom: 0.75rem;">
+          <strong>Conflict:</strong> Power users demand dense monthly matrices and keyboard accelerators. A fatigued senior with visual decline is paralyzed by dense visual noise.
+        </p>
+        <div class="callout-box" style="margin: 0; background: #eef2ff; border-color: #c7d2fe;">
+          <p style="font-size: 0.88rem; color: var(--primary-dark);">
+            <strong>Resolution:</strong> The underlying data remains synchronized, but the UI adapts completely via <span class="mono">setMode()</span>. Power mode displays the full bento cockpit, while Senior mode renders oversized cards, voice synthesis, and prominent 112 SOS buttons.
+          </p>
+        </div>
+      </div>
+
+      <div class="bento-card">
+        <div style="display: flex; justify-content: space-between; align-items: baseline; margin-bottom: 0.75rem; flex-wrap: wrap;">
+          <h3 style="font-size: 1.2rem; color: var(--slate-900);">Tension 2: Safety Oversight vs. Dignity and Autonomy</h3>
+          <span class="tag-action" style="background: var(--emerald-light); color: var(--emerald);">Resolved: Two-Way Telemetry & Pause</span>
+        </div>
+        <p style="color: var(--slate-600); font-size: 0.92rem; margin-bottom: 0.75rem;">
+          <strong>Conflict:</strong> Family monitoring easily degrades into a patronizing, one-way surveillance trap that elderly parents deeply resent.
+        </p>
+        <div class="callout-box" style="margin: 0; background: #ecfdf5; border-color: #a7f3d0;">
+          <p style="font-size: 0.88rem; color: #065f46;">
+            <strong>Resolution:</strong> Transparent Two-Way Banner (*"Monitored by Caregiver John Vance • Adherence 96%"*) paired with a 1-tap *"Pause Telemetry"* switch. Eleanor retains complete sovereignty over her privacy, and zero intrusive video cameras are used.
+          </p>
+        </div>
+      </div>
+
+      <div class="bento-card">
+        <div style="display: flex; justify-content: space-between; align-items: baseline; margin-bottom: 0.75rem; flex-wrap: wrap;">
+          <h3 style="font-size: 1.2rem; color: var(--slate-900);">Tension 3: Color Psychology vs. Panic Alarms</h3>
+          <span class="tag-action" style="background: var(--amber-light); color: var(--amber);">Resolved: Strict Semantic Color Roles</span>
+        </div>
+        <p style="color: var(--slate-600); font-size: 0.92rem; margin-bottom: 0.75rem;">
+          <strong>Conflict:</strong> Apps frequently use red for busy days or routine tasks, causing seniors to ask anxiously: *"Did I do something wrong?"*
+        </p>
+        <div class="callout-box" style="margin: 0; background: #fffbeb; border-color: #fde68a;">
+          <p style="font-size: 0.88rem; color: #92400e;">
+            <strong>Resolution:</strong> A calm color ramp with dual-channel shape cues. Busy days use sage green and ocean blue. Crimson (<span class="mono">#ef4444</span>) is strictly reserved for life-critical Emergency 112 SOS dispatch and missed medication.
+          </p>
+        </div>
+      </div>
+
+      <div class="bento-card">
+        <div style="display: flex; justify-content: space-between; align-items: baseline; margin-bottom: 0.75rem; flex-wrap: wrap;">
+          <h3 style="font-size: 1.2rem; color: var(--slate-900);">Tension 4: One Payment, Two Mental Models</h3>
+          <span class="tag-action">Resolved: Auto-Link Financial Bridge</span>
+        </div>
+        <p style="color: var(--slate-600); font-size: 0.92rem; margin-bottom: 0.75rem;">
+          <strong>Conflict:</strong> Users hate marking a utility bill paid in one calendar app and then re-entering it as an expense in a separate budgeting spreadsheet.
+        </p>
+        <div class="callout-box" style="margin: 0; background: #f8fafc; border-color: var(--slate-200);">
+          <p style="font-size: 0.88rem; color: var(--slate-700);">
+            <strong>Resolution:</strong> The Auto-Link Bridge. Clicking *"Paid ₹120.00"* on an upcoming electric bill instantly creates a categorized transaction in the expense ledger and recalculates monthly salary burn velocity in real-time.
+          </p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- 06 KEY FLOW: MISSED-PILL ESCALATION PROTOCOL -->
+  <section class="container" style="margin-bottom: 5rem;">
+    <div class="badge-label">06 // Clinical Safety Engine</div>
+    <h2 class="section-title">The Missed-Pill Escalation Protocol</h2>
+    <p class="section-sub">
+      A clinically engineered safety ladder where the three user roles intersect. It protects patient health while preventing premature alarm fatigue.
+    </p>
+
+    <div class="bento-card" style="padding: 3rem 2.5rem;">
+      <div class="ladder-step">
+        <div class="step-badge">1</div>
+        <div style="flex: 1;">
+          <div style="display: flex; justify-content: space-between; align-items: baseline;">
+            <h3 style="font-size: 1.25rem; color: var(--slate-900);">T + 0 min: Gentle In-App Nudge</h3>
+            <span class="mono" style="font-weight: 700; color: var(--primary);">Autonomous Grace Window</span>
+          </div>
+          <p style="color: var(--slate-600); font-size: 0.95rem; margin-top: 0.35rem;">
+            At the scheduled dose time (08:30 AM), Eleanor's tablet displays an active cyan dosage slot (*"Take Evening Dose"*) and plays a soft, dignified chime. Zero external notifications are sent to family, preserving her independence.
+          </p>
+        </div>
+      </div>
+
+      <div class="ladder-step">
+        <div class="step-badge warning">2</div>
+        <div style="flex: 1;">
+          <div style="display: flex; justify-content: space-between; align-items: baseline;">
+            <h3 style="font-size: 1.25rem; color: var(--slate-900);">T + 15 min: Spoken Room Audio</h3>
+            <span class="mono" style="font-weight: 700; color: var(--amber);">Local Auditory Alert</span>
+          </div>
+          <p style="color: var(--slate-600); font-size: 0.95rem; margin-top: 0.35rem;">
+            If unconfirmed past 15 minutes, the tablet invokes text-to-speech: <em>"Eleanor, it's time for your morning Metformin dose."</em> The card transitions to amber. Still zero alerts sent to John, allowing her time to finish tea or return from the garden.
+          </p>
+        </div>
+      </div>
+
+      <div class="ladder-step">
+        <div class="step-badge alert">3</div>
+        <div style="flex: 1;">
+          <div style="display: flex; justify-content: space-between; align-items: baseline;">
+            <h3 style="font-size: 1.25rem; color: var(--rose);">T + 30 min: Remote Caregiver Escalation</h3>
+            <span class="mono" style="font-weight: 700; color: var(--rose);">High-Priority Telemetry</span>
+          </div>
+          <p style="color: var(--slate-600); font-size: 0.95rem; margin-top: 0.35rem;">
+            When the safety threshold is exceeded, a push alert is dispatched to Caregiver John's iPhone. John can tap *"Call Eleanor"* directly from his command banner, contact her residence, and log a clinical note, instantly returning the system to nominal status.
+          </p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- 07 SCREEN-BY-SCREEN UI SHOWCASE WITH BUTTON INVENTORIES -->
+  <section class="container" style="margin-bottom: 5rem;">
+    <div class="badge-label">07 // High-Fidelity Interface Showcase</div>
+    <h2 class="section-title">Real Screens. Zero Flaws. Complete Button Breakdown.</h2>
+    <p class="section-sub">
+      Every screen captured directly from the live application, audited against contrast standards, with exhaustive inventories explaining what every control and button executes.
+    </p>
+
+    <!-- SCREEN 1: LOGIN GATEWAY -->
+    <div style="margin-bottom: 4.5rem;">
+      <h3 style="font-size: 1.6rem; margin-bottom: 0.5rem;">01. Zero-Trust Multi-Persona Login Gateway</h3>
+      <p style="color: var(--slate-600); margin-bottom: 1.5rem;">
+        Establishes role-based access control, cryptographic WebCrypto SHA-256 client authentication, and unauthenticated emergency SOS bypass.
+      </p>
+
+      <div class="showcase-frame">
+        <div class="browser-bar">
+          <div class="browser-dots"><div class="dot dot-red"></div><div class="dot dot-yellow"></div><div class="dot dot-green"></div></div>
+          <div class="browser-url">index.html?login=1</div>
+        </div>
+        <img src="OmniTask_UX_Case_Study/case_study_assets/01_login_gateway.png" alt="Login Gateway Screen" class="showcase-img">
+      </div>
+
+      <table class="button-table">
+        <thead>
+          <tr>
+            <th>Element / Button</th>
+            <th>Type</th>
+            <th>System Action & Logic</th>
+            <th>Visual State Change</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td><strong>Family Admin Card</strong></td>
+            <td><span class="tag-action">Interactive Card</span></td>
+            <td>Sets login role to <span class="mono">'power'</span>; pre-fills Aswin's credentials.</td>
+            <td>Highlights card with primary indigo border and blue glow.</td>
+          </tr>
+          <tr>
+            <td><strong>Elder Person Card</strong></td>
+            <td><span class="tag-action">Interactive Card</span></td>
+            <td>Sets role to <span class="mono">'senior'</span>; pre-fills Eleanor's 4-digit PIN profile.</td>
+            <td>Highlights card in green; updates preview mode.</td>
+          </tr>
+          <tr>
+            <td><strong>Caregiver Account Card</strong></td>
+            <td><span class="tag-action">Interactive Card</span></td>
+            <td>Sets role to <span class="mono">'caregiver'</span>; links telemetry stream to monitored patient.</td>
+            <td>Rose border highlight; activates clinical audit mode.</td>
+          </tr>
+          <tr>
+            <td><strong>Password Eye Icon</strong></td>
+            <td><span class="tag-action">Toggle Button</span></td>
+            <td>Switches input type between <span class="mono">'password'</span> and <span class="mono">'text'</span>.</td>
+            <td>Toggles icon from 👁️ to 🙈; reveals password safely.</td>
+          </tr>
+          <tr>
+            <td><strong>Sign In & Recalibrate</strong></td>
+            <td><span class="tag-action">Primary CTA</span></td>
+            <td>Hashes password with SHA-256; verifies session; calls <span class="mono">toggleLoginScreen(false)</span>.</td>
+            <td>Unlocks workspace; renders personalized dashboard with toast.</td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+
+    <!-- SCREEN 2: MEDICATION HUB -->
+    <div style="margin-bottom: 4.5rem;">
+      <h3 style="font-size: 1.6rem; margin-bottom: 0.5rem;">02. Active Prescriptions & Medication Course Engine</h3>
+      <p style="color: var(--slate-600); margin-bottom: 1.5rem;">
+        Treats chronic treatments as continuous 30-day clinical courses rather than disposable to-do alarms, tracking course progress, refill buffers, and emergency medical IDs.
+      </p>
+
+      <div class="showcase-frame">
+        <div class="browser-bar">
+          <div class="browser-dots"><div class="dot dot-red"></div><div class="dot dot-yellow"></div><div class="dot dot-green"></div></div>
+          <div class="browser-url">index.html?mode=power&tab=reminders</div>
+        </div>
+        <img src="OmniTask_UX_Case_Study/case_study_assets/03_reminders_medication.png" alt="Medication Hub Screen" class="showcase-img">
+      </div>
+
+      <table class="button-table">
+        <thead>
+          <tr>
+            <th>Element / Button</th>
+            <th>Type</th>
+            <th>System Action & Logic</th>
+            <th>Visual State Change</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td><strong>+ Add Rx</strong></td>
+            <td><span class="tag-action">Header CTA</span></td>
+            <td>Opens Prescription Course Creator modal with dosage, frequency, and doctor fields.</td>
+            <td>Fades in modal backdrop; focuses medication name input.</td>
+          </tr>
+          <tr>
+            <td><strong>Take Evening Dose</strong></td>
+            <td><span class="tag-action">Action Button</span></td>
+            <td>Logs dose timestamp; increments course counter (Day 22 of 30); increments streak.</td>
+            <td>Slot turns green; progress bar advances to 73%; logs audit entry.</td>
+          </tr>
+          <tr>
+            <td><strong>Snooze 15m</strong></td>
+            <td><span class="tag-action">Secondary Button</span></td>
+            <td>Delays next notification cycle by 15 minutes; postpones Caregiver Escalation timer.</td>
+            <td>Shows toast *"Snoozed 15m"*; updates badge to *"Snoozed"*.</td>
+          </tr>
+          <tr>
+            <td><strong>Refill Radar Badge</strong></td>
+            <td><span class="tag-action">Telemetry Chip</span></td>
+            <td>Computes remaining doses vs. 7-day safety threshold.</td>
+            <td>Displays *"8 Days Remaining • Refill on track"* in green.</td>
+          </tr>
+          <tr>
+            <td><strong>Emergency Medical ID</strong></td>
+            <td><span class="tag-action">Accordion Card</span></td>
+            <td>Expands emergency blood type (O+), penicillin allergy, and hospital details.</td>
+            <td>Card smoothly slides open for first responders without a password.</td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+
+    <!-- SCREEN 3: FINANCIAL LEDGER -->
+    <div style="margin-bottom: 4.5rem;">
+      <h3 style="font-size: 1.6rem; margin-bottom: 0.5rem;">03. Expenses, Salary Burn Velocity & Budget Ledger</h3>
+      <p style="color: var(--slate-600); margin-bottom: 1.5rem;">
+        Bridges scheduled calendar liabilities directly with liquid monthly salary burn, preventing unexpected cashflow depletion.
+      </p>
+
+      <div class="showcase-frame">
+        <div class="browser-bar">
+          <div class="browser-dots"><div class="dot dot-red"></div><div class="dot dot-yellow"></div><div class="dot dot-green"></div></div>
+          <div class="browser-url">index.html?mode=power&tab=expense</div>
+        </div>
+        <img src="OmniTask_UX_Case_Study/case_study_assets/04_expenses_finance.png" alt="Expenses & Bills Screen" class="showcase-img">
+      </div>
+
+      <table class="button-table">
+        <thead>
+          <tr>
+            <th>Element / Button</th>
+            <th>Type</th>
+            <th>System Action & Logic</th>
+            <th>Visual State Change</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td><strong>Edit Monthly Salary</strong></td>
+            <td><span class="tag-action">Header CTA</span></td>
+            <td>Prompts user to configure monthly take-home salary baseline (<span class="mono">₹50,000</span>).</td>
+            <td>Updates salary variable and recalculates burn velocity.</td>
+          </tr>
+          <tr>
+            <td><strong>Paid (₹120.00)</strong></td>
+            <td><span class="tag-action">Auto-Link Bridge</span></td>
+            <td>Marks utility bill as paid; creates linked expense item in ledger.</td>
+            <td>Button turns green; ledger adds *"Electric Bill (Auto-Linked)"*.</td>
+          </tr>
+          <tr>
+            <td><strong>Category Filter Chips</strong></td>
+            <td><span class="tag-action">Filter Buttons</span></td>
+            <td>Filters ledger table by category (Utility, Food, Travel, Medical).</td>
+            <td>Selected card receives blue border; updates ledger list below.</td>
+          </tr>
+          <tr>
+            <td><strong>Export CSV</strong></td>
+            <td><span class="tag-action">Data Button</span></td>
+            <td>Serializes expense ledger into RFC 4180 CSV with formula injection defense.</td>
+            <td>Downloads <span class="mono">omnitask_expenses_october_2026.csv</span> to device.</td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+
+    <!-- SCREEN 4: FITNESS & HABITS -->
+    <div style="margin-bottom: 4.5rem;">
+      <h3 style="font-size: 1.6rem; margin-bottom: 0.5rem;">04. Fitness Regimens, Multi-Day Streaks & Habit Clusters</h3>
+      <p style="color: var(--slate-600); margin-bottom: 1.5rem;">
+        Unifies physical strength regimens with same-day clustered habit tracking (hydration, guitar drills) with clean sanitized multi-line schedule breakdowns.
+      </p>
+
+      <div class="showcase-frame">
+        <div class="browser-bar">
+          <div class="browser-dots"><div class="dot dot-red"></div><div class="dot dot-yellow"></div><div class="dot dot-green"></div></div>
+          <div class="browser-url">index.html?mode=power&tab=fitness</div>
+        </div>
+        <img src="OmniTask_UX_Case_Study/case_study_assets/05_fitness_habits.png" alt="Fitness & Habits Screen" class="showcase-img">
+      </div>
+
+      <table class="button-table">
+        <thead>
+          <tr>
+            <th>Element / Button</th>
+            <th>Type</th>
+            <th>System Action & Logic</th>
+            <th>Visual State Change</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td><strong>+ Add Workout</strong></td>
+            <td><span class="tag-action">Header CTA</span></td>
+            <td>Opens Workout Routine Builder (Exercise Name, Sets, Reps, Muscle Group).</td>
+            <td>Fades in workout dialog with focused exercise input.</td>
+          </tr>
+          <tr>
+            <td><strong>Exercise Checkbox</strong></td>
+            <td><span class="tag-action">Checklist Item</span></td>
+            <td>Toggles completion of specific workout set (e.g. Bench Press: 3 Sets × 10 Reps).</td>
+            <td>Strike-through on exercise text; updates routine count.</td>
+          </tr>
+          <tr>
+            <td><strong>Mark Workout Complete</strong></td>
+            <td><span class="tag-action">Streak Button</span></td>
+            <td>Records workout completion; increments 7-day streak; logs calendar entry.</td>
+            <td>Button pulses green; triggers toast *"Workout Complete! +1 Streak"*.</td>
+          </tr>
+          <tr>
+            <td><strong>+ Log Session (+1)</strong></td>
+            <td><span class="tag-action">Habit Action</span></td>
+            <td>Increments daily session count for habit (e.g. Guitar Practice: 3 → 4).</td>
+            <td>Updates badge counter; renders clean multi-line schedule breakdown.</td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+
+    <!-- SCREEN 5: SENIOR DIGNITY & CAREGIVER DUALITY -->
+    <div style="margin-bottom: 4.5rem;">
+      <h3 style="font-size: 1.6rem; margin-bottom: 0.5rem;">05. Generational Duality: Senior Dignity vs. Caregiver Telemetry</h3>
+      <p style="color: var(--slate-600); margin-bottom: 1.5rem;">
+        Comparing how the same underlying medical adherence stream renders through the lens of independent elder dignity versus clinical oversight.
+      </p>
+
+      <div class="bento-grid-2">
+        <div>
+          <div style="font-weight: 700; font-size: 1.1rem; color: var(--emerald); margin-bottom: 0.5rem;">Senior Dignity Mode (Eleanor's Tablet)</div>
+          <div class="showcase-frame" style="margin-bottom: 1rem;">
+            <img src="OmniTask_UX_Case_Study/case_study_assets/07_senior_dignity_mode.png" alt="Senior Dignity Mode Screen" class="showcase-img">
+          </div>
+          <p style="font-size: 0.88rem; color: var(--slate-600);">
+            Features high-contrast 24pt+ typography, 56dp buttons, a friendly transparency banner (*"Monitored by John Vance"*), spoken schedule synthesis, and a 1-tap *"Pause Telemetry"* button.
+          </p>
+        </div>
+
+        <div>
+          <div style="font-weight: 700; font-size: 1.1rem; color: var(--rose); margin-bottom: 0.5rem;">Caregiver Command Mode (John's Stream)</div>
+          <div class="showcase-frame" style="margin-bottom: 1rem;">
+            <img src="OmniTask_UX_Case_Study/case_study_assets/08_caregiver_mode.png" alt="Caregiver Stream Screen" class="showcase-img">
+          </div>
+          <p style="font-size: 0.88rem; color: var(--slate-600);">
+            Features live adherence sparklines (96%), real-time activity stream, paired IoT tablet battery levels, escalation sliders, and a 1-tap direct phone dialer to Eleanor's tablet.
+          </p>
+        </div>
+      </div>
+    </div>
+
+    <!-- SCREEN 6: EMERGENCY SOS MODAL -->
+    <div style="margin-bottom: 4.5rem;">
+      <h3 style="font-size: 1.6rem; margin-bottom: 0.5rem;">06. National Emergency SOS & Crisis Response Gateway</h3>
+      <p style="color: var(--slate-600); margin-bottom: 1.5rem;">
+        The fail-safe crisis gateway providing instant 112 dialing, caregiver SMS with live GPS coordinates, and first-responder Medical ID details.
+      </p>
+
+      <div class="showcase-frame">
+        <div class="browser-bar">
+          <div class="browser-dots"><div class="dot dot-red"></div><div class="dot dot-yellow"></div><div class="dot dot-green"></div></div>
+          <div class="browser-url">index.html?sos=1</div>
+        </div>
+        <img src="OmniTask_UX_Case_Study/case_study_assets/09_emergency_sos_modal.png" alt="Emergency SOS Modal Screen" class="showcase-img">
+      </div>
+
+      <table class="button-table">
+        <thead>
+          <tr>
+            <th>Element / Button</th>
+            <th>Type</th>
+            <th>System Action & Logic</th>
+            <th>Visual State Change</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td><strong>DIAL 112 (DISPATCH)</strong></td>
+            <td><span class="tag-action" style="background: var(--rose-light); color: var(--rose);">Emergency CTA</span></td>
+            <td>Executes native telephone dialer protocol (<span class="mono">tel:112</span> / <span class="mono">tel:911</span>).</td>
+            <td>Button pulses red; launches native phone dialer immediately.</td>
+          </tr>
+          <tr>
+            <td><strong>Call John Vance</strong></td>
+            <td><span class="tag-action">Contact Card</span></td>
+            <td>Dials primary caregiver directly (<span class="mono">tel:+919876543212</span>); sends priority alert.</td>
+            <td>Launches call; records emergency check-in log.</td>
+          </tr>
+          <tr>
+            <td><strong>Text Caregiver with Location</strong></td>
+            <td><span class="tag-action">SMS GPS Button</span></td>
+            <td>Queries Geolocation API; formats SMS with Google Maps link.</td>
+            <td>Opens device SMS composer pre-filled with live coordinates.</td>
+          </tr>
+          <tr>
+            <td><strong>I Am Safe</strong></td>
+            <td><span class="tag-action">Resolution Button</span></td>
+            <td>Cancels emergency state; logs safety confirmation to family stream.</td>
+            <td>Closes modal; sends reassuring toast to family members.</td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+  </section>
+
+  <!-- 08 AUDIT RECTIFICATION: BEFORE VS AFTER -->
+  <section class="container" style="margin-bottom: 5rem;">
+    <div class="badge-label">08 // Usability & Engineering Audit</div>
+    <h2 class="section-title">Defect Rectification: Before vs. After</h2>
+    <p class="section-sub">
+      Documenting the rigorous auditing and code remediation process that eliminated all visual flaws from the initial trial build.
+    </p>
+
+    <div class="comparison-grid">
+      <div class="comp-col-before">
+        <div class="comp-header">
+          <span>❌</span>
+          <span>Flaws Present in User's Trial Build</span>
+        </div>
+        <ul style="padding-left: 1.25rem; font-size: 0.92rem; color: #742a2a; display: flex; flex-direction: column; gap: 0.75rem;">
+          <li><strong>Notification Popover Stuck Open:</strong> The notification card was permanently displayed across all screens, obscuring top navigation and cards.</li>
+          <li><strong>Dull Grey Backgrounds:</strong> Cards had inverted dark slate containers (<span class="mono">#334155</span>), making dark text unreadable.</li>
+          <li><strong>Raw HTML Tags in Habits:</strong> The details string showed literal <span class="mono">&lt;br&gt;</span> tags inside guitar practice cards.</li>
+          <li><strong>Empty Adherence Ring:</strong> SVG stroke calculation failed to render the numeric percentage on initial load.</li>
+          <li><strong>Mobile SOS Button Collision:</strong> Floating emergency button overlapped the bottom navigation drawer on phones.</li>
+          <li><strong>Identity Cross-Contamination:</strong> Switching persona carried "Aswin" across profiles, mistakenly renaming Eleanor.</li>
+        </ul>
+      </div>
+
+      <div class="comp-col-after">
+        <div class="comp-header">
+          <span>✅</span>
+          <span>Engineered Solutions in Production Build</span>
+        </div>
+        <ul style="padding-left: 1.25rem; font-size: 0.92rem; color: #1c4532; display: flex; flex-direction: column; gap: 0.75rem;">
+          <li><strong>Resolved Popover CSS Override:</strong> Added <span class="mono">[hidden] { display: none !important; }</span> and attached click-outside and Escape handlers.</li>
+          <li><strong>Pristine White Bento Cards:</strong> Upgraded to clean <span class="mono">#ffffff</span> surfaces with 1px slate borders and soft drop shadows.</li>
+          <li><strong>Sanitized Line-Break Parser:</strong> Implemented <span class="mono">.replace(/&lt;br\s*\/?&gt;/gi, '&lt;br&gt;')</span> for clean multi-line schedule drills.</li>
+          <li><strong>Synchronized Adherence Donut:</strong> Calculates 24hr adherence dynamically, animating SVG stroke to 96% fill.</li>
+          <li><strong>Ergonomic Mobile Thumb Zone:</strong> Sticky bottom navigation bar with explicit z-index stacking and 85px safe-area clearance.</li>
+          <li><strong>Isolated Identity State:</strong> Separate user sessions ensuring names, PINs, and metrics never bleed across roles.</li>
+        </ul>
+      </div>
+    </div>
+  </section>
+
+  <!-- 09 DESIGN SYSTEM & ACCESSIBILITY -->
+  <section class="container" style="margin-bottom: 5rem;">
+    <div class="badge-label">09 // Design System & Visual Tokens</div>
+    <h2 class="section-title">Color Palette & Typographic Hierarchy</h2>
+    <p class="section-sub">
+      Every color token serves an unambiguous functional role. Red is strictly reserved for life-critical medical emergencies.
+    </p>
+
+    <!-- COLOR SWATCH GRID -->
+    <div class="swatch-grid">
+      <div class="swatch-card">
+        <div class="swatch-color" style="background: #6366f1;"></div>
+        <div class="swatch-info">
+          <div class="swatch-name">Indigo</div>
+          <div class="swatch-hex">#6366F1</div>
+          <div class="swatch-usage">Master brand, Power Cockpit, primary actions</div>
+        </div>
+      </div>
+
+      <div class="swatch-card">
+        <div class="swatch-color" style="background: #10b981;"></div>
+        <div class="swatch-info">
+          <div class="swatch-name">Emerald</div>
+          <div class="swatch-hex">#10B981</div>
+          <div class="swatch-usage">Medication adherence, taken doses, budget surplus</div>
+        </div>
+      </div>
+
+      <div class="swatch-card">
+        <div class="swatch-color" style="background: #f59e0b;"></div>
+        <div class="swatch-info">
+          <div class="swatch-name">Amber</div>
+          <div class="swatch-hex">#F59E0B</div>
+          <div class="swatch-usage">Upcoming bills, snoozed doses, Tier 2 audio alerts</div>
+        </div>
+      </div>
+
+      <div class="swatch-card">
+        <div class="swatch-color" style="background: #ef4444;"></div>
+        <div class="swatch-info">
+          <div class="swatch-name">Crimson</div>
+          <div class="swatch-hex">#EF4444</div>
+          <div class="swatch-usage">Emergency 112 SOS, missed doses past 30m</div>
+        </div>
+      </div>
+
+      <div class="swatch-card">
+        <div class="swatch-color" style="background: #06b6d4;"></div>
+        <div class="swatch-info">
+          <div class="swatch-name">Cyan</div>
+          <div class="swatch-hex">#06B6D4</div>
+          <div class="swatch-usage">Next due dose slots, habit session counter chips</div>
+        </div>
+      </div>
+
+      <div class="swatch-card">
+        <div class="swatch-color" style="background: #8b5cf6;"></div>
+        <div class="swatch-info">
+          <div class="swatch-name">Violet</div>
+          <div class="swatch-hex">#8B5CF6</div>
+          <div class="swatch-usage">Fitness routines, workout streak fire gamification</div>
+        </div>
+      </div>
+    </div>
+
+    <!-- TYPOGRAPHY SPECIFICATION -->
+    <div class="bento-grid-2" style="margin-top: 2rem;">
+      <div class="bento-card">
+        <div style="font-size: 0.78rem; font-weight: 700; color: var(--primary); text-transform: uppercase; margin-bottom: 0.5rem;">Standard Typographic Scale</div>
+        <h3 style="font-size: 1.5rem; margin-bottom: 0.5rem;">Plus Jakarta Sans</h3>
+        <p style="color: var(--slate-600); font-size: 0.9rem; margin-bottom: 1rem;">
+          Clean geometric grotesque sans-serif engineered for digital interfaces. Display headings at 32/40 800-weight, body text at 14/20 500-weight.
+        </p>
+        <div style="padding: 1rem; background: var(--slate-50); border-radius: 8px; font-family: 'JetBrains Mono', monospace; font-size: 0.95rem; color: var(--slate-800);">
+          ₹7,450.00 • 08:30 AM • 96% Adherence
+        </div>
+        <span style="font-size: 0.75rem; color: var(--slate-500); margin-top: 0.5rem; display: block;">
+          Monospaced JetBrains Mono ensures financial figures and times align perfectly in tables.
+        </span>
+      </div>
+
+      <div class="bento-card" style="border-left: 4px solid var(--emerald);">
+        <div style="font-size: 0.78rem; font-weight: 700; color: var(--emerald); text-transform: uppercase; margin-bottom: 0.5rem;">Senior Dignity Accessibility Scale</div>
+        <h3 style="font-size: 1.5rem; margin-bottom: 0.5rem;">WCAG 2.1 AAA Compliant Scale</h3>
+        <p style="color: var(--slate-600); font-size: 0.9rem; margin-bottom: 1rem;">
+          Calibrated specifically for seniors with macular degeneration and motor tremors:
+        </p>
+        <ul style="font-size: 0.88rem; color: var(--slate-700); padding-left: 1.25rem; display: flex; flex-direction: column; gap: 0.35rem;">
+          <li><strong>Hero Alert:</strong> 32px / 40px bold high-contrast text.</li>
+          <li><strong>Card Titles:</strong> 24px / 32px high-legibility font size.</li>
+          <li><strong>Touch Targets:</strong> Minimum 56dp × 56dp interactive button areas.</li>
+          <li><strong>Contrast Ratio:</strong> Exceeds 7.1:1 on all primary action surfaces.</li>
+        </ul>
+      </div>
+    </div>
+  </section>
+
+  <!-- FOOTER & THANKS -->
+  <footer class="case-footer">
+    <div class="container">
+      <h2 class="footer-title">Thank you.</h2>
+      <p class="footer-sub">
+        OmniTask OS demonstrates that life management software does not need to choose between ambitious power productivity and gentle, dignified elder care.
+      </p>
+
+      <div class="footer-links">
+        <a href="https://aswin1237.github.io/task-manager-app-beta/" target="_blank" class="btn-proto">
+          <span>🚀 Open Live Prototype</span>
+        </a>
+        <a href="https://github.com/aswin1237/task-manager-app-beta" target="_blank" class="btn-gh">
+          <span>💻 View GitHub Repository</span>
+        </a>
+      </div>
+
+      <div style="margin-top: 3.5rem; padding-top: 2rem; border-top: 1px solid rgba(255, 255, 255, 0.1); display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 1rem; font-size: 0.85rem; color: var(--slate-500);">
+        <div>Designed & Engineered by <strong>Aswin S</strong> • NIFT Department of Design</div>
+        <div>OmniTask OS Version 4.4 Master • MIT License</div>
+      </div>
+    </div>
+  </footer>
+
+</body>
+</html>
